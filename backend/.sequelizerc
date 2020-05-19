@@ -1,0 +1,32 @@
+const path = require('path');
+
+module.exports = {
+  //config: path.resolve(__dirname, 'src', 'config', 'database.js')
+  config: path.resolve(__dirname, 'src/config/database.js'),
+  'migrations-path': path.resolve(__dirname, 'src/database/migrations'),
+}
+
+/**
+ * insert users (login, email, `password`, `name`, is_admin, created_at, updated_at) 
+ * value ('admin', 'admin@gmail.com', '123', 'administrador', 1, now(), now());
+ */
+
+/** Comandos sequelize-cli
+ * Para poder usar o sequelize-cli "npm sequelize db:<cmd>"
+ * 
+ * yarn sequelize migration:create --name=create-users (Cria uma nova migration)
+ * 
+ * yarn sequelize db:migrate (Executa as migrations)
+ * yarn sequelize db:migrate:undo (Desfaz a ultima migration executada (em produção não usar))
+ * 
+*/
+
+/** 
+ * Migrations
+ * 
+ * yarn sequelize migration:create --name=create-users 
+ * yarn sequelize migration:create --name=create-administrators 
+ * yarn sequelize migration:create --name=create-consultants
+ * yarn sequelize migration:create --name=create-investors 
+ * yarn sequelize migration:create --name=create-consultant_investor
+ */
