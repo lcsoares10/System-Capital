@@ -2,26 +2,31 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('consultant_investor', {
+    return queryInterface.createTable('contract_pay_competences', {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true, //PK
         autoIncrement: true, //Auto incremento
         allowNull: false // não pode ser nulo
       },
-      id_consultant: {
+      id_contract: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        references: { model: 'consultants', key: 'id' },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
+        references: { model: 'contracts', key: 'id' },
+        onUpdate: 'CASCADE', //atualiza o id do usuário caso ele mude
+        onDelete: 'CASCADE' //CASCADE | SET NULL | RESTRICT
       },
-      id_investor: {
+      value: {
+        type: Sequelize.FLOAT,
+        allowNull: false
+      },
+      competence: {
+        type: Sequelize.STRING(6),
+        allowNull: false
+      },
+      id_user: {
         type: Sequelize.INTEGER,
-        allowNull: false,
-        references: { model: 'investors', key: 'id' },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
+        allowNull: false
       },
       created_at: {
         type: Sequelize.DATE,
@@ -31,10 +36,11 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: false
       },
+
     });
   },
 
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('consultant_investor');
+    return queryInterface.dropTable('contract_pay_competences');
   }
 };

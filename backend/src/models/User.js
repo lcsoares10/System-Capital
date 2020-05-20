@@ -3,7 +3,7 @@ const { Model, DataTypes }  = require('sequelize');
 class User extends Model {
 
   static init(sequelize) { //recebe a conexão do banco de dados
-    super.init({
+    return super.init({
       login: DataTypes.STRING,
       email: DataTypes.STRING,
       password: DataTypes.STRING,
@@ -16,6 +16,7 @@ class User extends Model {
   }
 
   static associate(models) {
+    //hasOne [1:1] - Chave estrangeira definida em B
     this.hasOne(models.Administrator, { foreignKey: 'id_user', as: 'administrator' });
     this.hasOne(models.Consultant, { foreignKey: 'id_user', as: 'consultant' });
     this.hasOne(models.Investor, { foreignKey: 'id_user', as: 'investor' });
