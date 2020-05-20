@@ -3,7 +3,7 @@ const { Model, DataTypes }  = require('sequelize');
 class Administrator extends Model {
 
   static init(sequelize) { //recebe a conexão do banco de dados
-    super.init({
+    return super.init({
       //id_user: DataTypes.INTEGER //Até funciona
     }, { 
       sequelize,

@@ -15,6 +15,12 @@ module.exports = {
         references: { model: 'users', key: 'id' },
         onUpdate: 'CASCADE', //atualiza o id do usuário caso ele mude
         onDelete: 'CASCADE' //CASCADE | SET NULL | RESTRICT
+      },
+      id_consultant: {
+        type: Sequelize.INTEGER,
+        references: { model: 'consultants', key: 'id' },
+        onUpdate: 'CASCADE', //atualiza o id do usuário caso ele mude
+        onDelete: 'CASCADE' //CASCADE | SET NULL | RESTRICT
       }
     });
   },
