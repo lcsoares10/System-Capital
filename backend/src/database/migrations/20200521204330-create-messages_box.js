@@ -2,40 +2,28 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('users', {
+    return queryInterface.createTable('messages_box', {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true, //PK
         autoIncrement: true, //Auto incremento
         allowNull: false // não pode ser nulo
       },
-      login: {
-        type: Sequelize.STRING,
+      id_administrator: {
+        type: Sequelize.INTEGER,
         allowNull: false,
-        unique : true,
+        references: { model: 'administrators', key: 'id' },
+        onUpdate: 'CASCADE', //atualiza o id do usuário caso ele mude
+        onDelete: 'CASCADE' //CASCADE | SET NULL | RESTRICT
       },
-      email: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        unique : true,
-      },
-      password: {
-        type: Sequelize.STRING,
+      messagem: {
+        type: Sequelize.TEXT,
         allowNull: false
       },
-      name: {
-        type: Sequelize.STRING,
-        allowNull: false
-      },
-      is_admin: {
+      to_group_user: {
         type: Sequelize.INTEGER,
         allowNull: false,
         defaultValue: 0
-      },
-      active: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        defaultValue: 1
       },
       created_at: {
         type: Sequelize.DATE,
@@ -50,6 +38,6 @@ module.exports = {
   },
 
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('users');
+    return queryInterface.dropTable('messages_box');
   }
 };

@@ -10,7 +10,7 @@ class User extends Model {
       name: DataTypes.STRING,
       is_admin: DataTypes.INTEGER,
       active: DataTypes.INTEGER
-    }, { 
+    }, {
       sequelize
     });
   }
@@ -20,6 +20,15 @@ class User extends Model {
     this.hasOne(models.Administrator, { foreignKey: 'id_user', as: 'administrator' });
     this.hasOne(models.Consultant, { foreignKey: 'id_user', as: 'consultant' });
     this.hasOne(models.Investor, { foreignKey: 'id_user', as: 'investor' });
+
+    //belongsToMany [N:N]
+    this.belongsToMany(models.MessagesBox, {
+      //through: MessageUserView,
+      through: 'MessageUserView',
+      foreignKey: 'id_user',
+      as: 'messages_box'
+    });
+
   }
 
 }

@@ -5,7 +5,7 @@ class Administrator extends Model {
   static init(sequelize) { //recebe a conexão do banco de dados
     return super.init({
       //id_user: DataTypes.INTEGER //Até funciona
-    }, { 
+    }, {
       sequelize,
       timestamps: false
     });
