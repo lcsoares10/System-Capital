@@ -32,6 +32,7 @@ routes.get('/', async (req, res) => {
 
 });
 
+/****************************************************************/
 /** Users */
 routes.get('/users', UserController.index);
 routes.get('/user/:id', UserController.get);
