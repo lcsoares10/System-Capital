@@ -8,7 +8,7 @@ const path = require('path');
 
 require('dotenv').config({
   path: path.resolve(
-    __dirname, 
+    __dirname,
     '../',
     `.env.${process.env.NODE_ENV}.local`,
   ),

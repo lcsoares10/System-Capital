@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-  up: (queryInterface, Sequelize) => queryInterface.bulkInsert('Users', 
+  up: (queryInterface, Sequelize) => queryInterface.bulkInsert('users',
     [
       {
         login: 'admin',
@@ -14,7 +14,7 @@ module.exports = {
       },
     ], {}),
 
-  down: (queryInterface) => queryInterface.bulkDelete('Users', null, {}),
+  down: (queryInterface) => queryInterface.bulkDelete('users', null, {}),
 };
 
 /*
@@ -27,7 +27,7 @@ let users = [
   //   is_admin: 1,
   //   created_at: new Date(),
   //   updated_at: new Date(),
-  // }, 
+  // },
   {
     config: {
       qtd: 1,
@@ -55,7 +55,7 @@ let users = [
       created_at: new Date(),
       updated_at: new Date(),
     }
-  },  
+  },
   {
     config: {
       qtd: 1
@@ -69,6 +69,6 @@ let users = [
       created_at: new Date(),
       updated_at: new Date(),
     }
-  }, 
+  },
 ]
 */

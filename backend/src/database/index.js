@@ -12,12 +12,13 @@ const sequelize = new Sequelize(
   config.database, config.username, config.password, config
 );
 
-// try {
-//   async () => {await dbs.authenticate();}
-//   console.log('Connection has been established successfully.');
-// } catch (error) {
-//   console.error('Unable to connect to the database:', error);
-// }
+sequelize.authenticate().then(() => {
+  console.log('DB connection sucessful.');
+  },
+  (err) => {
+    console.error('Unable to connect to the database:', err.original.errno);
+    return false;
+  });
 
 fs
   .readdirSync(dirmodels)
@@ -42,4 +43,8 @@ Object.keys(dbs).forEach(modelName => {
  * module.exports = dbs;
  */
 
-module.exports = sequelize;
+dbs.Sequelize = Sequelize;
+dbs.sequelize = sequelize;
+module.exports = dbs;
+
+//module.exports = sequelize;

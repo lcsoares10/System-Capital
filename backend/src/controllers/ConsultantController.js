@@ -1,61 +1,46 @@
-const Consultant = require('@/src/models/Consultant');
-const Investor = require('@/src/models/Investor');
-//const User = require('@/src/models/User');
+const ConsultantModel = require('@/src/models/Consultant');
+const InvestorModel = require('@/src/models/Investor');
 
 module.exports = {
 
-    async index(req, res) {
-        const consultants = await Consultant.findAll({
-            include: { association: 'user', required: true }
-        });
-        return res.json(consultants);
-    },
+  async index(req, res) {
+      const consultants = await ConsultantModel.findAll({
+          include: { association: 'user', required: true }
+      });
+      return res.json(consultants);
+  },
 
-    async get(req, res) {
-        const { id } = req.params;
-        const consultant = await Consultant.findByPk(id,  { 
-            include: { association: 'user', required: true }
-        });
+  async get(req, res) {
+      const { id } = req.params;
+      const consultant = await ConsultantModel.findByPk(id,  {
+          include: { association: 'user', required: true }
+      });
 
-        if (!consultant) {
-            return res.status(400).json({ error: 'Consultor não existe'} );
+      if (!consultant) {
+          return res.status(400).json({ error: 'Consultor não existe'} );
+      }
+
+        return res.json(consultant);
+  },
+
+  /** Investors */
+
+  async getInvestors(req, res) {
+      const { id } = req.params;
+      const consultant = await ConsultantModel.findByPk(id);
+
+      if (!consultant) {
+          return res.status(400).json({ error: 'Consultor não existe'} );
+      }
+
+      const resilt = await InvestorModel.findAll({
+        include: { association: 'user', required: true },
+        where: {
+          id_consultant: id
         }
+      });
 
-         return res.json(consultant);
-    },
-
-    async indexInvestors(req, res) {
-        const consultants = await Consultant.findAll({
-            include: [
-                { association: 'user', required: true },
-                { 
-                    association: 'investors', 
-                    include : {association: 'user'} 
-                },    
-            ]
-        });
-        return res.json(consultants);
-    },
-
-    async getInvestors(req, res) {
-        const { id } = req.params;
-        const consultant = await Consultant.findByPk(id);
-
-        if (!consultant) {
-            return res.status(400).json({ error: 'Consultor não existe'} );
-        }
-        
-         const consultants = await Consultant.findByPk(id, {
-             include: [
-                { association: 'user', required: true },
-                { 
-                    association: 'investors', 
-                    include : {association: 'user'} 
-                },    
-            ]
-         });
-
-         return res.json(consultants);
-    },
+      return res.json(resilt);
+  },
 
 };

@@ -7,9 +7,9 @@ const express = require('express');
 const cors = require('cors');
 const routes = require('@/src/routes');
 
-require('@/src/database');
-
 const app = express();
+
+require('@/src/database');
 
 app.use(cors());
 app.use(express.json()); /*Informar que a requisição a ser usada será de json*/
