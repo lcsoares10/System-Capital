@@ -12,9 +12,9 @@ const MessageBoxController = require('@/src/controllers/MessageBoxController');
 /** Root */
 routes.get('/', async (req, res) => {
     //res.send('Root !!')
-    //res.json({ hello: 'Hello Word' })
+    res.json({ hello: 'Hello Word' })
 
-    const InvestorClass = require('@/src/class/Investor');
+/*     const InvestorClass = require('@/src/class/Investor');
     const Investor = new InvestorClass();
 
     try {
@@ -26,7 +26,7 @@ routes.get('/', async (req, res) => {
 
     } catch (er) {
         return res.status(400).json({ error: er.message });
-    }
+    } */
 
     //res.json({ hello: 'Hello Word' });
 
@@ -42,15 +42,12 @@ routes.get('/user/:id/messages', UserController.getMessages);
 /** Investors */
 routes.get('/investors', InvestorController.index);
 routes.get('/investor/:id', InvestorController.get);
-
 routes.get('/investor/:id/contracts', InvestorController.indexContracts);
 
 /****************************************************************/
 /** Consultants */
 routes.get('/consultants', ConsultantController.index);
 routes.get('/consultant/:id', ConsultantController.get);
-
-//routes.get('/consultants/investors', ConsultantController.indexInvestors);
 routes.get('/consultant/:id/investors', ConsultantController.getInvestors);
 
 /****************************************************************/
@@ -62,12 +59,10 @@ routes.get('/administrator/:id', AdministratorController.get);
 /** Contracts */
 routes.get('/contracts', ContractController.index);
 routes.get('/contract/:id', ContractController.get);
-
-routes.get('/contracts/contractpaymonths', ContractController.indexPayMonth);
-routes.get('/contracts/:id/contractspaymonth', ContractController.getPayMonth);
+routes.get('/contract/:id/contractspaymonth', ContractController.getPayMonth);
 
 /****************************************************************/
-/** ContractPayCompetences (não sei se deve ser uma rota !!!) */
+/** ContractPayCompetences */
 //routes.get('/contractspaymonth', ContractPayCompetencesController.index);
 //routes.get('/contractspaymonth/:id', ContractPayCompetencesController.get);
 

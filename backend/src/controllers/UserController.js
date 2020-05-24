@@ -1,4 +1,5 @@
 const UserModel = require('@/src/models/User');
+const MessageBoxModel = require('@/src/models/MessageBox');
 
 module.exports = {
 
@@ -25,29 +26,21 @@ module.exports = {
 
       const { id } = req.params;
 
-      const user = await UserModel.findByPk(id,  {
-          include: { association: 'messages_box' }
+      const result = await MessageBoxModel.findAll({
+          include: {
+            association: 'users',
+            attributes: [],
+            where: {
+              id
+            }
+          },
       });
 
-      //====================
-      //Raw
-      // const dbs = require('@/src/database');
-
-      // //const users = await dbs.sequelize.query("SELECT * FROM `users`",{ type: dbs.Sequelize.QueryTypes.SELECT });
-
-      // const users = await dbs.sequelize.query(
-      //   "SELECT * FROM `users`"
-      // );
-
-      // console.log(users);
-
-      //====================
-
-      if (!user) {
+      if (!result) {
           return res.status(400).json({ error: 'Usuário não existe'} );
       }
 
-       return res.json(user);
+       return res.json(result);
   },
 
     /*     async create(request, response) {
