@@ -12,9 +12,7 @@ class Pagination {
   async select(pagenum, options={}) {
 
     pagenum = parseInt(pagenum);
-    if(!pagenum) {
-      pagenum = 1;
-    }
+    if(!pagenum) pagenum = 1;
 
     const limit = this._pageSize;
     const offset = limit * (pagenum - 1);
