@@ -1,3 +1,5 @@
+/** Teste */
+
 class User {
   constructor() {
     /** Atributos */
