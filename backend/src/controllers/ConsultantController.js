@@ -24,7 +24,7 @@ module.exports = {
 
   /** Investors */
 
-  async indexInvestors(req, res) {
+/*   async indexInvestors(req, res) {
       const consultants = await ConsultantModel.findAll({
           include: [
               { association: 'user', required: true },
@@ -35,7 +35,7 @@ module.exports = {
           ]
       });
       return res.json(consultants);
-  },
+  }, */
 
   async getInvestors(req, res) {
       const { id } = req.params;

@@ -49,7 +49,7 @@ routes.get('/investor/:id/contracts', InvestorController.indexContracts);
 routes.get('/consultants', ConsultantController.index);
 routes.get('/consultant/:id', ConsultantController.get);
 
-routes.get('/consultants/investors', ConsultantController.indexInvestors);
+//routes.get('/consultants/investors', ConsultantController.indexInvestors);
 routes.get('/consultant/:id/investors', ConsultantController.getInvestors);
 
 /****************************************************************/
