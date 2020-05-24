@@ -1,12 +1,17 @@
 const MessageBoxModel = require('@/src/models/MessageBox');
+const PaginationClass = require('@/src/class/Pagination');
 
 module.exports = {
 
   async index(req, res) {
-      const result = await MessageBoxModel.findAll({
-        //include: { association: 'users' }
-      });
-      return res.json(result);
+
+    const page = req.query.page || 1;
+    const options = {};
+
+    const Pagination = new PaginationClass(MessageBoxModel);
+    const result = await Pagination.select(page, options);
+
+    return res.json(result);
   },
 
   async get(req, res) {

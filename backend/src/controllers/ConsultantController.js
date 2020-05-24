@@ -1,13 +1,20 @@
 const ConsultantModel = require('@/src/models/Consultant');
 const InvestorModel = require('@/src/models/Investor');
+const PaginationClass = require('@/src/class/Pagination');
 
 module.exports = {
 
   async index(req, res) {
-      const consultants = await ConsultantModel.findAll({
-          include: { association: 'user', required: true }
-      });
-      return res.json(consultants);
+
+    const page = req.query.page || 1;
+    const options = {
+      include: { association: 'user', required: true }
+    };
+
+    const Pagination = new PaginationClass(ConsultantModel);
+    const result = await Pagination.select(page, options);
+
+    return res.json(result);
   },
 
   async get(req, res) {
