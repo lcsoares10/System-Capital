@@ -1,9 +1,10 @@
-const Investor = require('@/src/models/Investor');
+const InvestorModel = require('@/src/models/Investor');
+const ContractModel = require('@/src/models/Contract');
 
 module.exports = {
 
   async index(req, res) {
-      const result = await Investor.findAll({
+      const result = await InvestorModel.findAll({
           include: [
               { association: 'user', required: true },
               {
@@ -18,7 +19,7 @@ module.exports = {
   async get(req, res) {
       const { id } = req.params;
 
-      const result = await Investor.findByPk(id,  {
+      const result = await InvestorModel.findByPk(id,  {
           include: { association: 'user', required: true }
       });
 
@@ -26,57 +27,38 @@ module.exports = {
           return res.status(400).json({ error: 'Investidor não existe'} );
       }
 
-        return res.json(result);
+      return res.json(result);
   },
 
-  /** Messages */
+  /** Contracts */
 
-  async indexMessages(req, res) {
+  async indexContracts(req, res) {
 
     const { id } = req.params;
 
-    const result = await Investor.findAll({
-        include: [
-            {
-              association: 'user',
-              required: true,
-              include: { association: 'messages_box' },
-            },
-        ],
-        where : {
-          id
-        }
+    const result = await ContractModel.findAll({
+      where: {
+        id_investor: id
+      }
     });
-    return res.json(result);
-  },
-
-  async getMessage(req, res) {
-
-    const { id, id_message_box } = req.params;
-
-    const result = await Investor.findAll({
-        include: [
-            {
-              association: 'user',
-              required: true,
-              include: {
-                association: 'messages_box',
-                where: {
-                  id: id_message_box
-                }
-               },
-            },
-        ],
-        where : {
-          id
-        }
-    });
-
-    if (!result.length) {
-      return res.status(400).json({ error: 'Mensagem não existe'} );
-  }
 
     return res.json(result);
   },
 
 };
+
+//TESTE
+/*   async get(req, res) {
+    const InvestorClass = require('@/src/class/Investor');
+    const Investor = new InvestorClass();
+
+    try {
+      const { id } = req.params;
+      await Investor.load(id);
+
+    } catch (er) {
+        return res.status(400).json({ error: er.message });
+    }
+
+    return res.json(Investor._values);
+  }, */

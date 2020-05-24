@@ -1,11 +1,11 @@
-const Contract = require('@/src/models/Contract');
+const ContractModel = require('@/src/models/Contract');
 
 module.exports = {
 
     async index(req, res) {
-        const contracts = await Contract.findAll({
+        const contracts = await ContractModel.findAll({
             include: [
-                { 
+                {
                     association: 'investor',
                     required: true,
                     include : {association: 'user'}
@@ -17,9 +17,9 @@ module.exports = {
 
     async get(req, res) {
         const { id } = req.params;
-        const contract = await Contract.findByPk(id,  { 
+        const contract = await ContractModel.findByPk(id,  {
             include: [
-                { 
+                {
                     association: 'investor',
                     required: true,
                     include : {association: 'user'}
@@ -35,7 +35,7 @@ module.exports = {
     },
 
     async indexPayMonth(req, res) {
-        const contracts = await Contract.findAll({
+        const contracts = await ContractModel.findAll({
             include: [
                 {
                     association: 'investor',
@@ -50,7 +50,7 @@ module.exports = {
 
     async getPayMonth(req, res) {
         const { id } = req.params;
-        const contract = await Contract.findByPk(id,  { 
+        const contract = await ContractModel.findByPk(id,  {
             include: [
                 {
                     association: 'investor',
@@ -67,5 +67,5 @@ module.exports = {
 
          return res.json(contract);
     },
-    
+
 };

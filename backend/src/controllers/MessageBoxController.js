@@ -1,9 +1,9 @@
-const MessagesBox = require('@/src/models/MessagesBox');
+const MessageBoxModel = require('@/src/models/MessageBox');
 
 module.exports = {
 
   async index(req, res) {
-      const result = await MessagesBox.findAll({
+      const result = await MessageBoxModel.findAll({
         //include: { association: 'users' }
       });
       return res.json(result);
@@ -12,7 +12,7 @@ module.exports = {
   async get(req, res) {
     const { id } = req.params;
 
-    const result = await MessagesBox.findByPk(id,  {
+    const result = await MessageBoxModel.findByPk(id,  {
         include: {
           association: 'administrator',
           include: {

@@ -1,6 +1,6 @@
 const { Model, DataTypes }  = require('sequelize');
 
-class MessagesBox extends Model {
+class MessageBox extends Model {
 
   static init(sequelize) { //recebe a conexão do banco de dados
     return super.init({
@@ -9,6 +9,7 @@ class MessagesBox extends Model {
     }, {
       sequelize,
       tableName: 'messages_box',
+      modelName: 'MessagesBox'
     });
   }
 
@@ -29,4 +30,4 @@ class MessagesBox extends Model {
 
 }
 
-module.exports = MessagesBox;
+module.exports = MessageBox;

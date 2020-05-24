@@ -6,14 +6,31 @@ const InvestorController = require('@/src/controllers/InvestorController');
 const ConsultantController = require('@/src/controllers/ConsultantController');
 const AdministratorController = require('@/src/controllers/AdministratorController');
 const ContractController = require('@/src/controllers/ContractController');
-const MessagesBoxController = require('@/src/controllers/MessagesBoxController');
+const MessageBoxController = require('@/src/controllers/MessageBoxController');
 //const ContractPayCompetence = require('@/src/controllers/ContractPayCompetenceController');
 
 /** Root */
-routes.get('/', (req, res) => (
+routes.get('/', async (req, res) => {
     //res.send('Root !!')
-    res.json({ hello: 'Hello Word' })
-));
+    //res.json({ hello: 'Hello Word' })
+
+    const InvestorClass = require('@/src/class/Investor');
+    const Investor = new InvestorClass();
+
+    try {
+      //await Investor.load(50);
+      const result = await Investor.loadAll();
+
+      //return res.json(Investor._values);
+      return res.json(result);
+
+    } catch (er) {
+        return res.status(400).json({ error: er.message });
+    }
+
+    //res.json({ hello: 'Hello Word' });
+
+});
 
 /** Users */
 routes.get('/users', UserController.index);
@@ -25,8 +42,7 @@ routes.get('/user/:id/messages', UserController.getMessages);
 routes.get('/investors', InvestorController.index);
 routes.get('/investor/:id', InvestorController.get);
 
-routes.get('/investor/:id/messages', InvestorController.indexMessages);
-routes.get('/investor/:id/message/:id_message_box', InvestorController.getMessage);
+routes.get('/investor/:id/contracts', InvestorController.indexContracts);
 
 /****************************************************************/
 /** Consultants */
@@ -35,25 +51,17 @@ routes.get('/consultant/:id', ConsultantController.get);
 
 routes.get('/consultants/investors', ConsultantController.indexInvestors);
 routes.get('/consultant/:id/investors', ConsultantController.getInvestors);
-routes.get('/consultant/:id/investor/:id_investor', ConsultantController.getInvestor);
-
-routes.get('/consultant/:id/messages', ConsultantController.indexMessages);
-routes.get('/consultant/:id/message/:id_message_box', ConsultantController.getMessage);
 
 /****************************************************************/
 /** Administrators */
 routes.get('/administrators', AdministratorController.index);
 routes.get('/administrator/:id', AdministratorController.get);
 
-routes.get('/administrator/:id/messages', AdministratorController.indexMessages);
-routes.get('/administrator/:id/message/:id_message_box', AdministratorController.getMessage);
-
 /****************************************************************/
 /** Contracts */
 routes.get('/contracts', ContractController.index);
 routes.get('/contract/:id', ContractController.get);
 
-//
 routes.get('/contracts/contractpaymonths', ContractController.indexPayMonth);
 routes.get('/contracts/:id/contractspaymonth', ContractController.getPayMonth);
 
@@ -64,7 +72,7 @@ routes.get('/contracts/:id/contractspaymonth', ContractController.getPayMonth);
 
 /****************************************************************/
 /** Menssagens Box */
-routes.get('/messagesbox', MessagesBoxController.index);
-routes.get('/messagebox/:id', MessagesBoxController.get);
+routes.get('/messagesbox', MessageBoxController.index);
+routes.get('/messagebox/:id', MessageBoxController.get);
 
 module.exports = routes;

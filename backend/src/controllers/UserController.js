@@ -1,16 +1,16 @@
-const User = require('@/src/models/User');
+const UserModel = require('@/src/models/User');
 
 module.exports = {
 
     async index(req, res) {
-        const users = await User.findAll();
+        const users = await UserModel.findAll();
         return res.json(users);
     },
 
     async get(req, res) {
 
         const { id } = req.params;
-        const user = await User.findByPk(id,  {
+        const user = await UserModel.findByPk(id,  {
             //include: { association: 'user', required: true }
         });
 
@@ -25,7 +25,7 @@ module.exports = {
 
       const { id } = req.params;
 
-      const user = await User.findByPk(id,  {
+      const user = await UserModel.findByPk(id,  {
           include: { association: 'messages_box' }
       });
 
