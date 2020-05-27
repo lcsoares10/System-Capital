@@ -24,9 +24,10 @@ module.exports = {
         type: Sequelize.STRING(6),
         allowNull: false
       },
-      id_user: {
+      id_user_pay: {
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: false,
+        references: { model: 'users', key: 'id' },
       },
       created_at: {
         type: Sequelize.DATE,

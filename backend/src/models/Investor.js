@@ -2,6 +2,10 @@ const { Model, DataTypes }  = require('sequelize');
 
 class Investor extends Model {
 
+  static get _name() {
+    return 'Investidor';
+  }
+
   static init(sequelize) { //recebe a conexão do banco de dados
     return super.init({
       //id_user: DataTypes.INTEGER //Até funciona

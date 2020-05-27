@@ -9,10 +9,10 @@ module.exports = {
         autoIncrement: true, //Auto incremento
         allowNull: false // não pode ser nulo
       },
-      id_administrator: {
+      id_user_send: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        references: { model: 'administrators', key: 'id' },
+        references: { model: 'users', key: 'id' },
         onUpdate: 'CASCADE', //atualiza o id do usuário caso ele mude
         onDelete: 'CASCADE' //CASCADE | SET NULL | RESTRICT
       },

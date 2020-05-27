@@ -2,10 +2,14 @@ const { Model, DataTypes }  = require('sequelize');
 
 class Consultant extends Model {
 
+  static get _name() {
+    return 'Consultor';
+  }
+
   static init(sequelize) { //recebe a conexão do banco de dados
     return super.init({
       //id_user: DataTypes.INTEGER //Até funciona
-    }, { 
+    }, {
       sequelize,
       timestamps: false
       //tableName: 'Consultants',

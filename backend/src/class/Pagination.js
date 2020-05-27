@@ -4,9 +4,9 @@
 
 class Pagination {
 
-  constructor(model) {
+  constructor(model, pageSize) {
     this._model = model;
-    this._pageSize = 15;
+    this._pageSize = pageSize || 50;
   }
 
   async select(pagenum, options={}) {
@@ -27,6 +27,7 @@ class Pagination {
 
     return new Promise((resolve, reject) => {
       const out = {
+        pagesize: this._pageSize,
         totreg: count,
         page: pagenum,
         totpages: Math.ceil(count / this._pageSize),

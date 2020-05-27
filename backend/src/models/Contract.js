@@ -4,10 +4,33 @@ class Contract extends Model {
 
   static init(sequelize) { //recebe a conexão do banco de dados
     return super.init({
-      begin: DataTypes.DATE,
-      time: DataTypes.INTEGER,
-      value: DataTypes.FLOAT,
-    }, { 
+      begin: { //início
+        type: DataTypes.DATE,
+        allowNull: false,
+        validate: {
+          notEmpty: true
+        }
+      },
+      day: { //dia do pagamento
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notEmpty: true,
+          is: /^[0-3][0-9]$/i
+        }
+      },
+      time: { //Prazo
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notEmpty: true
+        }
+      },
+      value: {
+        type: DataTypes.FLOAT,
+        allowNull: false
+      },
+    }, {
       sequelize
     });
   }
