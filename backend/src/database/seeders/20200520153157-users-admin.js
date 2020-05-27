@@ -7,7 +7,7 @@ module.exports = {
         login: 'admin',
         email: 'admin@gmail.com',
         password: '123',
-        name: 'administrador',
+        name: 'administrador_root',
         is_admin: 1,
         created_at: new Date(),
         updated_at: new Date(),
