@@ -17,14 +17,14 @@ const config = {
     username: "root",
     password: null,
     database: "database_test",
-    host: "127.0.0.1",
+    host: "10.5.0.5",
     dialect: "mysql",
   },
   production: {
     username: "root",
     password: null,
     database: "database_production",
-    host: "127.0.0.1",
+    host: "10.5.0.5",
     dialect: "mysql",
   }
 }

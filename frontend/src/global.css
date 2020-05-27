@@ -7,6 +7,32 @@
 }
 
 
+:root{
+
+  /*Cores para sobreposição de superfícies*/
+  --bg-color: #121212;
+  --bg-color-05: rgba(255, 255, 255, 0.05);
+  --bg-color-07: rgba(255, 255, 255, 0.07);
+  --bg-color-08: rgba(255, 255, 255, 0.08);
+  --bg-color-12: rgba(255, 255, 255, 0.12);
+  --bg-color-15: rgba(255, 255, 255, 0.15);
+  --shadow-bottom: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  --shadow-top: 0px -4px 4px rgba(0, 0, 0, 0.25);
+
+  --bg-color-button: #FFB900;
+  --text-color-button: white;
+
+    /*text*/
+
+  --text-color-gray:rgba(0, 0, 0, 0.4);
+  --text-color-beige:#A0770A;
+  --font-weight-thin:100;
+  --font-weight:300;
+
+}
+
+
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -19,4 +45,8 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+input {
+  background-color: transparent;
 }
