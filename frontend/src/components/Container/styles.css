@@ -1,7 +1,5 @@
 .container{
     background-color: var(--bg-color);           
     height: 100vh;
-    display: flex;
-    align-items:center;
-    justify-content: center;
+    width: 100%;
 }
