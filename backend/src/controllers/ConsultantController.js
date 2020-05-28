@@ -92,7 +92,7 @@ module.exports = {
 
       const { ...camposUser } = req.body
 
-      const user = await UserModel.create(camposUser, { transaction: t });
+      let user = await UserModel.create(camposUser, { transaction: t });
       const consultant = await ConsultantModel.create({
         id_user: user.id
       }
@@ -100,7 +100,8 @@ module.exports = {
 
       const result = {
         ...consultant.toJSON(),
-        user: { ...user.toJSON() }
+        //user: { ...user.toJSON(['password', 'updatedAt', 'createdAt'], "e")}
+        user: { ...user.toJSON()}
       };
 
       await t.commit();

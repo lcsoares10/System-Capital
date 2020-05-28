@@ -4,6 +4,7 @@
 require('module-alias/register')
 
 /** Prototype */
+require('@/src/prototype/ModelSequelize');
 require('@/src/prototype/String');
 
 /** Server */

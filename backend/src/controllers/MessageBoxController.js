@@ -63,7 +63,7 @@ module.exports = {
 
     try {
 
-      const { id_user } = req.headers;
+      const { id_user } = req.user;
       let user = await UserModel.findByPk(id_user);
       if (!user) throw new Exception("Usuário não existe");
 

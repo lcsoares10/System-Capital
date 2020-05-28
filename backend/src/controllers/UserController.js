@@ -51,7 +51,8 @@ module.exports = {
     try {
       const { id } = req.params;
       const result = await MessageBoxModel.findAll({
-          include: {
+          include: [
+          {
             association: 'users',
             required: true,
             attributes: ['id', 'name'],
@@ -62,6 +63,10 @@ module.exports = {
               }
             },
           },
+          {
+            association: 'user_send'
+          }
+        ],
       },);
 
       if (!result) {

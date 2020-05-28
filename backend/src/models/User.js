@@ -43,7 +43,12 @@ class User extends Model {
       is_admin: DataTypes.INTEGER,
       active: DataTypes.INTEGER
     }, {
-      sequelize
+      sequelize,
+      defaultScope: {
+        attributes: {
+          exclude: ['createdAt', 'updatedAt', 'password']
+        },
+      },
     });
   }
 

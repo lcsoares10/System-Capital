@@ -16,7 +16,8 @@ class Contract extends Model {
         allowNull: false,
         validate: {
           notEmpty: true,
-          is: /^[0-3][0-9]$/i
+          min: 1,
+          max: 31
         }
       },
       time: { //Prazo
@@ -31,7 +32,12 @@ class Contract extends Model {
         allowNull: false
       },
     }, {
-      sequelize
+      sequelize,
+      defaultScope: {
+        attributes: {
+          exclude: ['createdAt', 'updatedAt']
+        },
+      }
     });
   }
 

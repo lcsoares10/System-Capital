@@ -24,6 +24,9 @@ module.exports = {
           { association: 'investor', },
           { association: 'consultant' }
         ],
+        attributes: {
+          include: ['password']
+        },
         where: {
           email
         }
@@ -80,6 +83,7 @@ module.exports = {
       return res.json(Util.response({ ...result, token }, 'Logado com Sucesso'));
 
     } catch (e) {
+      console.log(e);
       const result = Exception._(e);
       return res.status(400).json(Util.response(result));
     }

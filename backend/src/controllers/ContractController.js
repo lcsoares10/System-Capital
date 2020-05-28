@@ -197,7 +197,7 @@ module.exports = {
       let contract = await ContractModel.findByPk(id);
       if (!contract) throw new Exception("Contrato não existe", "id_contract");
 
-      const { id_user } = req.headers;
+      const { id_user } = req.user;
       let user = await UserModel.findByPk(id_user);
       if (!user) throw new Exception("Usuário não existe");
 
