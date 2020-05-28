@@ -1,6 +1,10 @@
 const express = require('express');
 const routes = express.Router();
 
+const authMiddleware = require('@/src/middleware/auth');
+const authAdminMiddleware = require('@/src/middleware/authAdmin');
+
+const LoginController = require('@/src/controllers/LoginController');
 const UserController = require('@/src/controllers/UserController');
 const InvestorController = require('@/src/controllers/InvestorController');
 const ConsultantController = require('@/src/controllers/ConsultantController');
@@ -30,6 +34,12 @@ routes.get('/', async (req, res) => {
     //res.json({ hello: 'Hello Word' });
 
 });
+
+/****************************************************************/
+/** Login */
+routes.post('/login', LoginController.login);
+
+routes.use(authMiddleware);
 
 /****************************************************************/
 /** Users */
@@ -71,19 +81,17 @@ routes.post('/contract/:id/contractspaymonth', ContractController.createPayMonth
 
 /****************************************************************/
 /** ContractPayCompetences */
-routes.get('/contractpaycompetences', ContractPayCompetenceController.index);
-routes.get('/contractpaycompetences/:id', ContractPayCompetenceController.get);
+routes.get('/contractpaycompetences', authAdminMiddleware, ContractPayCompetenceController.index);
+routes.get('/contractpaycompetences/:id', authAdminMiddleware, ContractPayCompetenceController.get);
 
-routes.put('/contractpaycompetences/:id', ContractPayCompetenceController.update);
-routes.delete('/contractpaycompetences/:id', ContractPayCompetenceController.delete);
+routes.put('/contractpaycompetences/:id', authAdminMiddleware, ContractPayCompetenceController.update);
+routes.delete('/contractpaycompetences/:id', authAdminMiddleware, ContractPayCompetenceController.delete);
 
 /****************************************************************/
 /** Menssagens Box */
-routes.get('/messagesbox', MessageBoxController.index);
+routes.get('/messagesbox', authAdminMiddleware, MessageBoxController.index);
 routes.get('/messagebox/:id', MessageBoxController.get);
 
-routes.post('/messagebox', MessageBoxController.create);
-routes.put('/messagebox/:id', MessageBoxController.update);
-routes.delete('/messagebox/:id', MessageBoxController.delete);
+routes.post('/messagebox', authAdminMiddleware, MessageBoxController.create);
 
 module.exports = routes;

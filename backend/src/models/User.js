@@ -1,6 +1,5 @@
 const { Model, DataTypes }  = require('sequelize');
-//const { DataTypes }  = require('sequelize');
-//const SequelizeModel  = require('@/src/class/SequelizeModel');
+const bcrypt = require('bcrypt');
 
 class User extends Model {
 
@@ -63,6 +62,20 @@ class User extends Model {
 
   }
 
+  //https://www.abeautifulsite.net/hashing-passwords-with-nodejs-and-bcrypt **
+  //https://medium.com/@mridu.sh92/a-quick-guide-for-authentication-using-bcrypt-on-express-nodejs-1d8791bb418f
+  //https://auth0.com/blog/hashing-in-action-understanding-bcrypt/
+
+  //generating a hash
+  static generateHash(password) {
+    return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
+  }
+
+}
+
+//Prototype (Disponível no retorno de uma instâcia)
+User.prototype.validPassword = function(password) {
+  return bcrypt.compareSync(password, this.password);
 }
 
 module.exports = User;

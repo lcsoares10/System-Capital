@@ -104,6 +104,8 @@ module.exports = {
 
       const { id_consultant, ...camposUser } = req.body
 
+      camposUser.password = UserModel.generateHash(camposUser.password);
+
       const consultant = await ConsultantModel.findByPk(id_consultant);
       if (!consultant) {
         throw new Exception("Consultor não existe", "id_consultant");

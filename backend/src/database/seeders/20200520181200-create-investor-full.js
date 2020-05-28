@@ -1,5 +1,7 @@
 'use strict';
 
+const bcrypt = require('bcrypt');
+
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.sequelize.transaction(t => {
@@ -16,7 +18,7 @@ module.exports = {
 
             //http://devfuria.com.br/javascript/numeros-aleatorios/
             //Como gerar um número randômico no “range” dos inteiros positivos (entre 0 e 65536):
-            let key = Math.floor(Math.random() * 65536);
+            let key = Math.floor(Math.random() * 65536).toString();
 
             //---
             //Consultants
@@ -25,7 +27,7 @@ module.exports = {
                 {
                   login: `consultant_${key}`,
                   email: `consultant_${key}@gmail.com`,
-                  password: key,
+                  password: bcrypt.hashSync(key, bcrypt.genSaltSync(10)),
                   is_admin: (key % 2 === 0) ? true : false,
                   name: `Consultor_${key}`,
                   created_at: new Date(),
@@ -49,7 +51,8 @@ module.exports = {
                 {
                   login: `investor_${key}`,
                   email: `investor_${key}@gmail.com`,
-                  password: key,
+                  password: bcrypt.hashSync(key, bcrypt.genSaltSync(10)),
+                  //password: bcrypt.hashSync(key, 10),
                   name: `Investidor_${key}`,
                   created_at: new Date(),
                   updated_at: new Date(),
@@ -82,6 +85,8 @@ module.exports = {
               ], { transaction: t }
             );
 
+            if (i < 3) continue;
+
             //---
             //Contract_pay_competences
             await queryInterface.bulkInsert('contract_pay_competences',
@@ -90,7 +95,7 @@ module.exports = {
                   id_contract,
                   value: '1000',
                   competence: '202005',
-                  id_user_pay: 2,
+                  id_user_pay: id_user - 1,
                   created_at: new Date(),
                   updated_at: new Date(),
                 },
