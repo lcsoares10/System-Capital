@@ -23,7 +23,7 @@ export default function Logon() {
         
         <Container>
           
-            <HeaderBackground/>
+            <HeaderBackground notLogin={false}/>
             
             <div className="content">
                 <div className="main-login">
