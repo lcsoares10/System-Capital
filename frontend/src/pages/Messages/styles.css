@@ -1,0 +1,6 @@
+.main-msg .title-header h1{
+    color: var(--text-color-beige);
+    font-weight: var(--font-weight-thin);
+    font-size: var(--font-size-36);
+   
+}

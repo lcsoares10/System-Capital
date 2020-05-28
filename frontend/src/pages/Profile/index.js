@@ -27,8 +27,7 @@ export default function Profile() {
                   <option value="0003">0003</option>
                 </select>
             </div>
-            
-
+      
               <div className="content-projection">
                 <p>PROJEÇÃO DE 12 MESES</p>
                 <div className='graph'>
@@ -65,8 +64,7 @@ export default function Profile() {
               </div>
             </main>
           <FooterBackground/>
-        
-        
+          
         </Container>
     );
 }
