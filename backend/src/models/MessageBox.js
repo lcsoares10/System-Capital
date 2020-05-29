@@ -19,14 +19,19 @@ class MessageBox extends Model {
     }, {
       sequelize,
       tableName: 'messages_box',
-      modelName: 'MessageBox'
+      modelName: 'MessageBox',
+      defaultScope: {
+        attributes: {
+          exclude: ['createdAt', 'updatedAt']
+        },
+      }
     });
   }
 
   static associate(models) {
     //belongsTo [1:1] - Chave estrageira definida em A
     this.belongsTo(models.User, {
-      foreignKey: 'id_user_send', as: 'user'
+      foreignKey: 'id_user_send', as: 'user_send'
     });
 
     //belongsToMany [N:N]

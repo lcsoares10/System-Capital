@@ -14,17 +14,16 @@ module.exports = {
   async index(req, res) {
 
     try {
-
       const page = req.query.page || 1;
       const options = {
         include: [
-            { association: 'user', required: true },
-            {
-              association: 'consultant',
-              include : {association: 'user'}
-            }
-          ]
-        };
+          { association: 'user', required: true },
+          {
+            association: 'consultant',
+            include : {association: 'user'}
+          }
+        ]
+      };
 
       const Pagination = new PaginationClass(InvestorModel);
       const result = await Pagination.select(page, options);
@@ -104,12 +103,14 @@ module.exports = {
 
       const { id_consultant, ...camposUser } = req.body
 
+      camposUser.password = UserModel.generateHash(camposUser.password);
+
       const consultant = await ConsultantModel.findByPk(id_consultant);
       if (!consultant) {
         throw new Exception("Consultor não existe", "id_consultant");
       }
 
-      const user = await UserModel.create(camposUser, { transaction: t });
+      let user = await UserModel.create(camposUser, { transaction: t });
       const investor = await InvestorModel.create({
         id_user: user.id,
         id_consultant
@@ -118,7 +119,8 @@ module.exports = {
 
       const result = {
         ...investor.toJSON(),
-        user: { ...user.toJSON() }
+        //user: { ...user.toJSON(['password', 'updatedAt', 'createdAt'], "e")}
+        user: { ...user.toJSON()}
       };
 
       await t.commit();

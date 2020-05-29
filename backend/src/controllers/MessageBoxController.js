@@ -63,7 +63,7 @@ module.exports = {
 
     try {
 
-      const { id_user } = req.headers;
+      const { id_user } = req.user;
       let user = await UserModel.findByPk(id_user);
       if (!user) throw new Exception("Usuário não existe");
 
@@ -119,57 +119,6 @@ module.exports = {
       await t.rollback();
       const result = Exception._(e);
       return res.status(400).json(Util.response(result));
-    }
-
-  },
-
-  //Acho q não deve ter as opções abaixo!!!
-  //Fazer 26.05.2020
-  async update(req, res) {
-
-    const t = await ContractModel.sequelize.transaction();
-
-    try {
-      /** Validações */
-
-      const { id_user } = req.headers;
-      let user = await UserModel.findByPk(id_user);
-      if (!user) throw new Exception("Usuário não existe");
-
-      const { ...campos } = req.body;
-
-      await t.commit();
-
-      return res.json(Util.response(result, 'Alterado com sucesso'));
-
-    } catch (e) {
-      await t.rollback();
-      const result = Exception._(e);
-      return res.status(400).json(Util.response(result));
-    }
-
-  },
-
-  async delete(req, res) {
-
-    const t = await ContractModel.sequelize.transaction();
-
-    try {
-
-      const { id } = req.params;
-      let contract = await ContractModel.findByPk(id);
-      if (!contract) throw new Exception("Contrato não existe", "id_contract");
-
-      const result = await contract.destroy({ transaction: t });
-
-      await t.commit();
-
-      return res.json(Util.response(result, 'Deletado com sucesso'));
-
-    } catch (e) {
-      await t.rollback();
-      const result = Exception._(e);
-      return res.status(400).json(Util.response(result, 'Erro ao Deletar'));
     }
 
   },

@@ -16,11 +16,13 @@ class ContractPayCompetence extends Model {
           is: /\d{6}/i
         }
       }
-      //id_user: DataTypes.INTEGER,
     }, {
       sequelize,
-      //tableName: 'Contract_pay_competence',
-      //modelName: 'ContractPayCompetence'
+      defaultScope: {
+        attributes: {
+          exclude: ['createdAt', 'updatedAt']
+        },
+      }
     });
   }
 

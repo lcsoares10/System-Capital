@@ -13,6 +13,11 @@ class MessageUserView extends Model {
     }, {
       sequelize,
       tableName: 'message_user_view',
+      defaultScope: {
+        attributes: {
+          exclude: ['createdAt', 'updatedAt']
+        },
+      }
     });
   }
 

@@ -28,6 +28,8 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: { model: 'users', key: 'id' },
+        onUpdate: 'CASCADE', //atualiza o id do usuário caso ele mude
+        onDelete: 'CASCADE' //CASCADE | SET NULL | RESTRICT
       },
       created_at: {
         type: Sequelize.DATE,
