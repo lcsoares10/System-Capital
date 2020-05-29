@@ -1,10 +1,5 @@
 const { Model, DataTypes }  = require('sequelize');
-<<<<<<< HEAD
 const bcrypt = require('bcrypt');
-=======
-//const { DataTypes }  = require('sequelize');
-//const SequelizeModel  = require('@/src/class/SequelizeModel');
->>>>>>> master
 
 class User extends Model {
 
