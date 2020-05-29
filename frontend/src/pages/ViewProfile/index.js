@@ -60,7 +60,7 @@ export default function ViewProfile() {
             </div>
 
           </main>
-        <FooterBackground/>
+        <FooterBackground notLogin={true}/>
         
       </Container>
     );

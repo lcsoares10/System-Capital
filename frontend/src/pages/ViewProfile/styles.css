@@ -3,13 +3,6 @@
     padding: 5px 0px;
 }
 
-.myprofile .title-header h1{
-    color: var(--text-color-beige);
-    font-weight: var(--font-weight-thin);
-    font-size: var(--font-size-36);
-   padding: 0px 25px;
-}
-
 .content-form {
     margin-top: 30px;
     display: flex;

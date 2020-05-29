@@ -13,6 +13,7 @@ body{
 
   /*Cores para sobreposição de superfícies*/
   --bg-color: #121212;
+  --bg-color-variant:#0A0A0A;
   --bg-color-05: rgba(255, 255, 255, 0.05);
   --bg-color-03: rgba(255, 255, 255, 0.03);
   --bg-color-07: rgba(255, 255, 255, 0.07);
@@ -36,6 +37,7 @@ body{
   --font-size-14:14px;
   --font-size-16:16px;
   --font-size-18:18px;
+  --font-size-24:24px;
   --font-size-36:36px;
 
   /*margin*/
@@ -62,4 +64,22 @@ code {
 
 input {
   background-color: transparent;
+}
+
+h1{
+  color: #A0770A;
+  font-weight: var(--font-weight-thin);
+  font-size: var(--font-size-36);
+}
+
+.text-white{
+  color: white;
+  font-weight:100;
+}
+.text-beige{
+  color: var(--text-color-beige);
+}
+
+.weight-thin{
+  font-weight: 100;
 }

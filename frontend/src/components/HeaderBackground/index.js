@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom'
 import './styles.css';
 
 import logo_nav from '../../assets/logo_x6.svg';
@@ -8,10 +9,13 @@ import icon_profile from '../../assets/icon_profile.png';
 function ContentHeader(){
     return(
         <nav>
-            <img className="logo-nav" src={logo_nav}  alt=""/>
+            <Link to="/profile"> 
+                <img className="logo-nav" src={logo_nav}  alt=""/>
+            </Link>
+            
             <div className="icons-button">
-                <img src={icon_messages} alt=""/>
-                <img src={icon_profile} alt=""/>
+            <Link to="/messages"> <img src={icon_messages} alt=""/></Link>
+            <Link to="/view-profile">  <img src={icon_profile} alt=""/></Link>
             </div>
         </nav>
     );

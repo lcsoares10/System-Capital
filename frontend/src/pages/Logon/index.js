@@ -38,7 +38,7 @@ export default function Logon() {
                     </form>
                 </div>
             </div>
-            <FooterBackground/>
+            <FooterBackground notLogin={true}/>
         </Container>
     );
 }

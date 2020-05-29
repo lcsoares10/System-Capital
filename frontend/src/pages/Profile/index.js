@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 
 import Container from '../../components/Container';
 import HeaderBackground from '../../components/HeaderBackground';
@@ -20,7 +21,7 @@ export default function Profile() {
           <HeaderBackground notLogin={true}/>
             <main>
             <div className="title-header">
-              <h1>Investimentos</h1>
+              <h1 className="h1-profile">Investimentos</h1>
               <select className="select-contract" name="" id="">
                   <option value="0001">0001</option>
                   <option value="0002">0002</option>
@@ -33,7 +34,9 @@ export default function Profile() {
                 <div className='graph'>
                   <LineChart></LineChart>
                 </div>
-                <button>Ver detalhes</button>
+                <Link to="/detail-investment">
+                  <button>Ver detalhes</button>
+                </Link>
               </div>
 
               <h2>Contratos</h2>
@@ -45,8 +48,11 @@ export default function Profile() {
                     <th>Nome</th>
                     <th><img src={icon_cash} alt="icon"/></th>
                   </tr>
+                  <Link to="/detail-contract">
+                    
+                  </Link>
                   <tr>
-                    <td><p>cod-01</p></td>
+                    <td><Link to="/detail-contract"><p>cod-01</p></Link></td>
                     <td><p>nome do contrato</p></td>
                     <td><p>R$ 10.000,00</p></td>
                   </tr>
@@ -63,7 +69,7 @@ export default function Profile() {
                 </table>
               </div>
             </main>
-          <FooterBackground/>
+          <FooterBackground notLogin={true}/>
           
         </Container>
     );

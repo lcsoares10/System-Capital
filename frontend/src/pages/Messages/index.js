@@ -13,7 +13,7 @@ export default function Messages() {
 
 
     return (
-        <Container className="container-login" >    
+        <Container>    
           <HeaderBackground notLogin={true}/>
           <main className="main-msg">
             <div className="title-header">
@@ -73,7 +73,7 @@ export default function Messages() {
             </div>
 
           </main>
-        <FooterBackground/>
+        <FooterBackground notLogin={true}/>
         
       </Container>
     );

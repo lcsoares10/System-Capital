@@ -7,7 +7,6 @@ main {
     
     display: flex;
     flex-direction: column;
-    
     justify-content: center;
     margin-top: 80px;
     padding: 5px 25px;
@@ -20,11 +19,11 @@ main .title-header{
     align-items: center;
     justify-content: space-between;
 }
-main .title-header h1{
+main .title-header .h1-profile{
     color: white;
     font-weight: var(--font-weight-thin);
     font-size: var(--font-size-36);
-   
+    padding: 0px;
 }
 main .title-header .select-contract{
     margin-left: 10px;

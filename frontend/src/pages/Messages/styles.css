@@ -2,12 +2,8 @@
 .main-msg{
     padding: 5px 0px;
 }
-
-.main-msg .title-header h1{
-    color: var(--text-color-beige);
-    font-weight: var(--font-weight-thin);
-    font-size: var(--font-size-36);
-   padding: 0px 25px;
+.main-msg .title-header{
+    padding: 0px 25px;
 }
 
 .content-message {
