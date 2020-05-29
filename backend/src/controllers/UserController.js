@@ -1,62 +1,80 @@
 const UserModel = require('@/src/models/User');
 const MessageBoxModel = require('@/src/models/MessageBox');
 
+const Util = require('@/src/class/Util');
+const Exception = require('@/src/class/Exeption');
+const PaginationClass = require('@/src/class/Pagination');
+
 module.exports = {
 
-    async index(req, res) {
-        const users = await UserModel.findAll();
-        return res.json(users);
-    },
+  async index(req, res) {
 
-    async get(req, res) {
+    try {
 
-        const { id } = req.params;
-        const user = await UserModel.findByPk(id,  {
-            //include: { association: 'user', required: true }
-        });
+      const page = req.query.page || 1;
+      const options = {};
 
-        if (!user) {
-            return res.status(400).json({ error: 'Usuário não existe'} );
-        }
+      const Pagination = new PaginationClass(UserModel);
+      const result = await Pagination.select(page, options);
 
-         return res.json(user);
-    },
+      return res.json(Util.response(result));
 
-    async getMessages(req, res) {
+    } catch (e) {
+      const result = Exception._(e);
+      return res.status(400).json(Util.response(result));
+    }
+
+  },
+
+  async get(req, res) {
+
+    try {
 
       const { id } = req.params;
-
-      const result = await MessageBoxModel.findAll({
-          include: {
-            association: 'users',
-            attributes: [],
-            where: {
-              id
-            }
-          },
-      });
+      const result = await UserModel.findByPk(id);
 
       if (!result) {
           return res.status(400).json({ error: 'Usuário não existe'} );
       }
 
-       return res.json(result);
+      return res.json(Util.response(result));
+
+    } catch (e) {
+      const result = Exception._(e);
+      return res.status(400).json(Util.response(result));
+    }
+
   },
 
-    /*     async create(request, response) {
-        const {name, email, whatsapp, city, uf} = request.body;
+  async getMessages(req, res) {
 
-        const id = generateUniqueId();
+    try {
+      const { id } = req.params;
+      const result = await MessageBoxModel.findAll({
+          include: {
+            association: 'users',
+            required: true,
+            attributes: ['id', 'name'],
+            through: {
+              attributes: ['viewed', 'time_view'],
+              where: {
+                id_user: id
+              }
+            },
+          },
+      },);
 
-        await connection('ongs').insert({
-            id,
-            name,
-            email,
-            whatsapp,
-            city,
-            uf
-        });
+      if (!result) {
+          return res.status(400).json({ error: 'Usuário não existe'} );
+      }
 
-        return response.json({id});
-    } */
+      return res.json(Util.response(result));
+
+    } catch (e) {
+      const result = Exception._(e);
+      return res.status(400).json(Util.response(result));
+    }
+
+},
+
 };

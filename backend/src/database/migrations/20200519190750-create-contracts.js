@@ -16,6 +16,10 @@ module.exports = {
         onUpdate: 'CASCADE', //atualiza o id do usuário caso ele mude
         onDelete: 'CASCADE' //CASCADE | SET NULL | RESTRICT
       },
+      day: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
       begin: {
         type: Sequelize.DATE,
         allowNull: false
