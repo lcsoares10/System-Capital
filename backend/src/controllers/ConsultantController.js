@@ -100,8 +100,8 @@ module.exports = {
 
       const result = {
         ...consultant.toJSON(),
-        //user: { ...user.toJSON(['password', 'updatedAt', 'createdAt'], "e")}
-        user: { ...user.toJSON()}
+        user: { ...user.toJSON(['password', 'updatedAt', 'createdAt'], "e")}
+        //user: { ...user.toJSON()}
       };
 
       await t.commit();
