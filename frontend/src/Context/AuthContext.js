@@ -7,20 +7,26 @@
 //http://www.matera.com/blog/post/boas-praticas-para-desenvolvimento-de-apis-rest
 //https://medium.com/@oieduardorabelo/express-entendendo-o-tratamento-de-erros-em-express-f5bc20ef9101
 
-//
+//https://www.youtube.com/watch?v=c3pUMcMSn-w -> [BR][Front-end] Autenticação com Firebase e Context API no ReactJS
+//https://www.youtube.com/watch?v=gsJ6krEJTGM -> Gerenciando Autenticação com Context API no React Native
 
-import React, { createContext } from 'react';
+import React, { createContext, useContext } from 'react';
 
-import useAuth from './hooks/userAuth';
+import useAuthHook from './hooks/useAuth';
 
-const ContextAuth = createContext();
+const AuthContext = createContext();
 
 function AuthProvider({ children }) {
   return (
-    <ContextAuth.Provider value={{ ...useAuth() }}>
+    <AuthContext.Provider value={{ ...useAuthHook() }}>
       {children}
-    </ContextAuth.Provider>
+    </AuthContext.Provider>
   );
 }
 
-export { ContextAuth, AuthProvider };
+function useAuth() {
+  const context = useContext(AuthContext);
+  return { ...context };
+}
+
+export { AuthContext, AuthProvider, useAuth };

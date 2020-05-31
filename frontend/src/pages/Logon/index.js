@@ -1,4 +1,5 @@
-import React, { useState, useContext } from 'react';
+//import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { useHistory }  from 'react-router-dom';
 
 /* Componentes propios*/
@@ -10,13 +11,15 @@ import logo from '../../assets/logo_x6.png';
 import './styles.css';
 //------------------------------------------------------------
 
-import { ContextAuth } from '../../Context/AuthContext';
+//import { AuthContext } from '../../Context/AuthContext';
+import { useAuth } from '../../Context/AuthContext';
 
 export default function Logon() {
     const [email, setEmail] = useState('consultant_59334@gmail.com');
     const [password, setpassword] = useState('59334');
 
-    const { handleLogon } = useContext(ContextAuth);
+    //const { handleLogon } = useContext(AuthContext);
+    const { handleLogon } = useAuth();
     const history = useHistory();
 
     return (

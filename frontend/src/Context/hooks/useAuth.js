@@ -10,9 +10,11 @@ export default function useAuth() {
 
   useEffect(()=>{
     const token = localStorage.getItem('token');
+    const user = localStorage.getItem('user');
 
-    if (token) {
+    if (token && user) {
       api.defaults.headers.Authorization = `Bearer ${token}`;
+      setUser(JSON.parse(user));
       setAuthenticated(true);
     }
 
@@ -23,11 +25,11 @@ export default function useAuth() {
     e.preventDefault();
       try {
         const { data } = await api.post('/login',{ email, password });
-        const { token } = data.data;
-
-        console.log(data.data);
+        const { token, ...user } = data.data;
 
         localStorage.setItem('token', JSON.stringify(token));
+        localStorage.setItem('user', JSON.stringify(user));
+
         api.defaults.headers.Authorization = `Bearer ${token}`;
         setAuthenticated(true);
 
@@ -50,10 +52,10 @@ export default function useAuth() {
   }
 
   return {
-    loading,
     authenticated,
     handleLogon,
     handleLogout,
+    loading,
     user,
     setUser
   }

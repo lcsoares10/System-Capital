@@ -1,7 +1,8 @@
-import React, { useContext } from 'react';
+//import React, { useContext } from 'react';
+import React from 'react';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom' ;
 
-import { ContextAuth } from '../Context/AuthContext';
+import { useAuth } from '../Context/AuthContext';
 
 import Logon from '../pages/Logon';
 import Profile from '../pages/Profile';
@@ -14,7 +15,8 @@ import DetailInvestment from '../pages/DetailInvestment';
 import DetailContract from '../pages/DetailContract';
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
-  const { loading, authenticated } = useContext(ContextAuth);
+  //const { loading, authenticated } = useContext(AuthContext);
+  const { loading, authenticated } = useAuth();
 
   if (loading) {
     return <h1>Loading...</h1>;
