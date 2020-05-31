@@ -13,14 +13,18 @@ import './styles.css'
 
 //------------------------------------------------------------
 //import { AuthContext } from '../../Context/AuthContext';
-import { useAuth } from '../../Context/AuthContext';
+import { useAuthContext } from '../../Context/AuthContext';
 
 export default function Profile() {
 
   //const { user } = useContext(AuthContext);
-  const { user } = useAuth();
+  //const { user } = useAuthContext();
 
-  useEffect(()=>{
+  const { user, setUser } = useAuthContext();
+  //setUser({...user, name: 'Igor'});
+  //console.log(user);
+
+  useEffect(()=> {
       console.log(user);
   }, []);
 

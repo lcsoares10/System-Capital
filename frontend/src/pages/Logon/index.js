@@ -12,14 +12,14 @@ import './styles.css';
 //------------------------------------------------------------
 
 //import { AuthContext } from '../../Context/AuthContext';
-import { useAuth } from '../../Context/AuthContext';
+import { useAuthContext } from '../../Context/AuthContext';
 
 export default function Logon() {
     const [email, setEmail] = useState('consultant_59334@gmail.com');
     const [password, setpassword] = useState('59334');
 
     //const { handleLogon } = useContext(AuthContext);
-    const { handleLogon } = useAuth();
+    const { handleLogon } = useAuthContext();
     const history = useHistory();
 
     return (

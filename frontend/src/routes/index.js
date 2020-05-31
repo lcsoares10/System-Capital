@@ -2,7 +2,7 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom' ;
 
-import { useAuth } from '../Context/AuthContext';
+import { useAuthContext } from '../Context/AuthContext';
 
 import Logon from '../pages/Logon';
 import Profile from '../pages/Profile';
@@ -16,7 +16,7 @@ import DetailContract from '../pages/DetailContract';
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
   //const { loading, authenticated } = useContext(AuthContext);
-  const { loading, authenticated } = useAuth();
+  const { loading, authenticated } = useAuthContext();
 
   if (loading) {
     return <h1>Loading...</h1>;
