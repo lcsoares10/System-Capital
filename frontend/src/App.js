@@ -1,13 +1,16 @@
 import React from 'react';
+import Routes from './routes';
 
 import './global.css';//define stilo css global
 
-import Routes from './routes';
+import { AuthProvider } from './Context/AuthContext';
 
 function App() {
 
   return (
-    <Routes />
+    <AuthProvider>
+      <Routes />
+    </AuthProvider>
   );
 }
 
