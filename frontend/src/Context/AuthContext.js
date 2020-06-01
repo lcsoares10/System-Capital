@@ -16,16 +16,21 @@ import useAuth from './hooks/useAuth';
 
 const AuthContext = createContext();
 
-function AuthProvider({ children }) {
+export default function AuthProvider({ children }) {
+  //const { authenticated, handleLogon, handleLogout, loading, user, setUser } = useAuth();
   return (
-    <AuthContext.Provider value={{ ...useAuth() }}>
+    // <AuthContext.Provider value={{ authenticated, handleLogon, handleLogout, loading, user, setUser }}>
+    <AuthContext.Provider value={useAuth()}>
       {children}
     </AuthContext.Provider>
   );
 }
 
-function useAuthContext() {
-  return { ...useContext(AuthContext) };
+export function useAuthContext() {
+  const context = useContext(AuthContext);
+  return context;
+  //const { authenticated, handleLogon, handleLogout, loading, user, setUser } = context
+  //return { authenticated, handleLogon, handleLogout, loading, user, setUser };
 }
 
-export { AuthProvider, useAuthContext };
+//export { AuthProvider, useAuthContext };

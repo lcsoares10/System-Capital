@@ -8,17 +8,24 @@ export default function useAuth() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState({});
 
-  useEffect(()=>{
-    const token = localStorage.getItem('token');
-    const user = localStorage.getItem('user');
+  //https://blog.rocketseat.com.br/reactjs-autenticacao/
 
-    if (token && user) {
-      api.defaults.headers.Authorization = `Bearer ${token}`;
-      setUser(JSON.parse(user));
-      setAuthenticated(true);
+  //unmount -> Desmontar
+  useEffect(() => {
+
+    function loadStorageData() {
+      const storageToken = localStorage.getItem('token');
+      const storageUSer = localStorage.getItem('user');
+
+      if (storageToken && storageUSer) {
+        api.defaults.headers.Authorization = `Bearer ${storageToken}`;
+        setUser(JSON.parse(storageUSer));
+        setAuthenticated(true);
+      }
+      setLoading(false);
     }
 
-    setLoading(false);
+    loadStorageData();
   }, []);
 
   async function handleLogon(e, email, password, history) {
@@ -27,14 +34,14 @@ export default function useAuth() {
         const { data } = await api.post('/login',{ email, password });
         const { token, ...user } = data.data;
 
-        localStorage.setItem('token', JSON.stringify(token));
+        localStorage.setItem('token', token);
         localStorage.setItem('user', JSON.stringify(user));
 
         api.defaults.headers.Authorization = `Bearer ${token}`;
+        setUser(user);
         setAuthenticated(true);
 
         alert(data.message);
-
         history.push('/profile');
 
       } catch(error) {
@@ -46,9 +53,10 @@ export default function useAuth() {
 
   async function handleLogout(e) {
     e.preventDefault();
-    localStorage.setItem('token');
-    localStorage.setItem('user');
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
     api.defaults.headers.Authorization = undefined;
+    setUser({});
     setAuthenticated(false);
   }
 

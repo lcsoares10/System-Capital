@@ -3,7 +3,7 @@ import Routes from './routes';
 
 import './global.css';//define stilo css global
 
-import { AuthProvider } from './Context/AuthContext';
+import AuthProvider from './Context/AuthContext';
 
 function App() {
 

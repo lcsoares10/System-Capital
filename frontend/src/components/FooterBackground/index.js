@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './styles.css';
 
 import { useAuthContext } from '../../Context/AuthContext';
@@ -13,6 +13,7 @@ function ContentFooter(props){
 export default function FooterBackground(props) {
 
   const { user } = useAuthContext();
+  //console.log('Footer 1');
 
   return (
 
