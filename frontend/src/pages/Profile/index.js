@@ -12,17 +12,11 @@ import icon_cash from '../../assets/icon_cash.png'
 import './styles.css'
 
 //------------------------------------------------------------
-//import { AuthContext } from '../../Context/AuthContext';
-import { useAuth } from '../../Context/AuthContext';
+//import { useAuthContext } from '../../Context/AuthContext';
 
 export default function Profile() {
 
-  //const { user } = useContext(AuthContext);
-  const { user } = useAuth();
-
-  useEffect(()=>{
-      console.log(user);
-  }, []);
+  //const { user, setUser } = useAuthContext();
 
     return (
       <Container className="container-login" >

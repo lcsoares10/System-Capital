@@ -12,21 +12,25 @@
 
 import React, { createContext, useContext } from 'react';
 
-import useAuthHook from './hooks/useAuth';
+import useAuth from './hooks/useAuth';
 
 const AuthContext = createContext();
 
-function AuthProvider({ children }) {
+export default function AuthProvider({ children }) {
+  //const { authenticated, handleLogon, handleLogout, loading, user, setUser } = useAuth();
   return (
-    <AuthContext.Provider value={{ ...useAuthHook() }}>
+    // <AuthContext.Provider value={{ authenticated, handleLogon, handleLogout, loading, user, setUser }}>
+    <AuthContext.Provider value={useAuth()}>
       {children}
     </AuthContext.Provider>
   );
 }
 
-function useAuth() {
+export function useAuthContext() {
   const context = useContext(AuthContext);
-  return { ...context };
+  return context;
+  //const { authenticated, handleLogon, handleLogout, loading, user, setUser } = context
+  //return { authenticated, handleLogon, handleLogout, loading, user, setUser };
 }
 
-export { AuthContext, AuthProvider, useAuth };
+//export { AuthProvider, useAuthContext };

@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './styles.css';
+
+import { useAuthContext } from '../../Context/AuthContext';
+
 //------------------------------------------------------------
 function ContentFooter(props){
     return(
@@ -9,10 +12,14 @@ function ContentFooter(props){
 
 export default function FooterBackground(props) {
 
-    return (
+  const { user } = useAuthContext();
+  //console.log('Footer 1');
 
-        <footer>
-            {props.notLogin === true ? <ContentFooter textview1="Bem Vindo" textview2="Lucas Soares"/>:''}
-        </footer>
-    );
+  return (
+
+      <footer>
+          {/* {props.notLogin === true ? <ContentFooter textview1="Bem Vindo" textview2="Lucas Soares"/>:''} */}
+          {props.notLogin === true ? <ContentFooter textview1="Bem Vindo" textview2={user.name}/>:''}
+      </footer>
+  );
 }
