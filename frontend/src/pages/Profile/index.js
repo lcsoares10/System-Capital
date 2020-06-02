@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import {Link} from 'react-router-dom';
 
 import Container from '../../components/Container';
@@ -9,14 +9,26 @@ import LineChart from '../../components/ Graphics/line';
 
 import icon_cash from '../../assets/icon_cash.png'
 
+import allContracts from '../../controller/Investor';
+
 import './styles.css'
 
 //------------------------------------------------------------
-//import { useAuthContext } from '../../Context/AuthContext';
+import { useAuthContext } from '../../Context/AuthContext';
 
 export default function Profile() {
 
-  //const { user, setUser } = useAuthContext();
+  const { user, setUser } = useAuthContext();
+  const [ contracts, setContracts ] = useState([]);
+
+  useEffect(() => {
+    // Create an scoped async function in the hook
+    async function getContracts() {
+      setContracts( await allContracts(user.id_user) );
+    }
+    // Execute the created function directly
+    getContracts();
+  }, []);
 
     return (
       <Container className="container-login" >
@@ -25,9 +37,12 @@ export default function Profile() {
           <div className="title-header">
             <h1 className="h1-profile">Investimentos</h1>
             <select className="select-contract" name="" id="">
-                <option value="0001">0001</option>
-                <option value="0002">0002</option>
-                <option value="0003">0003</option>
+
+              {
+                  contracts.map((contract)=>{
+                  return(<option value={contract.id}>{contract.id}</option>)
+                  })
+              }
               </select>
           </div>
 
@@ -48,7 +63,7 @@ export default function Profile() {
                 <tr>
                   <th>Código</th>
                   <th>Nome</th>
-                  <th><img src={icon_cash} alt="icon"/></th>
+                  <th><img src={icon_cash} alt="icon_cash"/></th>
                 </tr>
                 <Link to="/detail-contract">
 
