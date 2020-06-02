@@ -22,7 +22,7 @@ function ContentHeader() {
             <div className="icons-button">
                 <Link to="/messages"> <img src={icon_messages} alt=""/></Link>
                 <Link to="/view-profile">  <img src={icon_profile} alt=""/></Link>
-                <Link >  <img src={icon_exit}  onClick={(e) => handleLogout(e)} alt=""/></Link>
+                <img src={icon_exit}  onClick={(e) => handleLogout(e)} alt=""/>
             </div>
         </nav>
     );

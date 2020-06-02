@@ -8,7 +8,6 @@ export default async function allContracts(id){
             headers:{Authorization:api.defaults.headers.Authorization}
         });
 
-        console.log(data.data.rows[0])
         return data.data.rows;
     } catch (error) {
         console.log(error);
