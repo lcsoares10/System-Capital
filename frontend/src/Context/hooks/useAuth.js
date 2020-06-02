@@ -14,31 +14,46 @@ export default function useAuth() {
   useEffect(() => {
 
     function loadStorageData() {
-      const storageToken = localStorage.getItem('token');
-      const storageUSer = localStorage.getItem('user');
+      try {
+        const storageToken = localStorage.getItem('token');
 
-      if (storageToken && storageUSer) {
-        api.defaults.headers.Authorization = `Bearer ${storageToken}`;
-        setUser(JSON.parse(storageUSer));
-        setAuthenticated(true);
+        if (storageToken) {
+          api.defaults.headers.Authorization = `Bearer ${storageToken}`;
+          const { payload } = jwtDecode(storageToken);
+          setUser(payload.user);
+          setAuthenticated(true);
+        }
+
+      } catch {
+        alert('Token inválido');
+        _logout();
       }
+
       setLoading(false);
     }
-
     loadStorageData();
   }, []);
+
+  function jwtDecode(t) {
+    const [header, payload] = t.split('.');
+    return {
+      raw: t,
+      header: window.atob(header),
+      payload: JSON.parse(window.atob(payload)),
+    };
+  }
 
   async function handleLogon(e, email, password, history) {
     e.preventDefault();
       try {
         const { data } = await api.post('/login',{ email, password });
-        const { token, ...user } = data.data;
+        const { token } = data.data;
+        const { payload } = jwtDecode(token);
 
         localStorage.setItem('token', token);
-        localStorage.setItem('user', JSON.stringify(user));
 
         api.defaults.headers.Authorization = `Bearer ${token}`;
-        setUser(user);
+        setUser(payload.user);
         setAuthenticated(true);
 
         alert(data.message);
@@ -48,11 +63,16 @@ export default function useAuth() {
         setAuthenticated(false);
         const { data } = error.response;
         alert(data.message);
+        //console.log(error.response);
       }
   }
 
   async function handleLogout(e) {
     e.preventDefault();
+    _logout();
+  }
+
+  function _logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     api.defaults.headers.Authorization = undefined;

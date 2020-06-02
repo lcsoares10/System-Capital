@@ -1,9 +1,11 @@
 const jwt = require('jsonwebtoken');
-const authConfig = require('@/src/config/auth');
+//const authConfig = require('@/src/config/auth');
 
 const UserModel = require('@/src/models/User');
 const Util = require('@/src/class/Util');
 const Exception = require('@/src/class/Exeption');
+
+const CryptoJS = require("crypto-js");
 
 //https://www.youtube.com/watch?v=aVAl8GzS0d0
 
@@ -61,26 +63,37 @@ module.exports = {
       //voltar investidor ou consultor ...
 
       const result = {
-        //id,
+        id,
         type,
-        //id_user: user.id,
+        id_user: user.id,
         login: user.login,
         email: user.email,
         name: user.name,
-        //is_admin: user.is_admin
+        is_admin: user.is_admin
       }
+
+      const { browser, version } = req.useragent;
+
+      let lockkey = {
+        id_user: user.id,
+        remote_andress: req.ip, //https://stackoverflow.com/questions/19266329/node-js-get-clients-i
+        browser,
+        version: version.match(/(\d*)\./)[1]
+      };
+      lockkey = CryptoJS.enencrypt(JSON.stringify(lockkey));
 
       //==========
       //JWT Token
       //https://www.youtube.com/watch?v=KKTX1l3sZGk
       //https://stackoverflow.com/questions/37959945/how-to-destroy-jwt-tokens-on-logout
 
-      const token = jwt.sign({ user: result }, authConfig.secret, {
+      //const token = jwt.sign({ user: result, lockkey  }, authConfig.secret, {
+      const token = jwt.sign({ user: result, lockkey  }, process.env.SECRET_KEY_JWT, {
         expiresIn: 86400 //1 dia
       });
       //==========
 
-      return res.json(Util.response({ ...result, token }, 'Logado com Sucesso'));
+      return res.json(Util.response({ token }, 'Logado com Sucesso'));
 
     } catch (e) {
       console.log(e);
