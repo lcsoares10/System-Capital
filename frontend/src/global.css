@@ -72,6 +72,10 @@ h1{
   font-size: var(--font-size-36);
 }
 
+a{
+  text-decoration: none;
+}
+
 .text-white{
   color: white;
   font-weight:100;
