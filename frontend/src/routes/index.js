@@ -13,22 +13,23 @@ import RegisterContract from '../pages/RegisterContract';
 import RegisterUsers from '../pages/RegisterUsers';
 import DetailInvestment from '../pages/DetailInvestment';
 import DetailContract from '../pages/DetailContract';
+import Loading from '../components/Loading';
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
   //const { loading, authenticated } = useContext(AuthContext);
   const { loading, authenticated } = useAuthContext();
 
   if (loading) {
-    return <h1>Loading...</h1>;
+    return Loading;
   }
-
+  
   return <Route
     { ...rest }
     render={props => (
       authenticated ? (
         <Component {... props} />
       ) : (
-        <Redirect to={{ pathname: '/logon', state: { from: props.location }}} />
+        <Redirect to={{ pathname: '/', state: { from: props.location }}} />
       )
     )}
   />
@@ -39,7 +40,8 @@ export default function Routes() {
 
         <BrowserRouter>
           <Switch>
-            <Route path="/logon" exact component = {Logon} />
+            <Route path="/" exact component = {Logon} />
+            <Route path="/Loading"  component = {Loading} />
             <PrivateRoute path="/profile" component = {Profile} />
             <PrivateRoute path="/view-profile" component = {ViewProfile} />
             <PrivateRoute path="/detail-investment" component = {DetailInvestment} />

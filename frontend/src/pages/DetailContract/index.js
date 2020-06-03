@@ -8,6 +8,7 @@ import findContract from '../../controller/Investor/findContract';
 import convertCoinBr from '../../services/convertCoinBr';
 
 import './styles.css';
+import Loading from '../../components/Loading';
 //------------------------------------------------------------
 
 export default function DetailInvestment(props) {
@@ -17,15 +18,22 @@ export default function DetailInvestment(props) {
   useEffect(() => {
 
     async function getContract() {
-      setContract( await findContract(props.match.params.id));
+     
+        setContract( await findContract(props.match.params.id));
+    
+      
     }
-
-    getContract();
+    setTimeout(() => {
+      getContract();
+    }, 3000);
+    
 
   }, []);
-
-
+  
+  if ( Object.entries(contract).length ===0) return <Loading/>;
+  
     return (
+        
         <Container>    
           <HeaderBackground notLogin={true}/>
           <main className="main-detail-contract">

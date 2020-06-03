@@ -15,8 +15,8 @@ import './styles.css';
 import { useAuthContext } from '../../Context/AuthContext';
 
 export default function Logon() {
-    const [email, setEmail] = useState('consultant_24814@gmail.com');
-    const [password, setpassword] = useState('24814');
+    const [email, setEmail] = useState('investor_33905@gmail.com');
+    const [password, setpassword] = useState('33905');
 
     //const { handleLogon } = useContext(AuthContext);
     const { handleLogon } = useAuthContext();
