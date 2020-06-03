@@ -48,6 +48,7 @@ export default function Profile() {
           <div className="title-header">
             <h1 className="h1-profile">Investimentos</h1>
             <select onChange={e => handleCalculationProjection(e.target.value)} className="select-contract" name="" id="">
+            <option value="">Selecionar</option>
 
               {
                   contracts.map(contract=>(
