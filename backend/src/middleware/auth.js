@@ -1,8 +1,10 @@
 const jwt = require('jsonwebtoken');
-const authConfig = require('@/src/config/auth');
+//const authConfig = require('@/src/config/auth');
 
 const Util = require('@/src/class/Util');
 const Exception = require('@/src/class/Exeption');
+
+const CryptoJS = require("crypto-js");
 
 module.exports = (req, res, next) => {
 
@@ -33,8 +35,24 @@ module.exports = (req, res, next) => {
       throw new Exception("Token mal formatado");
     }
 
-    jwt.verify(token, authConfig.secret, (err, decoded) => {
+    //jwt.verify(token, authConfig.secret, (err, decoded) => {
+    jwt.verify(token, process.env.SECRET_KEY_JWT, (err, decoded) => {
       if (err) throw new Exception("Token inválido");
+
+      //==============
+      //verifica agente
+      const lockkey = JSON.parse(CryptoJS.decrypt(decoded.lockkey));
+      const { browser, version } = req.useragent;
+
+      if (lockkey.browser != browser
+          || lockkey.version != version
+          || lockkey.remote_andress != req.ip
+          || lockkey.id_user != decoded.user.id_user
+        ) {
+          console.log('Token inválido (lockkey)');
+          throw new Exception("Token inválido");
+        }
+      //==============
 
       req.user = decoded.user;
       return next();

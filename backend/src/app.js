@@ -6,21 +6,26 @@ require('module-alias/register')
 /** Prototype */
 require('@/src/prototype/ModelSequelize');
 require('@/src/prototype/String');
+require('@/src/prototype/CryptoJS');
 
 /** Server */
 const express = require('express');
 const cors = require('cors');
 const routes = require('@/src/routes');
 const inteceptedResponse = require('@/src/middleware/inteceptedResponse');
+const useragent = require('express-useragent');
 
 const app = express();
 
 require('@/src/database');
 
+/** Middlewares */
+app.use(useragent.express());
 app.use(cors());
 app.use(express.json()); /*Informar que a requisição a ser usada será de json*/
 app.use(inteceptedResponse);
 
+/** Rotas */
 app.use(routes);
 
 module.exports = app;
