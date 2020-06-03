@@ -63,11 +63,11 @@ module.exports = {
       const result = {
         //id,
         type,
-        //id_user: user.id,
+        id_user: user.id,
         login: user.login,
         email: user.email,
         name: user.name,
-        //is_admin: user.is_admin
+        is_admin: user.is_admin
       }
 
       //==========

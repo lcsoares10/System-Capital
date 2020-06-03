@@ -43,7 +43,7 @@ export default function Routes() {
             <PrivateRoute path="/profile" component = {Profile} />
             <PrivateRoute path="/view-profile" component = {ViewProfile} />
             <PrivateRoute path="/detail-investment" component = {DetailInvestment} />
-            <PrivateRoute path="/detail-contract" component = {DetailContract} />
+            <PrivateRoute path="/detail-contract/:id" component = {DetailContract} />
             <PrivateRoute path="/listUsers" component = {ListUsers} />
             <PrivateRoute path="/messages" component = {Messages} />
             <PrivateRoute path="/RegisterContract" component = {RegisterContract} />

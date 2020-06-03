@@ -94,14 +94,14 @@ main .content-list-contract .list-contract {
     border-radius:10px ;
 }
 
-main .content-list-contract .list-contract tr:first-child { 
+main .content-list-contract .list-contract thead tr { 
     background-color: transparent;
     box-shadow: none;
     color: var(--text-color-beige);
     font-size: 14px;
 }
 
-main .content-list-contract .list-contract tr { 
+main .content-list-contract .list-contract tbody tr { 
     background-color: var(--bg-color-05);
     box-shadow: var(--shadow-bottom);
 }
