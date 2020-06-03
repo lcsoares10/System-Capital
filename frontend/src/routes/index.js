@@ -13,6 +13,8 @@ import RegisterContract from '../pages/RegisterContract';
 import RegisterUsers from '../pages/RegisterUsers';
 import DetailInvestment from '../pages/DetailInvestment';
 import DetailContract from '../pages/DetailContract';
+import Page404 from '../pages/Page404';
+
 import Loading from '../components/Loading';
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
@@ -35,6 +37,8 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
   />
 }
 
+//<Route path="/*"  component = {Page404} />
+
 export default function Routes() {
     return(
 
@@ -42,6 +46,7 @@ export default function Routes() {
           <Switch>
             <Route path="/" exact component = {Logon} />
             <Route path="/Loading"  component = {Loading} />
+          
             <PrivateRoute path="/profile" component = {Profile} />
             <PrivateRoute path="/view-profile" component = {ViewProfile} />
             <PrivateRoute path="/detail-investment" component = {DetailInvestment} />

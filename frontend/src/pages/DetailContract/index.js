@@ -25,7 +25,7 @@ export default function DetailInvestment(props) {
     }
     setTimeout(() => {
       getContract();
-    }, 3000);
+    }, 500);
     
 
   }, []);
