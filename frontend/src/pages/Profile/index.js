@@ -4,12 +4,11 @@ import {Link} from 'react-router-dom';
 import Container from '../../components/Container';
 import HeaderBackground from '../../components/HeaderBackground';
 import FooterBackground from '../../components/FooterBackground';
-
 import LineChart from '../../components/ Graphics/line';
+import ListContracts from '../../components/ListContracts';
 
-import icon_cash from '../../assets/icon_cash.png'
-
-import allContracts from '../../controller/Investor';
+import allContracts from '../../controller/Investor/allContracts';
+import calculateProjection from '../../controller/Investor/calculateProjection';
 
 import './styles.css'
 
@@ -20,15 +19,27 @@ export default function Profile() {
 
   const { user, setUser } = useAuthContext();
   const [ contracts, setContracts ] = useState([]);
+  const [dataProjection,setDataProjection] = useState([]);
+  const [idContract,setIdContracts] = useState();
 
   useEffect(() => {
     // Create an scoped async function in the hook
     async function getContracts() {
       setContracts( await allContracts(user.id_user) );
     }
-    // Execute the created function directly
     getContracts();
+    // Execute the created function directly
+
   }, []);
+
+  function handleCalculationProjection(id_contract) {
+    const contract_find = filterId(id_contract);
+    setDataProjection(calculateProjection(contract_find[0].value))
+  }
+
+  function filterId(id_contract) {
+    return contracts.filter(contract => id_contract == contract.id)
+  }
 
     return (
       <Container className="container-login" >
@@ -36,12 +47,14 @@ export default function Profile() {
           <main>
           <div className="title-header">
             <h1 className="h1-profile">Investimentos</h1>
-            <select className="select-contract" name="" id="">
+            <select onChange={e => handleCalculationProjection(e.target.value)} className="select-contract" name="" id="">
 
               {
-                  contracts.map((contract)=>{
-                  return(<option value={contract.id}>{contract.id}</option>)
-                  })
+                  contracts.map(contract=>(
+                  <option key={contract.id} value={contract.id}>
+            
+                    {contract.id.toString().padStart('5', '0')}</option>
+                  ))
               }
               </select>
           </div>
@@ -49,7 +62,7 @@ export default function Profile() {
             <div className="content-projection">
               <p>PROJEÇÃO DE 12 MESES</p>
               <div className='graph'>
-                <LineChart></LineChart>
+                <LineChart data={dataProjection}></LineChart>
               </div>
               <Link to="/detail-investment">
                 <button>Ver detalhes</button>
@@ -57,34 +70,7 @@ export default function Profile() {
             </div>
 
             <h2>Contratos</h2>
-
-            <div className='content-list-contract'>
-              <table className="list-contract">
-                <tr>
-                  <th>Código</th>
-                  <th>Nome</th>
-                  <th><img src={icon_cash} alt="icon_cash"/></th>
-                </tr>
-                <Link to="/detail-contract">
-
-                </Link>
-                <tr>
-                  <td><Link to="/detail-contract"><p>cod-01</p></Link></td>
-                  <td><p>nome do contrato</p></td>
-                  <td><p>R$ 10.000,00</p></td>
-                </tr>
-                <tr>
-                  <td><p>cod-01</p></td>
-                  <td><p>nome do contrato</p></td>
-                  <td><p>R$ 10.000,00</p></td>
-                </tr>
-                <tr>
-                  <td><p>cod-01</p></td>
-                  <td><p>nome do contrato</p></td>
-                  <td><p>R$ 10.000,00</p></td>
-                </tr>
-              </table>
-            </div>
+            <ListContracts contracts={contracts}/>
           </main>
         <FooterBackground notLogin={true}/>
 
