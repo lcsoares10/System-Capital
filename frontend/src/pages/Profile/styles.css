@@ -4,15 +4,15 @@
 }
 
 main {
-    
     display: flex;
     flex-direction: column;
     justify-content: center;
-    margin-top: 80px;
-    padding: 5px 25px;
+    /* margin-top: 80px; */
+    /* margin-top: 80px; */
+    padding: 80px 25px 50px;
 }
 main .title-header{
- 
+
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -94,19 +94,19 @@ main .content-list-contract .list-contract {
     border-radius:10px ;
 }
 
-main .content-list-contract .list-contract thead tr { 
+main .content-list-contract .list-contract thead tr {
     background-color: transparent;
     box-shadow: none;
     color: var(--text-color-beige);
     font-size: 14px;
 }
 
-main .content-list-contract .list-contract tbody tr { 
+main .content-list-contract .list-contract tbody tr {
     background-color: var(--bg-color-05);
     box-shadow: var(--shadow-bottom);
 }
 
-main .content-list-contract .list-contract td {   
+main .content-list-contract .list-contract td {
     width: 100%;
     background: transparent;
     margin-top: 5px;
@@ -121,3 +121,4 @@ main .content-list-contract .list-contract td p{
     padding: 0px;
     white-space: nowrap;
 }
+

@@ -44,8 +44,10 @@ module.exports = (req, res, next) => {
       const lockkey = JSON.parse(CryptoJS.decrypt(decoded.lockkey));
       const { browser, version } = req.useragent;
 
+      console.log(lockkey, { browser, version, ip: req.ip, id_user: decoded.user.id_user });
+
       if (lockkey.browser != browser
-          || lockkey.version != version
+          || lockkey.version != version.match(/(\d*)\./)[1]
           || lockkey.remote_andress != req.ip
           || lockkey.id_user != decoded.user.id_user
         ) {

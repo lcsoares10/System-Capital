@@ -19,13 +19,15 @@ export default function Profile() {
 
   const { user, setUser } = useAuthContext();
   const [ contracts, setContracts ] = useState([]);
-  const [dataProjection,setDataProjection] = useState([]);
-  const [idContract,setIdContracts] = useState();
+  const [dataProjection, setDataProjection] = useState([]);
+  const [idContract, setIdContracts] = useState();
 
   useEffect(() => {
     // Create an scoped async function in the hook
     async function getContracts() {
-      setContracts( await allContracts(user.id_user) );
+      const contratos = await allContracts(user.id);
+      setContracts(contratos);
+      handleCalculationProjection(contratos[0].id);
     }
     getContracts();
     // Execute the created function directly
@@ -33,8 +35,7 @@ export default function Profile() {
   }, []);
 
   function handleCalculationProjection(id_contract) {
-    const contract_find = filterId(id_contract);
-    setDataProjection(calculateProjection(contract_find[0].value))
+    setDataProjection(calculateProjection(id_contract));
   }
 
   function filterId(id_contract) {
@@ -48,14 +49,12 @@ export default function Profile() {
           <div className="title-header">
             <h1 className="h1-profile">Investimentos</h1>
             <select onChange={e => handleCalculationProjection(e.target.value)} className="select-contract" name="" id="">
-            <option value="">Selecionar</option>
-
+            {/* <option value="">Selecionar</option> */}
               {
-                  contracts.map(contract=>(
-                  <option key={contract.id} value={contract.id}>
-            
-                    {contract.id.toString().padStart('5', '0')}</option>
-                  ))
+                contracts.map(contract=>(
+                <option key={contract.id} value={contract.id}>
+                  {contract.id.toString().padStart('5', '0')}</option>
+                ))
               }
               </select>
           </div>

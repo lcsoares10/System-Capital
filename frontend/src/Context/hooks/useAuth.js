@@ -61,9 +61,10 @@ export default function useAuth() {
 
       } catch(error) {
         setAuthenticated(false);
-        const { data } = error.response;
-        alert(data.message);
+        //const { data } = error.response;
+        //alert(data.message);
         //console.log(error.response);
+        alert(error.message);
       }
   }
 
