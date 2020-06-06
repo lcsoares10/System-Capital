@@ -39,7 +39,7 @@ module.exports = {
 
     try {
       const { id } = req.params;
-      const contract = await ContractModel.findByPk(id,  {
+      const result = await ContractModel.findByPk(id,  {
           include: [
               {
                   association: 'investor',
@@ -49,11 +49,11 @@ module.exports = {
           ]
       });
 
-      if (!contract) {
+      if (!result) {
         throw new Exception("Contrato não existe");
       }
 
-      return res.json(contract);
+      return res.json(Util.response(result));
 
     } catch (e) {
       const result = Exception._(e);

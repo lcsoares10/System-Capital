@@ -14,22 +14,28 @@ export default function ListContracts(props) {
           <thead>
             <tr >
               <th>Código</th>
-              <th>Nome</th>
+              <th>Início</th>
               <th><img src={icon_cash} alt="icon_cash"/></th>
             </tr>
           </thead>
           <tbody>
 
             {
-                contracts.map(contract=>(
+                contracts.map(contract=> {
+                  let con = {
+                    id: contract.id.toString().padStart('5', '0'),
+                    begin: new Date(contract.begin).toLocaleDateString(),
+                    value: convertCoinBr(contract.value),
+                  }
+                  return (
+                    <tr key={con.id}>
+                      <td><Link to={`/detail-contract/${contract.id}`}><p>{con.id}</p></Link></td>
+                      <td><p>{con.begin}</p></td>
+                      <td><p>{con.value}</p></td>
+                    </tr>
+                  )
 
-                  <tr key={contract.id}>
-                    <td><Link to={`/detail-contract/${contract.id}`}><p>{contract.id.toString().padStart('5', '0')}</p></Link></td>
-                    <td><p>{contract.id.toString().padStart('5', '0')}-{contract.id_investor}</p></td>
-                    <td><p>{convertCoinBr(contract.value)}</p></td>
-                  </tr>
-                  
-                ))
+                })
             }
           </tbody>
         </table>
