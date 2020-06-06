@@ -6,6 +6,8 @@ import FooterBackground from '../../components/FooterBackground';
 import findContract from '../../controller/Investor/findContract';
 
 import convertCoinBr from '../../services/convertCoinBr';
+import convertDate from '../../services/convertDate';
+import sumDate from '../../services/sumDate';
 
 import './styles.css';
 import Loading from '../../components/Loading';
@@ -31,7 +33,7 @@ export default function DetailInvestment(props) {
   }, []);
   
   if ( Object.entries(contract).length ===0) return <Loading/>;
-  
+
     return (
         
         <Container>    
@@ -43,8 +45,8 @@ export default function DetailInvestment(props) {
             </div>
 
             <div className="content-contract">
-                <p className="text-beige">Data de Inicio: <b className="text-white">{contract.begin}</b></p>
-                <p className="text-beige">Data de Termino: <b className="text-white">{contract.begin}</b></p>
+                <p className="text-beige">Data de Inicio: <b className="text-white">{convertDate(new Date(contract.begin))}</b></p>
+                <p className="text-beige">Data de Termino: <b className="text-white">{convertDate(sumDate(contract.begin,1))}</b></p>
                 <p className="text-beige">Prazo: <b className="text-white">12 Meses</b></p>
                 <p className="text-beige">Valor Investido: <b className="text-white">{convertCoinBr(contract.value)}</b></p>
                 <p className="text-beige">Dia do pagamento: <b className="text-white">{contract.day}</b></p>
