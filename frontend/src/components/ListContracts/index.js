@@ -25,7 +25,7 @@ export default function ListContracts(props) {
 
                   <tr key={contract.id}>
                     <td><Link to={`/detail-contract/${contract.id}`}><p>{contract.id.toString().padStart('5', '0')}</p></Link></td>
-                    <td><p>{contract.id.toString().padStart('5', '0')}-{contract.id_investor}</p></td>
+                    <td><p>con-{contract.id.toString().padStart('5', '0')}</p></td>
                     <td><p>{convertCoinBr(contract.value)}</p></td>
                   </tr>
                   
