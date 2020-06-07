@@ -35,6 +35,7 @@ export default function Profile() {
   }, []);
 
   function handleCalculationProjection(id_contract) {
+    setIdContracts(id_contract);
     setDataProjection(calculateProjection(id_contract));
   }
 
@@ -64,7 +65,7 @@ export default function Profile() {
               <div className='graph'>
                 <LineChart data={dataProjection}></LineChart>
               </div>
-              <Link to="/detail-investment">
+              <Link to={`/detail-investment/${idContract}`}>
                 <button>Ver detalhes</button>
               </Link>
             </div>

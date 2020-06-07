@@ -1,4 +1,6 @@
-import React from 'react';
+import React,{useEffect,useState} from 'react';
+
+import api from '../../services/api';
 
 import Container from '../../components/Container';
 import HeaderBackground from '../../components/HeaderBackground';
@@ -9,10 +11,48 @@ import EditIcon from '@material-ui/icons/Edit';
 
 import './styles.css';
 //------------------------------------------------------------
+import { useAuthContext } from '../../Context/AuthContext';
+
+async function handdleInpuntTel(value) {
+
+    try {
+      const { data } = await api.get(`/consultants/${value}`);
+      console.log(data.user.name);
+      return data.user;
+
+    } catch (error) {
+        console.log(error);
+        return error;
+    }
+
+}
+
+async function handdleInpuntEmail(value) {
+
+  try {
+    const { data } = await api.get(`/consultants/${value}`);
+    console.log(data.user.name);
+    return data.user;
+
+  } catch (error) {
+      console.log(error);
+      return error;
+  }
+
+}
+
+
+
 
 export default function ViewProfile() {
 
 
+    const { user } = useAuthContext();
+    const [tel,setTel] = useState(user.email);
+    const [email,setEmail] = useState(user.email);
+ 
+    console.log(user)
+ 
     return (
         <Container className="container-login" >    
           <HeaderBackground notLogin={true}/>
@@ -34,22 +74,22 @@ export default function ViewProfile() {
                   
                   <div className ='no-edit-form'>
                     <label for="nome" className="label">Nome</label>
-                    <input type="text" value="Lucas"/>
+                    <input type="text" readonly='true' value={user.name}/>
                   </div>
                   <div className ='no-edit-form'>
                     <label for="sobreNome" className="label">Sobre nome</label>
-                    <input type="text" value="da Silva Soares"/>
+                    <input type="text" readonly='true' value={user.name}/>
                   </div>
 
                   <div className ='edit-form'>
                     <label for="tel" className="label"> Telefone</label>
-                    <input id="tel" type="text" value="(21) 9 96907-5358"/>
+                    <input id="tel" type="text" onChange={e => setTel(e.target.value)} value={tel}/>
                     <EditIcon className="icon-edit"/>
                   </div>
                   
                   <div className='edit-form'>
                     <label for="email" className="label">Email</label>
-                    <input type="email" value="lucasdasilvasoares10@gmail.com"/>
+                    <input type="email" onChange={e => setEmail(e.target.value)} value={email}/>
                     <EditIcon className="icon-edit"/>
                   </div>
 

@@ -4,10 +4,12 @@ import Container from '../../components/Container';
 import HeaderBackground from '../../components/HeaderBackground';
 import FooterBackground from '../../components/FooterBackground';
 
+import ListCheckPayments from '../../components/ListCheckPayments';
+
 import './styles.css';
 //------------------------------------------------------------
 
-export default function detailInvestment() {
+export default function detailInvestment(props) {
 
 
     return (
@@ -29,7 +31,7 @@ export default function detailInvestment() {
                 <h2>Recebidos</h2>
                 <div className="list-check-payments">
 
-      
+                <ListCheckPayments id_contract={props.match.params.id}/>
 
                 </div>
               </div>
