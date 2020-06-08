@@ -1,11 +1,38 @@
+import moment from 'moment';
+import convertCoinBr from '../../utils/convertCoinBr';
 
-export default function calculateProjection(value_contract){
+export default function calculateProjection(contract) {
 
-    let dataProjection = [0];
-    for (let x =0 ; x < 11 ; x++) dataProjection.push((10*value_contract)/100);
+  let { id, begin, time, value } = contract;
 
-    console.log(dataProjection);
+  let dt_begin = moment(begin);
+  let dt_end = moment(begin).add(time, 'month');
 
-    return dataProjection;
+  const aux = [];
+  const months = [];
+  const values = [];
+  const rendimento = value * 0.10
+  while(dt_begin.format('YMM') <= dt_end.format('YMM')) {
 
+    if (aux[aux.length - 1]) {
+      value = aux[aux.length - 1].value + rendimento;
+    }
+
+    aux.push({
+      year: dt_begin.get('year'),
+      month: dt_begin.format('MM'),
+      month_: dt_begin.format('MMMM').capitalize(),
+      value,
+      value_: convertCoinBr(value),
+    });
+
+    months.push(`${dt_begin.get('year')}/${dt_begin.format('MMM').capitalize()}`);
+    values.push(value.toFixed(2));
+
+    dt_begin.add(1, 'month');
+  }
+
+  //console.log(aux);
+
+  return { id, time: aux, months, values, time }
 }

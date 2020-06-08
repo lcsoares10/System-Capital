@@ -80,7 +80,6 @@ main .content-list-contract{
 }
 main .content-list-contract .indices-list {
     width: 100%;
-
     padding: 0px 30px;
 }
 
@@ -110,11 +109,12 @@ main .content-list-contract .list-contract tbody tr {
 }
 
 main .content-list-contract .list-contract td {
-    width: 100%;
+    /* width: 100%; */
     background: transparent;
     margin-top: 5px;
+    /* padding: 5px 10px; */
     padding: 10px 15px;
-
+    text-align: center;
 }
 
 main .content-list-contract .list-contract td p{

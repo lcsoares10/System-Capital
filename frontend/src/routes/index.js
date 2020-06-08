@@ -24,7 +24,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
   if (loading) {
     return Loading;
   }
-  
+
   return <Route
     { ...rest }
     render={props => (
@@ -46,7 +46,7 @@ export default function Routes() {
           <Switch>
             <Route path="/" exact component = {Logon} />
             <Route path="/Loading"  component = {Loading} />
-          
+
             <PrivateRoute path="/profile" component = {Profile} />
             <PrivateRoute path="/view-profile" component = {ViewProfile} />
             <PrivateRoute path="/detail-investment/:id" component = {DetailInvestment} />

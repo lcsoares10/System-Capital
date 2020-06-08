@@ -37,10 +37,6 @@ module.exports = {
  * yarn sequelize db:migrate:undo:all (Defaz todas as migrations)
  *
  * yarn sequelize migration:create --name=create-users
- * yarn sequelize migration:create --name=create-administrators
- * yarn sequelize migration:create --name=create-consultants
- * yarn sequelize migration:create --name=create-investors
- */
 
  /** Seeders
   *

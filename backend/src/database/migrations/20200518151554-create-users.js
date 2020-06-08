@@ -22,9 +22,23 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
+      id_image_profile: {
+        type: Sequelize.INTEGER,
+        references: { model: 'images', key: 'id' },
+        onUpdate: 'CASCADE', //atualiza o id do usuário caso ele mude
+        onDelete: 'CASCADE' //CASCADE | SET NULL | RESTRICT
+      },
       name: {
         type: Sequelize.STRING,
         allowNull: false
+      },
+      last_name: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      tel: {
+        type: Sequelize.STRING,
+        allowNull: true
       },
       is_admin: {
         type: Sequelize.INTEGER,

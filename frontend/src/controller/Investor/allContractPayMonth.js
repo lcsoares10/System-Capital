@@ -9,6 +9,7 @@ export default async function allContracts(id_contract) {
 
     } catch (error) {
         console.log(error);
+        console.log(error.response);
         return error;
     }
 

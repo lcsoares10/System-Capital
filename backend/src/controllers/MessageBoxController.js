@@ -35,7 +35,7 @@ module.exports = {
 
       const result = await MessageBoxModel.findByPk(id,  {
           include: {
-            association: 'user', required: true
+            association: 'user_send', required: true
           },
           where : {
             id
@@ -50,7 +50,7 @@ module.exports = {
 
     } catch (e) {
       const result = Exception._(e);
-      return res.status(400).json(Util.response(result, 'Erro ao Deletar'));
+      return res.status(400).json(Util.response(result));
     }
 
   },

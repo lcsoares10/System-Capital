@@ -1,9 +1,11 @@
+import 'moment/locale/pt-br';
+import './prototype/String.js';
+
 import React from 'react';
 import Routes from './routes';
+import AuthProvider from './Context/AuthContext';
 
 import './global.css';//define stilo css global
-
-import AuthProvider from './Context/AuthContext';
 
 function App() {
 

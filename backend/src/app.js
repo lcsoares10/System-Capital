@@ -2,6 +2,7 @@
 //https://arunmichaeldsouza.com/blog/aliasing-module-paths-in-node-js
 //https://www.npmjs.com/package/module-alias
 require('module-alias/register')
+require('moment/locale/pt-br');
 
 /** Prototype */
 require('@/src/prototype/ModelSequelize');

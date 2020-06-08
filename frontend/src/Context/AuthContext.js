@@ -33,4 +33,6 @@ export function useAuthContext() {
   //return { authenticated, handleLogon, handleLogout, loading, user, setUser };
 }
 
+export { AuthContext };
+
 //export { AuthProvider, useAuthContext };
