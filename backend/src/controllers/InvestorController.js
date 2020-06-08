@@ -1,3 +1,4 @@
+const ImageModel = require('@/src/models/Image');
 const UserModel = require('@/src/models/User');
 const InvestorModel = require('@/src/models/Investor');
 const ConsultantModel = require('@/src/models/Consultant');
@@ -17,7 +18,10 @@ module.exports = {
       const page = req.query.page || 1;
       const options = {
         include: [
-          { association: 'user', required: true },
+          { association: 'user',
+           required: true,
+           include : {association: 'profile'}
+          },
           {
             association: 'consultant',
             include : {association: 'user'}
@@ -43,7 +47,16 @@ module.exports = {
       const { id } = req.params;
 
       const result = await InvestorModel.findByPk(id,  {
-          include: { association: 'user', required: true }
+        include: [
+          { association: 'user',
+           required: true,
+           include : {association: 'profile'}
+          },
+          {
+            association: 'consultant',
+            include : {association: 'user'}
+          }
+        ]
       });
 
       if (!result) {
@@ -97,6 +110,8 @@ module.exports = {
 
   async create(req, res) {
 
+    //console.log(req.file);
+
     const t = await InvestorModel.sequelize.transaction();
 
     try {
@@ -105,12 +120,33 @@ module.exports = {
 
       camposUser.password = UserModel.generateHash(camposUser.password);
 
+      //Consultant
       const consultant = await ConsultantModel.findByPk(id_consultant);
       if (!consultant) {
         throw new Exception("Consultor não existe", "id_consultant");
       }
 
-      let user = await UserModel.create(camposUser, { transaction: t });
+      //Image
+      const {
+        originalname: name,
+        size,
+        filename: key,
+        mimetype: mime,
+      } = req.file;
+
+      let image = await ImageModel.create({
+        name,
+        size,
+        key,
+        mime
+      }, { transaction: t });
+
+      //User
+      let user = await UserModel.create({
+        ...camposUser,
+        id_image_profile: image.id
+      }, { transaction: t });
+
       const investor = await InvestorModel.create({
         id_user: user.id,
         id_consultant
@@ -119,7 +155,7 @@ module.exports = {
 
       const result = {
         ...investor.toJSON(),
-        //user: { ...user.toJSON(['password', 'updatedAt', 'createdAt'], "e")}
+        image: { ...image.toJSON()},
         user: { ...user.toJSON()}
       };
 
@@ -128,6 +164,7 @@ module.exports = {
       return res.json(Util.response(result, 'Inserido com Sucesso'));
 
     } catch (e) {
+      Util.removeFile(req.file.filename);
       await t.rollback();
       const result = Exception._(e);
       return res.status(400).json(Util.response(result));
@@ -196,9 +233,19 @@ module.exports = {
       //const result = await investor.destroy({ transaction: t });
       const result = await user.destroy({ transaction: t });
 
+      //image
+      const image = await ImageModel.findByPk(result.id_image_profile);
+      if (image) {
+        await image.destroy({ transaction: t });
+        await Util.removeFile(image.key);
+      }
+
       await t.commit();
 
-      return res.json(Util.response(result, 'Deletado com sucesso'));
+      return res.json(Util.response({
+        result,
+        profile: { ...image.toJSON() },
+      }, 'Deletado com sucesso'));
 
     } catch (e) {
       await t.rollback();

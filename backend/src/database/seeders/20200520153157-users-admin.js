@@ -11,6 +11,8 @@ module.exports = {
         password: bcrypt.hashSync('admin', bcrypt.genSaltSync(10)),
         name: 'administrador_root',
         is_admin: 1,
+        last_name: `administrador_root_ln`,
+        tel: '219'+ Math.floor(10000000 + Math.random() * 9999999),
         created_at: new Date(),
         updated_at: new Date(),
       },

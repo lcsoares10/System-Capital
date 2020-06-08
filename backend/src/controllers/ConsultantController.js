@@ -1,3 +1,4 @@
+const ImageModel = require('@/src/models/Image');
 const UserModel = require('@/src/models/User');
 const InvestorModel = require('@/src/models/Investor');
 const ConsultantModel = require('@/src/models/Consultant');
@@ -90,9 +91,28 @@ module.exports = {
 
     try {
 
+      //Image
+      const {
+        originalname: name,
+        size,
+        filename: key,
+        mimetype: mime,
+      } = req.file;
+
+      let image = await ImageModel.create({
+        name,
+        size,
+        key,
+        mime
+      }, { transaction: t });
+
+      //User
       const { ...camposUser } = req.body
 
-      let user = await UserModel.create(camposUser, { transaction: t });
+      let user = await UserModel.create({
+        ...camposUser,
+        id_image_profile: image.id
+      }, { transaction: t });
       const consultant = await ConsultantModel.create({
         id_user: user.id
       }
@@ -100,8 +120,8 @@ module.exports = {
 
       const result = {
         ...consultant.toJSON(),
+        image: { ...image.toJSON()},
         user: { ...user.toJSON(['password', 'updatedAt', 'createdAt'], "e")}
-        //user: { ...user.toJSON()}
       };
 
       await t.commit();
@@ -109,6 +129,7 @@ module.exports = {
       return res.json(Util.response(result, 'Inserido com Sucesso'));
 
     } catch (e) {
+      Util.removeFile(req.file.filename);
       await t.rollback();
       const result = Exception._(e);
       return res.status(400).json(Util.response(result));
@@ -172,9 +193,19 @@ module.exports = {
       //const result = await investor.destroy({ transaction: t });
       const result = await user.destroy({ transaction: t });
 
+      //image
+      const image = await ImageModel.findByPk(result.id_image_profile);
+      if (image) {
+        await image.destroy({ transaction: t });
+        await Util.removeFile(image.key);
+      }
+
       await t.commit();
 
-      return res.json(Util.response(result, 'Deletado com sucesso'));
+      return res.json(Util.response({
+        result,
+        profile: { ...image.toJSON() },
+      }, 'Deletado com sucesso'));
 
     } catch (e) {
       await t.rollback();

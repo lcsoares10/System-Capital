@@ -34,5 +34,5 @@ export default function calculateProjection(contract) {
 
   //console.log(aux);
 
-  return { time: aux, months, values }
+  return { time: aux, months, values, time }
 }

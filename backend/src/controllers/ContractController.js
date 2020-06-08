@@ -6,6 +6,7 @@ const ContractPayCompetenceModel = require('@/src/models/ContractPayCompetence')
 const Util = require('@/src/class/Util');
 const Exception = require('@/src/class/Exeption');
 const PaginationClass = require('@/src/class/Pagination');
+const moment = require('moment');
 
 module.exports = {
 
@@ -66,19 +67,50 @@ module.exports = {
 
     try {
       const { id } = req.params;
-
       const contract = await ContractModel.findByPk(id);
-      if (!contract) {
-        throw new Exception("Contrato não existe", "id_contract");
+
+      if (!result) {
+        throw new Exception("Contrato não existe");
       }
 
-      const result = await ContractPayCompetenceModel.findAll({
+      const { begin, time } = contract;
+
+      let dt_begin = moment(begin).add(1, 'month');
+      let dt_end = moment(dt_begin).add(time, 'month');
+
+      const payMonths = await ContractPayCompetenceModel.findAll({
         where: {
           id_contract: id
         }
       });
 
-    return res.json(Util.response(result));
+      const aux = [];
+      while (dt_begin.format('YMM') <= dt_end.format('YMM')) {
+
+        let months = {
+          competence: dt_begin.format('YMM'),
+          competence_: dt_begin.format('MM/Y'),
+          value: 0,
+          pay: 0
+        }
+
+        let idx = payMonths.findIndex((item) => {
+          return item.competence == dt_begin.format('YMM');
+        });
+
+        if (payMonths[idx]) {
+          months.competence = payMonths[idx].competence;
+          months.competence_ = dt_begin.format('MM/Y');
+          months.value = payMonths[idx].value;
+          months.pay = 1;
+        }
+
+        aux.push(months);
+
+        dt_begin.add(1, 'month');
+      }
+
+      return res.json(Util.response({ contract: contract, payMonths: aux}));
 
     } catch (e) {
       const result = Exception._(e);

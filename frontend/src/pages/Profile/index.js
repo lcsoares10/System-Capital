@@ -66,7 +66,7 @@ export default function Profile() {
         </div>
 
           <div className="content-projection">
-            <p>PROJEÇÃO DE 12 MESES</p>
+            <p>PROJEÇÃO DE {dataProjection.time} MESES</p>
             <div className='graph'>
               <LineChart data={dataProjection}></LineChart>
             </div>

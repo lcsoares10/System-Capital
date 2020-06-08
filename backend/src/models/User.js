@@ -1,6 +1,8 @@
 const { Model, DataTypes }  = require('sequelize');
 const bcrypt = require('bcrypt');
 
+//https://medium.com/@thihenos/node-salvando-imagens-em-banco-de-dados-e-convertendo-em-imagens-novamente-1a304880f285
+
 class User extends Model {
 
   static get _name() {
@@ -32,12 +34,31 @@ class User extends Model {
           //tem q por mais coisas
         }
       },
+      // id_image_profile: {
+      //   type: DataTypes.INTEGER,
+      //   allowNull: false
+      // },
       name: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
           notEmpty: true,
           is: /^[a-z]+$/i
+        }
+      },
+      last_name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: true,
+          is: /^[a-z]+$/i
+        }
+      },
+      tel: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        validate: {
+          is: /^[1-9]*$/i //https://medium.com/@igorrozani/criando-uma-express%C3%A3o-regular-para-telefone-fef7a8f98828
         }
       },
       is_admin: DataTypes.INTEGER,
@@ -56,6 +77,8 @@ class User extends Model {
     //hasOne [1:1] - Chave estrangeira definida em B
     this.hasOne(models.Consultant, { foreignKey: 'id_user', as: 'consultant' });
     this.hasOne(models.Investor, { foreignKey: 'id_user', as: 'investor' });
+
+    this.belongsTo(models.Image, { foreignKey: 'id_image_profile', as: 'profile' });
 
     //belongsToMany [N:N]
     this.belongsToMany(models.MessageBox, {

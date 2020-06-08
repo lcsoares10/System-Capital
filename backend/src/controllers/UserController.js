@@ -12,7 +12,9 @@ module.exports = {
     try {
 
       const page = req.query.page || 1;
-      const options = {};
+      const options = {
+        include: { association: 'profile'}
+      };
 
       const Pagination = new PaginationClass(UserModel);
       const result = await Pagination.select(page, options);
@@ -50,7 +52,7 @@ module.exports = {
 
     try {
       const { id } = req.params;
-      const result = await MessageBoxModel.findAll({
+      let result = await MessageBoxModel.findAll({
           include: [
           {
             association: 'users',
@@ -70,7 +72,8 @@ module.exports = {
       },);
 
       if (!result) {
-          return res.status(400).json({ error: 'Usuário não existe'} );
+          //return res.status(400).json({ error: 'Usuário não existe'} );
+          result = []
       }
 
       return res.json(Util.response(result));
