@@ -1,4 +1,4 @@
-import React,{useEffect,useState} from 'react';
+import React,{useState} from 'react';
 
 import api from '../../services/api';
 
@@ -64,7 +64,7 @@ export default function ViewProfile() {
             <div className="content-form">
 
               <div className="photo-ptofile">
-                <img src={icon_profile_my} alt='photo-profile'/>
+                <img src={icon_profile_my}/>
               </div>
               <form> 
                   <div className="upload-photo">

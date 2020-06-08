@@ -9,14 +9,14 @@ export default (date,sum,optionSum="year")=>{
     switch (optionSum) {
         case "month":
             return Date(year, month + sum, day);
-            break;
+       
         case "day":
             return new Date(year, month, day + sum);
-            break;
+          
 
         default:
             return new Date(year + sum, month, day);
-            break;
+          
     }
 }
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useEffect,useState } from 'react';
 import {Link} from 'react-router-dom';
 
 import Container from '../../components/Container';
@@ -17,7 +17,7 @@ import { useAuthContext } from '../../Context/AuthContext';
 
 export default function Profile() {
 
-  const { user, setUser } = useAuthContext();
+  const { user } = useAuthContext();
   const [ contracts, setContracts ] = useState([]);
   const [dataProjection, setDataProjection] = useState([]);
   const [idContract, setIdContracts] = useState();

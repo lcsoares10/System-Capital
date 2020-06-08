@@ -1,8 +1,8 @@
 import React,{useState,useEffect} from 'react';
-import icon_cash from '../../assets/icon_cash.png'
-import {Link} from 'react-router-dom';
+//import icon_cash from '../../assets/icon_cash.png'
+//import {Link} from 'react-router-dom';
 
-import convertCoinBr from '../../services/convertCoinBr';
+//import convertCoinBr from '../../services/convertCoinBr';
 
 import CheckCircle from '@material-ui/icons/CheckCircle';
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';

@@ -55,6 +55,7 @@ export default function Routes() {
             <PrivateRoute path="/messages" component = {Messages} />
             <PrivateRoute path="/RegisterContract" component = {RegisterContract} />
             <PrivateRoute path="/RegisterUsers" component = {RegisterUsers} />
+            <PrivateRoute path="/*" component = {Page404} />
 
           </Switch>
         </BrowserRouter>
