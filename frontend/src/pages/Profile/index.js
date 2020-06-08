@@ -40,7 +40,7 @@ export default function Profile() {
   }
 
   function filterId(id_contract) {
-    return contracts.filter(contract => id_contract == contract.id)
+    return contracts.filter(contract => id_contract === contract.id)
   }
 
     return (
