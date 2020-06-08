@@ -18,6 +18,9 @@ main .title-header{
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
+    animation-name: up;
+    animation-duration: 1s;
+  
 }
 main .title-header .h1-profile{
     color: white;

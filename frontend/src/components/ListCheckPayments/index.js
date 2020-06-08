@@ -1,15 +1,15 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 //import icon_cash from '../../assets/icon_cash.png'
 //import {Link} from 'react-router-dom';
 
-import convertCoinBr from '../../utils/convertCoinBr';
+//import convertCoinBr from '../../services/convertCoinBr';
 
 import CheckCircle from '@material-ui/icons/CheckCircle';
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
 
+import allContractPayMonth from '../../controller/Investor/allContractPayMonth';
 
-
-const PaidOut = ()=>(
+const PaidOut = (props)=>(
 
     <ul>
         <li className="text-white">06/2020</li>
@@ -18,7 +18,7 @@ const PaidOut = ()=>(
     </ul>
 )
 
-const NotPay = ()=>(
+const NotPay = (props)=>(
 
     <ul>
         <li className="text-white">03/2021</li>
@@ -28,23 +28,30 @@ const NotPay = ()=>(
 
 )
 
+function constructArrayPayMonth(data) {
+    let months = [{}]
+}
+
 export default function ListContracts(props) {
 
+    const [payMonths,setPayMonths] = useState({});
 
-    const contracts = props.contracts;
+    useEffect(() => {
+
+        async function getPayMonths() {
+            const data = await allContractPayMonth(props.id_contract)
+            setPayMonths( data );
+        }
+        setTimeout(() => {
+          getPayMonths();
+        }, 500);
+
+
+      }, []);
 
     return(
         <div className="list-check-payments">
 
-            {
-                contracts.map(contract=>(
-
-
-
-
-
-                ))
-            }
 
         </div>
     );
