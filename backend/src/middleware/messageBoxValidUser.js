@@ -24,14 +24,14 @@ module.exports = async (req, res, next) => {
     //console.log(req.user, message.toJSON());
 
     if (!message && !req.user.is_admin ) {
-      throw new Exception("Página não existe");
+      throw new Exception("Você não tem diretiso de acesso");
     }
 
     return next();
 
   } catch (e) {
     const result = Exception._(e);
-    return res.status(404).json(Util.response(result));
+    return res.status(401).json(Util.response(result));
   }
 
 }

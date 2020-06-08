@@ -13,7 +13,7 @@ import RegisterContract from '../pages/RegisterContract';
 import RegisterUsers from '../pages/RegisterUsers';
 import DetailInvestment from '../pages/DetailInvestment';
 import DetailContract from '../pages/DetailContract';
-//import Page404 from '../pages/Page404';
+import Page404 from '../pages/Page404';
 
 import Loading from '../components/Loading';
 

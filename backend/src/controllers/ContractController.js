@@ -69,7 +69,7 @@ module.exports = {
       const { id } = req.params;
       const contract = await ContractModel.findByPk(id);
 
-      if (!result) {
+      if (!contract) {
         throw new Exception("Contrato não existe");
       }
 

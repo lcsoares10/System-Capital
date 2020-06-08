@@ -20,13 +20,13 @@ module.exports = async (req, res, next) => {
     // );
 
     if (contract.id_investor != req.user.id && !req.user.is_admin ) {
-      throw new Exception("Página não existe");
+      throw new Exception("Você não tem diretiso de acesso");
     }
     return next();
 
   } catch (e) {
     const result = Exception._(e);
-    return res.status(404).json(Util.response(result));
+    return res.status(401).json(Util.response(result));
   }
 
 }

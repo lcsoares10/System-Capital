@@ -70,7 +70,7 @@ export default function Profile() {
             <div className='graph'>
               <LineChart data={dataProjection}></LineChart>
             </div>
-            <Link to="/detail-investment">
+            <Link to={`/detail-investment/${dataProjection.id}`}>
               <button>Ver detalhes</button>
             </Link>
           </div>

@@ -3,7 +3,7 @@ import convertCoinBr from '../../utils/convertCoinBr';
 
 export default function calculateProjection(contract) {
 
-  let { begin, time, value } = contract;
+  let { id, begin, time, value } = contract;
 
   let dt_begin = moment(begin);
   let dt_end = moment(begin).add(time, 'month');
@@ -34,5 +34,5 @@ export default function calculateProjection(contract) {
 
   //console.log(aux);
 
-  return { time: aux, months, values, time }
+  return { id, time: aux, months, values, time }
 }
