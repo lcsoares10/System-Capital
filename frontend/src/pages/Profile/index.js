@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useEffect,useState } from 'react';
 import {Link} from 'react-router-dom';
 
 import Container from '../../components/Container';
@@ -17,7 +17,7 @@ import { useAuthContext } from '../../Context/AuthContext';
 
 export default function Profile() {
 
-  const { user, setUser } = useAuthContext();
+  const { user } = useAuthContext();
   const [ contracts, setContracts ] = useState([]);
   const [dataProjection, setDataProjection] = useState([]);
   const [idContract, setIdContracts] = useState();
@@ -35,11 +35,12 @@ export default function Profile() {
   }, []);
 
   function handleCalculationProjection(id_contract) {
+    setIdContracts(id_contract);
     setDataProjection(calculateProjection(id_contract));
   }
 
   function filterId(id_contract) {
-    return contracts.filter(contract => id_contract == contract.id)
+    return contracts.filter(contract => id_contract === contract.id)
   }
 
     return (
@@ -64,7 +65,7 @@ export default function Profile() {
               <div className='graph'>
                 <LineChart data={dataProjection}></LineChart>
               </div>
-              <Link to="/detail-investment">
+              <Link to={`/detail-investment/${idContract}`}>
                 <button>Ver detalhes</button>
               </Link>
             </div>

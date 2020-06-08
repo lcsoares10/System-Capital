@@ -1,0 +1,42 @@
+.content-detail-message{
+    width: 100%;
+    position: absolute;
+    top:0;
+    background-color: #191919;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    animation-name: move-left;
+    animation-duration: 0.5s;
+}
+.content-detail-message .nav{
+    display: flex;
+    flex-direction: row;
+    background-color: black;
+    align-items: center;
+    padding: 5px 20px;
+}
+
+.content-detail-message .nav img{
+    margin-left: 10px;
+}
+
+.content-detail-message .nav h3{
+    color: white;
+    margin-left: 20px;
+    font-weight: 400;
+}
+
+.content-detail-message .content-message{
+    padding:15px;
+    margin: 10px 20px;
+    background-color: var(--bg-color-05);
+    box-shadow: var(--shadow-bottom);
+    color: #cecece;
+    font-size: 16px;
+}
+
+@keyframes move-left {
+    0% {margin-left: 100%;}
+    100% {margin-left: 0%;}
+  }
