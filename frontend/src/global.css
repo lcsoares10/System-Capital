@@ -6,8 +6,8 @@
    
 }
 body{
-  background-color: #121212;
-  overflow: hidden;
+  background-color: #121212; 
+  overflow-x: hidden;
 }
 
 :root{
@@ -57,7 +57,14 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* margin-top: 80px; */
+  /* margin-top: 80px; */
+  padding: 80px 25px 50px;
+}
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

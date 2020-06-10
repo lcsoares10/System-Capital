@@ -3,7 +3,7 @@ import axios from 'axios';
 //defino qual será a base para as requições
 const api = axios.create({
     //baseURL:'http://localhost:3333'
-    baseURL:'http://192.168.1.6:3333'
+    baseURL:'http://193.168.100.2:3333'
 });
 
 //===================

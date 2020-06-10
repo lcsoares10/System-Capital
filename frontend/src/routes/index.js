@@ -22,7 +22,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
   const { loading, authenticated } = useAuthContext();
 
   if (loading) {
-    return Loading;
+    return <Loading/>;
   }
 
   return <Route
