@@ -1,6 +1,4 @@
-//import React, { useState, useContext } from 'react';
 import React, { useState } from 'react';
-// import { useHistory }  from 'react-router-dom';
 
 /* Componentes propios*/
 import Container from '../../components/Container';
@@ -11,18 +9,15 @@ import logo from '../../assets/logo_x6.png';
 import './styles.css';
 //------------------------------------------------------------
 
-//import { AuthContext } from '../../Context/AuthContext';
 import { useAuthContext } from '../../Context/AuthContext';
 
 export default function Logon() {
-    const [email, setEmail] = useState('investor_56923@gmail.com');
-    const [password, setpassword] = useState('56923');
+    const [email, setEmail] = useState(process.env.REACT_APP_DEFAULT_USER_LOGIN);
+    const [password, setpassword] = useState(process.env.REACT_APP_DEFAULT_USER_PASSWORD);
 
     const { handleLogon } = useAuthContext();
-    // const history = useHistory();
 
     return (
-
         <Container>
 
             <HeaderBackground notLogin={false}/>
