@@ -1,6 +1,6 @@
 //import React, { useState, useContext } from 'react';
 import React, { useState } from 'react';
-import { useHistory }  from 'react-router-dom';
+// import { useHistory }  from 'react-router-dom';
 
 /* Componentes propios*/
 import Container from '../../components/Container';
@@ -19,7 +19,7 @@ export default function Logon() {
     const [password, setpassword] = useState('56923');
 
     const { handleLogon } = useAuthContext();
-    const history = useHistory();
+    // const history = useHistory();
 
     return (
 
@@ -31,7 +31,7 @@ export default function Logon() {
                 <div className="main-login">
                     <img src={logo}/>
 
-                    <form onSubmit={e=>handleLogon(e, email, password, history)}>
+                    <form onSubmit={e=>handleLogon(e, email, password)}>
                         <div className="form-inputs">
                             <input type="text" value={email} placeholder="E-mail" onChange={e => setEmail(e.target.value)}></input>
                             <input type="password" value={password} placeholder="Senha"  onChange={e => setpassword(e.target.value)}></input>

@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-
+import { useHistory } from "react-router-dom";
 import api from '../../services/api';
 
 export default function useAuth() {
+  const history = useHistory();
 
   const [authenticated, setAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -10,7 +11,6 @@ export default function useAuth() {
 
   //https://blog.rocketseat.com.br/reactjs-autenticacao/
 
-  //unmount -> Desmontar
   useEffect(() => {
 
     function loadStorageData() {
@@ -43,7 +43,7 @@ export default function useAuth() {
     };
   }
 
-  async function handleLogon(e, email, password, history) {
+  async function handleLogon(e, email, password) {
     e.preventDefault();
       try {
         const { data } = await api.post('/login',{ email, password });

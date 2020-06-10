@@ -16,12 +16,10 @@ import useAuth from './hooks/useAuth';
 
 const AuthContext = createContext();
 
-export default function AuthProvider({ children }) {
-  //const { authenticated, handleLogon, handleLogout, loading, user, setUser } = useAuth();
+export default function AuthProvider(props) {
   return (
-    // <AuthContext.Provider value={{ authenticated, handleLogon, handleLogout, loading, user, setUser }}>
     <AuthContext.Provider value={useAuth()}>
-      {children}
+      {props.children}
     </AuthContext.Provider>
   );
 }
@@ -29,10 +27,4 @@ export default function AuthProvider({ children }) {
 export function useAuthContext() {
   const context = useContext(AuthContext);
   return context;
-  //const { authenticated, handleLogon, handleLogout, loading, user, setUser } = context
-  //return { authenticated, handleLogon, handleLogout, loading, user, setUser };
 }
-
-export { AuthContext };
-
-//export { AuthProvider, useAuthContext };
