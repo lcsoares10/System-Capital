@@ -2,7 +2,7 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom' ;
 
-import { useAuthContext } from '../Context/AuthContext';
+import AuthProvider, { useAuthContext } from '../Context/AuthContext';
 
 import Logon from '../pages/Logon';
 import Profile from '../pages/Profile';
@@ -22,18 +22,25 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
   const { loading, authenticated } = useAuthContext();
 
   if (loading) {
-    return <Loading/>;
+    return <Loading />;
   }
+
+  //Fazer validação da tela login aqui
 
   return <Route
     { ...rest }
-    render={props => (
-      authenticated ? (
-        <Component {... props} />
-      ) : (
-        <Redirect to={{ pathname: '/', state: { from: props.location }}} />
-      )
-    )}
+    render={props => {
+
+      if (props.match.path !== '/login' && !authenticated) {
+        return <Redirect to={{ pathname: '/logon', state: { from: props.location }}} />
+      } else if (props.match.path === '/login' && authenticated) {
+        console.log('aqui');
+        return <Redirect to={{ pathname: '/profile', state: { from: props.location }}} />
+      } else {
+        return <Component {... props} />;
+      }
+
+    }}
   />
 }
 
@@ -43,21 +50,25 @@ export default function Routes() {
     return(
 
         <BrowserRouter>
-          <Switch>
-            <Route path="/" exact component = {Logon} />
-            <Route path="/Loading"  component = {Loading} />
+          <AuthProvider>
+            <Switch>
+              <Route path="/" exact>
+                <Redirect to="/login" />
+              </Route>
+              <Route path="/Loading"  component = {Loading} />
 
-            <PrivateRoute path="/profile" component = {Profile} />
-            <PrivateRoute path="/view-profile" component = {ViewProfile} />
-            <PrivateRoute path="/detail-investment/:id" component = {DetailInvestment} />
-            <PrivateRoute path="/detail-contract/:id" component = {DetailContract} />
-            <PrivateRoute path="/listUsers" component = {ListUsers} />
-            <PrivateRoute path="/messages" component = {Messages} />
-            <PrivateRoute path="/RegisterContract" component = {RegisterContract} />
-            <PrivateRoute path="/RegisterUsers" component = {RegisterUsers} />
-            <PrivateRoute path="/*" component = {Page404} />
-
-          </Switch>
+              <PrivateRoute path="/login" component = {Logon} />
+              <PrivateRoute path="/profile" component = {Profile} />
+              <PrivateRoute path="/view-profile" component = {ViewProfile} />
+              <PrivateRoute path="/detail-investment/:id" component = {DetailInvestment} />
+              <PrivateRoute path="/detail-contract/:id" component = {DetailContract} />
+              <PrivateRoute path="/listUsers" component = {ListUsers} />
+              <PrivateRoute path="/messages" component = {Messages} />
+              <PrivateRoute path="/RegisterContract" component = {RegisterContract} />
+              <PrivateRoute path="/RegisterUsers" component = {RegisterUsers} />
+              <PrivateRoute path="/*" component = {Page404} />
+            </Switch>
+          </AuthProvider>
         </BrowserRouter>
 
     );
