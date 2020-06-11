@@ -3,14 +3,7 @@
     align-items:flex-start;
 }
 
-main {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    /* margin-top: 80px; */
-    /* margin-top: 80px; */
-    padding: 80px 25px 50px;
-}
+
 main .title-header{
 
     display: flex;

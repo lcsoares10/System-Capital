@@ -4,7 +4,12 @@
     display: flex;
     flex-direction: column;
 }
+.main-detail-investiment .title-header {
 
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
 .main-detail-investiment .title-header p{
 
     color: white;
