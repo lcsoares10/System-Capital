@@ -7,52 +7,33 @@ import convertCoinBr from '../../utils/convertCoinBr';
 import CheckCircle from '@material-ui/icons/CheckCircle';
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
 
-import allContractPayMonth from '../../controller/Investor/allContractPayMonth';
-
-const PaidOut = (props)=>(
+const PayOut = (props)=>(
 
     <ul>
-        <li className="text-white">06/2020</li>
-        <li class className="text-beige"Name="text-beige">{convertCoinBr(10000)}</li>
-        <li><CheckCircle style={{color:"#25C00C"}}/></li>
+        <li className="text-white">{props.comp}</li>
+        <li className="text-beige">{convertCoinBr(props.value)}</li>
+        <li>
+            {
+                (props.payOut === 1 ?<CheckCircle style={{color:"#25C00C"}}/>:<RemoveCircleIcon style={{color:"#2E2E2E"}}/>)
+            }
+            
+        </li>
     </ul>
 )
-
-const NotPay = (props)=>(
-
-    <ul>
-        <li className="text-white">03/2021</li>
-        <li className="text-beige">R$ 1.000,00</li>
-        <li><RemoveCircleIcon style={{color:"#2E2E2E"}}/></li>
-    </ul>
-
-)
-
-function constructArrayPayMonth(data) {
-    let months = [{}]
-}
 
 export default function ListContracts(props) {
 
-    const [payMonths,setPayMonths] = useState({});
 
-    useEffect(() => {
-
-        async function getPayMonths() {
-            const data = await allContractPayMonth(props.id_contract)
-            setPayMonths( data );
-        }
-        setTimeout(() => {
-          getPayMonths();
-        }, 500);
-
-
-      }, []);
 
     return(
         <div className="list-check-payments">
-
-
+            {
+                props.payMonths.map((payMonth,key)=>(
+                    <div key={key}>
+                     <PayOut  payOut={payMonth.pay} value={payMonth.value} comp={payMonth.competence_}/>
+                    </div>
+                ))
+            }
         </div>
     );
 }

@@ -31,7 +31,7 @@ export default function Messages() {
     }
     getMessages();
   },[])
-
+  console.log(messages);
     return (
 
         <Container>    
@@ -43,6 +43,10 @@ export default function Messages() {
 
             <div className="content-message">
 
+            {
+             
+              messages.length === 0 ? <h3 className="text-white">Voce nao possui menssagens</h3> : ''
+            }
             {
               messages.map((message,key)=>{
                 console.log(message.users[0].MessageUserView.viewed)
