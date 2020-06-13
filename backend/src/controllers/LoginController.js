@@ -24,7 +24,8 @@ module.exports = {
       let user = await UserModel.findOne( {
         include: [
           { association: 'investor', },
-          { association: 'consultant' }
+          { association: 'consultant' },
+          { association: 'profile' }
         ],
         attributes: {
           include: ['password']
@@ -58,9 +59,7 @@ module.exports = {
 
       }
 
-      //throw new Exception("Usuário ou senha incorretos");
-
-      //voltar investidor ou consultor ...
+      //console.log();
 
       const result = {
         id,

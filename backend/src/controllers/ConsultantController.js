@@ -120,7 +120,7 @@ module.exports = {
 
       const result = {
         ...consultant.toJSON(),
-        image: { ...image.toJSON()},
+        image: { ...image.toJSON(['updatedAt', 'createdAt'], "e")},
         user: { ...user.toJSON(['password', 'updatedAt', 'createdAt'], "e")}
       };
 

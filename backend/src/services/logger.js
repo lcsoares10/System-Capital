@@ -156,27 +156,53 @@ require('winston-daily-rotate-file');
 
 //============================================================
 
-const log = winston.createLogger({
-  //level: 'info',
-  //format: winston.format.simple(),
-  format: winston.format.printf((info) => {
-    //console.log('XXXX', log.req.body);
-    //console.log(info.obj);
-    const id_user = (log.req.user) ? log.req.user.id_user : 'null';
+//console.log(winston.config.syslog.levels);
 
-    let message = `${moment().format('@HH:mm:ss')} | user: ${id_user} | ${info.message} | `;
-    message = info.obj ? message + `data:${JSON.stringify(info.obj)} | ` : message;
-    //message = this.log_data ? message + `log_data:${JSON.stringify(this.log_data)} | ` : message;
-    return message
+// const leves = {
+//   error: 0,
+//   warn: 1,
+//   info: 1,
+//   http: 3,
+//   verbose: 4,
+//   debug: 5,
+//   silly: 6
+// }
+
+//console.log(winston.config.npm.levels);
+
+const logger = winston.createLogger({
+  level: 'info',
+  //level: leves,
+  // defaultMeta: {
+  //   service: 'user-service'
+  // },
+  format: winston.format.printf((info) => {
+    const ignore = (obj) => {
+      if (obj.token) obj.token = '...';
+      if (obj.password) obj.password = '...';
+      return obj;
+    };
+
+    const aux = {
+      date: moment().format('@HH:mm:ss'),
+      level: info.level.toUpperCase(),
+      id_user: (logger.req && logger.req.user) ? logger.req.user.id_user : null,
+      data: (info.obj) ? JSON.stringify(ignore(info.obj)) : null,
+      reqBody: (logger.req) ? logger.req.body : null,
+      message: `"${info.message}"`
+    }
+
+    return message = `${aux.date} | ${aux.level} | user: ${aux.id_user} | message: ${aux.message} | data: ${aux.data}`;
+
   }),
   transports: [
     new (winston.transports.DailyRotateFile)({
       level: 'info',
-      filename: './logs/info-%DATE%.log',
+      filename: './logs/all-%DATE%.log',
       datePattern: 'YYYY-MM-DD',
       zippedArchive: true,
       maxSize: '20m',
-      maxFiles: '14d'
+      maxFiles: '1d'
     }),
     new (winston.transports.DailyRotateFile)({
       level: 'error',
@@ -184,22 +210,27 @@ const log = winston.createLogger({
       datePattern: 'YYYY-MM-DD',
       zippedArchive: true,
       maxSize: '20m',
-      maxFiles: '14d'
+      maxFiles: '1d'
     }),
   ]
 });
 
 if (process.env.NODE_ENV !== 'production') {
-  log.add(new winston.transports.Console({
+  logger.add(new winston.transports.Console({
     format: winston.format.simple()
   }));
 }
 
-// log.log('info', 'Message Teste', { obj: '111' });
-// log.log('error', 'Message Teste', { obj: '222' });
-// log.info('Message Teste', { obj: '444' });
-// log.error('Message Teste', { obj: '555' });
+logger.info = (message, obj) => {
+  logger.log('info', message, { obj });
+  //console.log(`message: ${message}`, `obj: ${JSON.stringify(obj)}`);
+}
 
-module.exports = log;
+logger.error = (message, obj) => {
+  logger.log('error', message, { obj });
+  //console.log(`message: ${message}`, `obj: ${JSON.stringify(obj)}`);
+}
+
+module.exports = logger;
 
 //https://stackoverflow.com/questions/61428648/how-do-i-log-messages-using-winston-and-passport-session
