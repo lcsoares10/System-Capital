@@ -19,6 +19,7 @@ const cors = require('cors');
 const path = require('path');
 const routes = require('@/src/routes');
 const useragent = require('express-useragent');
+const morgan = require('morgan');
 
 /** ==========================================================*/
 /** Custom */
@@ -38,6 +39,10 @@ app.use(express.json()); /*Informar que a requisição a ser usada será de json
 /** ==========================================================*/
 //Extra
 app.use(inteceptedResponse);
+
+/** ==========================================================*/
+//Log Request Morgan
+app.use(require('@/src/services/morgan.js'));
 
 /** ==========================================================*/
 //Statics
@@ -65,4 +70,5 @@ app.use(routes);
 }); */
 
 module.exports = app;
+
 
