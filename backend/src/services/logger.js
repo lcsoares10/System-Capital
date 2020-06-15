@@ -202,7 +202,7 @@ const logger = winston.createLogger({
       datePattern: 'YYYY-MM-DD',
       zippedArchive: true,
       maxSize: '20m',
-      maxFiles: '1d'
+      maxFiles: '2d'
     }),
     new (winston.transports.DailyRotateFile)({
       level: 'error',
@@ -210,7 +210,7 @@ const logger = winston.createLogger({
       datePattern: 'YYYY-MM-DD',
       zippedArchive: true,
       maxSize: '20m',
-      maxFiles: '1d'
+      maxFiles: '5d'
     }),
   ]
 });
