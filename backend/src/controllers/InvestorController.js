@@ -110,14 +110,11 @@ module.exports = {
 
   async create(req, res) {
 
-    //console.log(req.file);
-
     const t = await InvestorModel.sequelize.transaction();
 
     try {
 
-      const { id_consultant, ...camposUser } = req.body
-
+      const { id_consultant, ...camposUser } = req.body;
       camposUser.password = UserModel.generateHash(camposUser.password);
 
       //Consultant
@@ -126,21 +123,29 @@ module.exports = {
         throw new Exception("Consultor não existe", "id_consultant");
       }
 
+      //========================
       //Image
-      const {
-        originalname: name,
-        size,
-        filename: key,
-        mimetype: mime,
-      } = req.file;
+      let image = { id: null };
+      if (req.file) {
+        const {
+          originalname: name,
+          size,
+          filename: key,
+          mimetype: mime,
+        } = req.file;
 
-      let image = await ImageModel.create({
-        name,
-        size,
-        key,
-        mime
-      }, { transaction: t });
+        const url = `${process.env.BASE_URL}/files/${key}`;
 
+        image = await ImageModel.create({
+          name,
+          size,
+          key,
+          mime,
+          url
+        }, { transaction: t });
+      }
+
+      //========================
       //User
       let user = await UserModel.create({
         ...camposUser,

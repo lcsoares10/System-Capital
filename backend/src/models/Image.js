@@ -36,6 +36,13 @@ class Image extends Model {
           notEmpty: true
         }
       },
+      url: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+        validate: {
+          notEmpty: true
+        }
+      },
     }, {
       sequelize,
       defaultScope: {
