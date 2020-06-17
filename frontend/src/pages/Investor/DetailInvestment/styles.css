@@ -46,12 +46,8 @@
     flex-direction: row;
     justify-content: space-between;
     justify-items: center;
-    padding: 10px 15px;
+    padding: 0px 15px;
     margin: 2px 0px;
     background-color: var(--bg-color-variant);
     border-radius: 10px;
-}
-
-.main-detail-investiment .content-ivestment .list-check-payments li{ 
-    
 }

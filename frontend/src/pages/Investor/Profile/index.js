@@ -1,14 +1,14 @@
 import React, { useEffect,useState } from 'react';
 import {Link} from 'react-router-dom';
 
-import Container from '../../components/Container';
-import HeaderBackground from '../../components/HeaderBackground';
-import FooterBackground from '../../components/FooterBackground';
-import LineChart from '../../components/ Graphics/line';
-import ListContracts from '../../components/ListContracts';
+import Container from '../../../components/Container';
+import HeaderBackground from '../../../components/HeaderBackground';
+import FooterBackground from '../../../components/FooterBackground';
+import LineChart from '../../../components/ Graphics/line';
+import ListContracts from '../../../components/ListContracts';
 
-import allContracts from '../../controller/Investor/allContracts';
-import calculateProjection from '../../controller/Investor/calculateProjection';
+import allContracts from '../../../controller/Investor/allContracts';
+import calculateProjection from '../../../controller/Investor/calculateProjection';
 //import findContract from '../../controller/Investor/findContract';
 
 // import api from '../../services/api';
@@ -16,7 +16,7 @@ import calculateProjection from '../../controller/Investor/calculateProjection';
 import './styles.css'
 
 //------------------------------------------------------------
-import { useAuthContext } from '../../Context/AuthContext';
+import { useAuthContext } from '../../../Context/AuthContext';
 
 export default function Profile() {
 
@@ -27,8 +27,8 @@ export default function Profile() {
   useEffect(() => {
     // Create an scoped async function in the hook
     async function getContracts() {
-      const contractss = await allContracts(user.id);
-      setContracts(contractss);
+      const contracts = await allContracts(user.id);
+      setContracts(contracts);
     }
     getContracts();
     //Execute the created function directly
@@ -48,6 +48,8 @@ export default function Profile() {
     setDataProjection(calculateProjection(contract));
   }
 
+  console.log(user)
+
   return (
     <Container className="container-login" >
       <HeaderBackground notLogin={true}/>
@@ -55,7 +57,7 @@ export default function Profile() {
         <div className="title-header">
           <h1 className="h1-profile">Investimentos</h1>
           <select onChange={e => handleCalculationProjection(e.target.value)} className="select-contract" name="" id="">
-          {/* <option value="">Selecionar</option> */}
+
             {
               contracts.map(contract=>(
               <option key={contract.id} value={contract.id}>

@@ -13,43 +13,35 @@ import './styles.css';
 //------------------------------------------------------------
 import { useAuthContext } from '../../Context/AuthContext';
 
-async function handdleInpuntTel(value) {
-
-    try {
-      const { data } = await api.get(`/consultants/${value}`);
-      console.log(data.user.name);
-      return data.user;
-
-    } catch (error) {
-        console.log(error);
-        return error;
-    }
-
-}
-
-async function handdleInpuntEmail(value) {
-
-  try {
-    const { data } = await api.get(`/consultants/${value}`);
-    console.log(data.user.name);
-    return data.user;
-
-  } catch (error) {
-      console.log(error);
-      return error;
-  }
-
-}
-
-
 
 
 export default function ViewProfile() {
 
+  const { user } = useAuthContext();
+  const [tel,setTel] = useState(user.tel);
+  const [email,setEmail] = useState(user.email);
+  const [img,setImg] = useState(user.id_image_profile);
 
-    const { user } = useAuthContext();
-    const [tel,setTel] = useState(user.email);
-    const [email,setEmail] = useState(user.email);
+  async function handdleInpunt(e, email, tel) {
+    e.preventDefault();
+  
+      try {
+        const { data } = await api.get(`/investor/${user.id}`,{
+
+          email,
+          tel,
+          id_image_profile: null,
+          profile: null
+
+        });
+        console.log(data.user.name);
+        return data.user;
+  
+      } catch (error) {
+          console.log(error);
+          return error;
+      }
+  }
  
     console.log(user)
  
@@ -66,10 +58,10 @@ export default function ViewProfile() {
               <div className="photo-ptofile">
                 <img src={icon_profile_my}/>
               </div>
-              <form> 
+              <form enctype="multipart/form-data" onSubmit={e=>handdleInpunt(e, email, tel)}>
                   <div className="upload-photo">
                     <label for="photo">ALTERAR FOTO</label>
-                    <input id="photo"  type="file" style={{display:"none"}}/>
+                    <input id="photo" type="file" style={{display:"none"}}/>
                   </div>
                   
                   <div className ='no-edit-form'>
@@ -78,12 +70,12 @@ export default function ViewProfile() {
                   </div>
                   <div className ='no-edit-form'>
                     <label for="sobreNome" className="label">Sobre nome</label>
-                    <input type="text" readonly='true' value={user.name}/>
+                    <input type="text" readonly='true' value={user.last_name}/>
                   </div>
 
                   <div className ='edit-form'>
                     <label for="tel" className="label"> Telefone</label>
-                    <input id="tel" type="text" onChange={e => setTel(e.target.value)} value={tel}/>
+                    <input id="tel" type="text" onChange={e => setTel(e.target.value)} value={user}/>
                     <EditIcon className="icon-edit"/>
                   </div>
                   
@@ -91,9 +83,10 @@ export default function ViewProfile() {
                     <label for="email" className="label">Email</label>
                     <input type="email" onChange={e => setEmail(e.target.value)} value={email}/>
                     <EditIcon className="icon-edit"/>
-                  </div>
+                  </div>  
 
-
+                    <button style={{'padding': '10px 90px','margin-top':'30px' }}>SALVAR</button>
+          
               </form>
              
 
