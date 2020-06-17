@@ -8,7 +8,7 @@ const moment = require('moment');
 const accessLogStream = rfs.createStream(()=>(
   `access.log-${moment().format('Y-MM-DD')}.log`
 ), {
-  interval: '5d', // rotate daily
+  interval: '1d', // rotate daily
   path: path.join(__dirname, '../../logs')
 })
 

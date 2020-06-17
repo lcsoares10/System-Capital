@@ -21,10 +21,8 @@ module.exports = async (req, res, next) => {
       }
     });
 
-    //console.log(req.user, message.toJSON());
-
     if (!message && !req.user.is_admin ) {
-      throw new Exception("Você não tem diretiso de acesso");
+      throw new Exception("Você não tem direito de acesso");
     }
 
     return next();
