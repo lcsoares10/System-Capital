@@ -15,11 +15,12 @@ function ContentHeader() {
     
     return(
         <nav>
-            <Link to="/profile">
+            <Link to="/">
                 <img className="logo-nav" src={logo_nav}  alt=""/>
             </Link>
 
             <div className="icons-button">
+
                 <Link to="/messages"> <img src={icon_messages} alt=""/></Link>
                 <Link to="/view-profile">  <img src={icon_profile} alt=""/></Link>
                 <img src={icon_exit}  onClick={(e) => handleLogout(e)} alt=""/>

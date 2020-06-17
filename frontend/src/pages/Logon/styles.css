@@ -48,19 +48,4 @@ form .form-inputs input:focus{
 }
 
 
-form button{
-    background-color: var(--bg-color-button);
-    border:none;
-    border-radius: 10px;
-    padding: 10px 125px;
-    color:var(--text-color-button);
-    box-shadow: var(--shadow-top);
-    transition: 0.8 ;
-    font-weight: 600;
-    font-size: 14px;
-}
-
-form button:hover{
-    opacity: 0.8;
-}
 
