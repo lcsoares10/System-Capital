@@ -6,18 +6,19 @@ const Sequelize = require("sequelize"); // Sequelize is a constructor
 const basename = path.basename(__filename);
 const dirmodels = path.resolve(__dirname, '../models');
 const config = require('@/src/config/database.js');
-const dbs = {};
 
+const logger = require('@/src/services/logger');
+
+const dbs = {};
 const sequelize = new Sequelize(
   config.database, config.username, config.password, config
 );
 
 sequelize.authenticate().then(() => {
-  console.log('DB connection sucessful.');
+  logger.info('DB connection sucessful.');
   },
   (err) => {
-    console.error('Unable to connect to the database:', err.original.errno);
-    return false;
+    logger.error(err.message, err.original);
   });
 
 fs

@@ -9,28 +9,66 @@ require('@/src/prototype/ModelSequelize');
 require('@/src/prototype/String');
 require('@/src/prototype/CryptoJS');
 
+/** Banco de Dados */
+require('@/src/database');
+
+/** ==========================================================*/
 /** Server */
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const routes = require('@/src/routes');
-const inteceptedResponse = require('@/src/middleware/inteceptedResponse');
 const useragent = require('express-useragent');
+const morgan = require('morgan');
 
+/** ==========================================================*/
+/** Custom */
+const inteceptedResponse = require('@/src/middleware/inteceptedResponse');
+
+/** ==========================================================*/
+/** App */
 const app = express();
 
-require('@/src/database');
-
+/** ==========================================================*/
 /** Middlewares */
-app.use(useragent.express());
-app.use(cors());
+/** ==========================================================*/
+app.use(useragent.express()); /** User Agente */
+app.use(cors()); /** Segurança de Api */
 app.use(express.json()); /*Informar que a requisição a ser usada será de json*/
+
+/** ==========================================================*/
+//Extra
 app.use(inteceptedResponse);
 
+/** ==========================================================*/
+//Log Request Morgan
+app.use(require('@/src/services/morgan.js'));
+
+/** ==========================================================*/
+//Statics
 //https://www.youtube.com/watch?v=MkkbUfcZUZM - Upload de arquivos: back-end com NodeJS | Diego Fernandes
 app.use('/files', express.static(path.resolve(__dirname, '../tmp/uploads')));
 
+/** ==========================================================*/
+/** Disponibilizar req for Log  */
+app.use((req, res, next) => {
+  const logger = require('@/src/services/logger');
+  logger.req = req;
+  next();
+});
+
+/** ==========================================================*/
 /** Rotas */
 app.use(routes);
 
+/** ==========================================================*/
+
+/** Entender como funciona */
+/* app.use(function(err, req, res, next) {
+  console.error('aauaiuaiua', err.message);
+  res.status(500).send('Something broke!');
+}); */
+
 module.exports = app;
+
+

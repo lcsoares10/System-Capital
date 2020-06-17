@@ -155,8 +155,8 @@ module.exports = {
 
       const result = {
         ...investor.toJSON(),
-        image: { ...image.toJSON()},
-        user: { ...user.toJSON()}
+        image: { ...image.toJSON(['updatedAt', 'createdAt'], "e")},
+        user: { ...user.toJSON(['password', 'updatedAt', 'createdAt'], "e")}
       };
 
       await t.commit();

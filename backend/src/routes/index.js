@@ -3,6 +3,8 @@ const routes = express.Router();
 
 const authMiddleware = require('@/src/middleware/auth');
 
+const testeRoutes = require('./teste');
+
 const loginRoutes = require('./login');
 const userRoutes = require('./user');
 const investorRoutes = require('./investor');
@@ -11,11 +13,16 @@ const contractRoutes = require('./contract');
 const contractpaycompetenceRoutes = require('./contractpaycompetence');
 const messageboxRoutes = require('./messagebox');
 
+/** ==========================================================*/
+/** Rotas */
 routes.get('/', async (req, res) => res.json({
   sucess: true,
   message: "Hello Word",
   data: null
  }));
+routes.use('/teste', testeRoutes);
+
+/** Aplicação */
 routes.use('/login', loginRoutes);
 
 routes.use(authMiddleware);
