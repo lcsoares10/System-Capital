@@ -51,14 +51,14 @@ class User extends Model {
         allowNull: false,
         validate: {
           notEmpty: true,
-          is: /^[a-z]+$/i
+          is: /^[A-Za-z\s]+$/i
         }
       },
       tel: {
         type: DataTypes.STRING,
         allowNull: true,
         validate: {
-          is: /^[1-9]*$/i //https://medium.com/@igorrozani/criando-uma-express%C3%A3o-regular-para-telefone-fef7a8f98828
+          is: /^[0-9]*$/i //https://medium.com/@igorrozani/criando-uma-express%C3%A3o-regular-para-telefone-fef7a8f98828
         }
       },
       is_admin: DataTypes.INTEGER,
