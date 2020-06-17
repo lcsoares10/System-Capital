@@ -57,7 +57,7 @@ export default function useAuth() {
         setAuthenticated(true);
 
         alert(data.message);
-        history.push('/profile');
+       // history.push('/profile');
 
       } catch(error) {
         setAuthenticated(false);

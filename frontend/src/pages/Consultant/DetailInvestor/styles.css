@@ -1,0 +1,61 @@
+
+.main-associated-investors .content-form {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+}
+.main-associated-investors .title-header {
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.main-associated-investors .title-header p{
+
+    color: white;
+    font-size: 18px;
+    font-weight: var(--font-weight-thin);
+}
+
+.main-associated-investors .content-detail-associated{
+    display: flex;
+    flex-direction: column;
+    padding: 0px 0px;
+}
+
+.main-associated-investors .content-detail-associated .detail-investor{
+    margin-top: 28px;
+    font-size: var(--font-size-18);
+    color: var(--text-color-beige);
+}
+
+.main-associated-investors .content-contracts {
+    display: flex;
+    flex-direction: column;
+}
+
+.main-associated-investors .content-contracts  .list-contracts{
+    display: flex;
+    flex-direction: column;
+    margin-top: 28px;
+}
+
+.main-associated-investors .content-contracts  .list-contracts .contracts{
+    background-color: #0A0A0A;
+    color:white;
+    padding:20px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 20px;
+}
+
+.main-associated-investors .content-contracts  .list-contracts .contracts p{
+    margin: 20px;
+}
+
+.main-associated-investors .content-contracts  .list-contracts .contracts .time-contract{
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}

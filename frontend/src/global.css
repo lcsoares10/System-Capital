@@ -61,14 +61,39 @@ main {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin: 0 auto;
   /* margin-top: 80px; */
   /* margin-top: 80px; */
   padding: 80px 25px 50px;
+  max-width: 1200px;
+}
+.dashboard{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  
 }
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+form button{
+  background-color: var(--bg-color-button);
+  border:none;
+  border-radius: 10px;
+  padding: 10px 125px;
+  color:var(--text-color-button);
+  box-shadow: var(--shadow-top);
+  transition: 0.8 ;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+form button:hover{
+  opacity: 0.8;
+}
+
 
 input {
   background-color: transparent;
@@ -90,6 +115,9 @@ a{
 }
 .text-beige{
   color: var(--text-color-beige);
+}
+.text-green{
+  color: #05FF00;
 }
 
 .weight-thin{

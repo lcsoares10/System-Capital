@@ -1,13 +1,13 @@
 import React,{useState,useEffect} from 'react';
 import moment from 'moment';
 
-import Container from '../../components/Container';
-import HeaderBackground from '../../components/HeaderBackground';
-import FooterBackground from '../../components/FooterBackground';
+import Container from '../../../components/Container';
+import HeaderBackground from '../../../components/HeaderBackground';
+import FooterBackground from '../../../components/FooterBackground';
 
-import ListCheckPayments from '../../components/ListCheckPayments';
-import allContractPayMonth from '../../controller/Investor/allContractPayMonth';
-import convertCoinBr from '../../utils/convertCoinBr';
+import ListCheckPayments from '../../../components/ListCheckPayments';
+import allContractPayMonth from '../../../controller/Investor/allContractPayMonth';
+import convertCoinBr from '../../../utils/convertCoinBr';
 
 import './styles.css';
 //------------------------------------------------------------

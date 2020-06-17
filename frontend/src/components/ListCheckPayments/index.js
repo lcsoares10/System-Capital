@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react';
+import React from 'react';
 //import icon_cash from '../../assets/icon_cash.png'
 //import {Link} from 'react-router-dom';
 
