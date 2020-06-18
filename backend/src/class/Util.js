@@ -12,7 +12,7 @@ class Util {
     const fs = require('fs');
     fs.access(path, fs.F_OK, (err) => {
       if (err) return false;
-      return true
+      return true;
     })
   }
 

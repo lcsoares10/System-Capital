@@ -62,12 +62,14 @@ app.use((req, res, next) => {
 app.use(routes);
 
 /** ==========================================================*/
-
 /** Entender como funciona */
-/* app.use(function(err, req, res, next) {
-  console.error('aauaiuaiua', err.message);
-  res.status(500).send('Something broke!');
-}); */
+app.use((err, req, res, next) => {
+  res.status(500).json({
+    error: err,
+    message: 'Internal server error!',
+  })
+  next()
+})
 
 module.exports = app;
 
