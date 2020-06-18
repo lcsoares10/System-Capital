@@ -25,7 +25,7 @@ class Investor extends Model {
     this.belongsTo(models.Consultant, {foreignKey: 'id_consultant', as: 'consultant'});
 
     //hasOne [1:1] - Chave estrangeira definida em B
-    this.hasOne(models.Contract, {foreignKey: 'id_investor', as: 'investor'});
+    this.hasOne(models.Contract, {foreignKey: 'id_investor', as: 'contracts'});
 
   }
 

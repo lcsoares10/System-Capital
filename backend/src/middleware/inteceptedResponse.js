@@ -12,7 +12,8 @@ module.exports = (req, res, next) => {
     body = JSON.parse(body);
 
     const sucess = (res.statusCode >= 400) ? false : true;
-    if (sucess) logger.info(data.message, data.data);
+    //if (sucess) logger.info(data.message, data.data);
+    if (sucess) logger.info(data.message);
     else logger.error(data.message, data.data);
 
     const result = {
