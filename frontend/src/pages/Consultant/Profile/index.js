@@ -82,7 +82,7 @@ export default function Profile() {
           
 
         </main>
-      <FooterBackground viewAddUser={true} notLogin={true}/>
+      <FooterBackground viewAddUser={true} notLogin={true} />
 
     </Container>
   );
