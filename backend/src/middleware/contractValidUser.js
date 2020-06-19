@@ -10,6 +10,7 @@ module.exports = async (req, res, next) => {
     const { id } = req.params;
     const contract = await ContractModel.findByPk(id);
     if (!contract) {
+      res.status(404)
       throw new Exception("Contrato não existe");
     }
 
@@ -20,13 +21,14 @@ module.exports = async (req, res, next) => {
     // );
 
     if (contract.id_investor != req.user.id && !req.user.is_admin ) {
+      res.status(403);
       throw new Exception("Você não tem direito de acesso");
     }
     return next();
 
   } catch (e) {
     const result = Exception._(e);
-    return res.status(401).json(Util.response(result));
+    return res.json(Util.response(result));
   }
 
 }

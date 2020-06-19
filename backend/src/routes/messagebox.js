@@ -11,4 +11,6 @@ routes.get('/:id', messageBoxValidUser, MessageBoxController.get);
 
 routes.post('/', authAdminMiddleware, MessageBoxController.create);
 
+routes.post('/:id/viewd', messageBoxValidUser, MessageBoxController.setViewed);
+
 module.exports = routes;

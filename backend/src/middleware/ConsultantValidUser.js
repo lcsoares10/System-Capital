@@ -17,7 +17,7 @@ module.exports = async (req, res, next) => {
     }
 
     if (consultant.id_user != req.user.id_user && !req.user.is_admin ) {
-      res.status(401);
+      res.status(403);
       throw new Exception("Você não tem direito de acesso");
     }
     return next();

@@ -8,7 +8,14 @@ module.exports = async (req, res, next) => {
   try {
 
     const { id } = req.params;
-    const message = await MessageBoxModel.findByPk(id,  {
+
+    const message = await MessageBoxModel.findByPk(id,  {where: {id}});
+    if (!message) {
+      res.status(404);
+      throw new Exception("Mensagem não existe");
+    }
+
+    const messageUser = await MessageBoxModel.findByPk(id,  {
       include: {
         association: 'users',
         required: true,
@@ -21,7 +28,8 @@ module.exports = async (req, res, next) => {
       }
     });
 
-    if (!message && !req.user.is_admin ) {
+    if (!messageUser && !req.user.is_admin ) {
+      res.status(403)
       throw new Exception("Você não tem direito de acesso");
     }
 
@@ -29,7 +37,7 @@ module.exports = async (req, res, next) => {
 
   } catch (e) {
     const result = Exception._(e);
-    return res.status(401).json(Util.response(result));
+    return res.json(Util.response(result));
   }
 
 }
