@@ -1,79 +1,134 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import Container from '../../components/Container';
 import HeaderBackground from '../../components/HeaderBackground';
 import FooterBackground from '../../components/FooterBackground';
 
-import styled from 'styled-components';
-
-const Contract = () => {
+const Contract = (props) => {
   return (
     <div className="inputs-contracts">
-      <h2>Cadastro do Contrato</h2>
+      <h3 style={{ margin: '28px auto' }}>Cadastrar Contrato</h3>
       <div className="edit-form">
-        <label for="tel" className="label">
-          {' '}
+        <label htmlFor="valueInvest" className="label">
           Valor Investido
         </label>
-        <input id="tel" type="text" value="" />
+        <span className="icon-prefix">R$</span>
+        <input
+          id="valueInvest"
+          type="text"
+          value={props.valueInvest}
+          onChange={(e) => props.handlevalueInvest(e.target.value)}
+        />
       </div>
 
       <div className="edit-form">
-        <label for="email" className="label">
+        <label htmlFor="startContract" className="label">
           Incio do contrato
         </label>
-        <input type="email" value="" />
+        <input
+          type="date"
+          id="startContract"
+          value={props.startContract}
+          onChange={(e) => props.handleStartContract(e.target.value)}
+        />
       </div>
 
       <div className="edit-form">
-        <label for="email" className="label">
-          Final do
+        <label htmlFor="doneContract" className="label">
+          Final do Contrato
         </label>
-        <input type="email" value="" />
+        <input
+          type="date"
+          id="doneContract"
+          value={props.doneContract}
+          onChange={(e) => props.handleDoneContract(e.target.value)}
+        />
       </div>
     </div>
   );
 };
 
 export default function NewUser() {
+  const newInvestor = true;
+
+  const [name, setName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [tel, setTel] = useState('');
+  const [email, setEmail] = useState('');
+
+  const [valueInvest, setValueInvest] = useState(0);
+  const [startContract, setStartContract] = useState('');
+  const [doneContract, setDoneContract] = useState('');
+
   return (
     <Container className="container-login">
       <HeaderBackground notLogin={true} />
       <main className="main-myprofile">
         <div className="title-header">
-          <h1>Perfil</h1>
+          {newInvestor ? (
+            <h1>Cadastro Investidor</h1>
+          ) : (
+            <h1>Cadastro Consultor</h1>
+          )}
         </div>
 
         <div className="content-form">
           <form>
-            <div className="no-edit-form">
-              <label for="nome" className="label">
+            <div className="edit-form">
+              <label htmlFor="nome" className="label">
                 Nome
               </label>
-              <input type="text" readonly="true" value="" />
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
             </div>
-            <div className="no-edit-form">
-              <label for="sobreNome" className="label">
+            <div className="edit-form">
+              <label htmlFor="sobreNome" className="label">
                 Sobre nome
               </label>
-              <input type="text" readonly="true" value="" />
+              <input
+                type="text"
+                value=""
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+              />
             </div>
 
             <div className="edit-form">
-              <label for="tel" className="label">
+              <label htmlFor="tel" className="label">
                 Telefone
               </label>
-              <input id="tel" type="text" value="" />
+              <input
+                id="tel"
+                type="text"
+                value={tel}
+                onChange={(e) => setTel(e.target.value)}
+              />
             </div>
 
             <div className="edit-form">
-              <label for="email" className="label">
+              <label htmlFor="email" className="label">
                 Email
               </label>
-              <input type="email" value="" />
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </div>
-
-            <button style={{ padding: '10px 90px', 'margin-top': '30px' }}>
+            {newInvestor && (
+              <Contract
+                valueInvest={valueInvest}
+                handlevalueInvest={setValueInvest}
+                startContract={startContract}
+                handleStartContract={setStartContract}
+                doneContract={doneContract}
+                handleDoneContract={setDoneContract}
+              />
+            )}
+            <button style={{ padding: '10px 90px', marginTop: '30px' }}>
               SALVAR
             </button>
           </form>

@@ -1,20 +1,17 @@
-
-*{
+* {
   margin: 0px;
   padding: 0px;
   box-sizing: border-box;
-   
 }
-body{
-  background-color: #121212; 
+body {
+  background-color: #121212;
   overflow-x: hidden;
 }
 
-:root{
-
+:root {
   /*Cores para sobreposição de superfícies*/
   --bg-color: #121212;
-  --bg-color-variant:#0A0A0A;
+  --bg-color-variant: #0a0a0a;
   --bg-color-05: rgba(255, 255, 255, 0.05);
   --bg-color-03: rgba(255, 255, 255, 0.03);
   --bg-color-07: rgba(255, 255, 255, 0.07);
@@ -24,30 +21,27 @@ body{
   --shadow-bottom: 0px 4px 4px rgba(0, 0, 0, 0.25);
   --shadow-top: 0px -4px 4px rgba(0, 0, 0, 0.25);
 
-  --bg-color-button: #FFB900;
+  --bg-color-button: #ffb900;
   --text-color-button: white;
 
-    /*text*/
+  /*text*/
 
-  --text-color-gray:rgba(0, 0, 0, 0.4);
-  --text-color-beige:#A0770A;
-  --font-weight-thin:100;
-  --font-weight:300;
+  --text-color-gray: rgba(0, 0, 0, 0.4);
+  --text-color-beige: #a0770a;
+  --font-weight-thin: 100;
+  --font-weight: 300;
 
-  --font-size-12:12px;
-  --font-size-14:14px;
-  --font-size-16:16px;
-  --font-size-18:18px;
-  --font-size-24:24px;
-  --font-size-36:36px;
+  --font-size-12: 12px;
+  --font-size-14: 14px;
+  --font-size-16: 16px;
+  --font-size-18: 18px;
+  --font-size-24: 24px;
+  --font-size-36: 36px;
 
   /*margin*/
 
-  --margin-title:28px;
-
+  --margin-title: 28px;
 }
-
-
 
 body {
   margin: 0;
@@ -67,64 +61,73 @@ main {
   padding: 80px 25px 50px;
   max-width: 1200px;
 }
-.dashboard{
+.dashboard {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  
 }
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
 
-form button{
+form button {
   background-color: var(--bg-color-button);
-  border:none;
+  border: none;
   border-radius: 10px;
   padding: 10px 125px;
-  color:var(--text-color-button);
+  color: var(--text-color-button);
   box-shadow: var(--shadow-top);
-  transition: 0.8 ;
+  transition: 0.8;
   font-weight: 600;
   font-size: 14px;
 }
 
-form button:hover{
+form button:hover {
   opacity: 0.8;
 }
-
 
 input {
   background-color: transparent;
 }
 
-h1{
-  color: #A0770A;
+h1 {
+  color: #a0770a;
   font-weight: var(--font-weight-thin);
   font-size: var(--font-size-36);
 }
 
-a{
+h3 {
+  color: white;
+  font-weight: var(--font-weight-thin);
+  font-size: var(--font-size-24);
+  margin-top: 28px;
+}
+
+a {
   text-decoration: none;
 }
 
-.text-white{
+.text-white {
   color: white;
-  font-weight:100;
+  font-weight: 100;
 }
-.text-beige{
+.text-beige {
   color: var(--text-color-beige);
 }
-.text-green{
-  color: #05FF00;
+.text-green {
+  color: #05ff00;
 }
 
-.weight-thin{
+.weight-thin {
   font-weight: 100;
 }
 
-@keyframes up{
-  0%{margin-bottom:100vh}
-  100%{margin-bottom: 0px;}
+@keyframes up {
+  0% {
+    margin-bottom: 100vh;
+  }
+  100% {
+    margin-bottom: 0px;
+  }
 }
