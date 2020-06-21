@@ -50,6 +50,14 @@ module.exports = {
         allowNull: false,
         defaultValue: 1
       },
+      password_reset_token: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      password_reset_expires: {
+        type: Sequelize.DATE,
+        allowNull: true
+      },
       created_at: {
         type: Sequelize.DATE,
         allowNull: false

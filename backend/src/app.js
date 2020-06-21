@@ -19,7 +19,6 @@ const cors = require('cors');
 const path = require('path');
 const routes = require('@/src/routes');
 const useragent = require('express-useragent');
-const morgan = require('morgan');
 
 /** ==========================================================*/
 /** Custom */
@@ -42,7 +41,7 @@ app.use(inteceptedResponse);
 
 /** ==========================================================*/
 //Log Request Morgan
-app.use(require('@/src/services/morgan.js'));
+app.use(require('@/src/modules/log/morgan.js'));
 
 /** ==========================================================*/
 //Statics
@@ -52,7 +51,7 @@ app.use('/files', express.static(path.resolve(__dirname, '../tmp/uploads')));
 /** ==========================================================*/
 /** Disponibilizar req for Log  */
 app.use((req, res, next) => {
-  const logger = require('@/src/services/logger');
+  const logger = require('@/src/modules/log/logger');
   logger.req = req;
   next();
 });

@@ -62,12 +62,20 @@ class User extends Model {
         }
       },
       is_admin: DataTypes.INTEGER,
-      active: DataTypes.INTEGER
+      active: DataTypes.INTEGER,
+      password_reset_token: DataTypes.STRING,
+      password_reset_expires: DataTypes.DATE,
     }, {
       sequelize,
       defaultScope: {
         attributes: {
-          exclude: ['createdAt', 'updatedAt', 'password']
+          exclude: [
+            'createdAt',
+            'updatedAt',
+            'password',
+            'password_reset_token',
+            'password_reset_expires'
+          ]
         },
       },
     });
@@ -96,7 +104,7 @@ class User extends Model {
 
   //generating a hash
   static generateHash(password) {
-    return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
+    return bcrypt.hashSync(password.toString(), bcrypt.genSaltSync(10));
   }
 
 }
