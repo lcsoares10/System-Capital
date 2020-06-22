@@ -8,7 +8,6 @@ async function createUser(typeUser, data, data_contract) {
   data = {
     ...data,
     password: gerarPassword(),
-    id_investor: 2,
   };
 
   if (typeUser === 'investor') {
