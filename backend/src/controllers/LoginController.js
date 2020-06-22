@@ -24,7 +24,8 @@ module.exports = {
       let user = await UserModel.findOne( {
         include: [
           { association: 'investor', },
-          { association: 'consultant' }
+          { association: 'consultant' },
+          { association: 'profile' }
         ],
         attributes: {
           include: ['password']
@@ -40,6 +41,7 @@ module.exports = {
         throw new Exception("Usuário ou senha incorretos");
       }
 
+      //console.log(user.toJSON());
       //console.log( JSON.stringify(user.investor, null, 2) );
       //console.log( JSON.stringify(user.consultant, null, 2) );
 
@@ -55,12 +57,7 @@ module.exports = {
           id = user.consultant.id;
           type = 'consultant';
           break;
-
       }
-
-      //throw new Exception("Usuário ou senha incorretos");
-
-      //voltar investidor ou consultor ...
 
       const result = {
         id,
@@ -69,8 +66,11 @@ module.exports = {
         login: user.login,
         email: user.email,
         name: user.name,
-        is_admin: user.is_admin
+        is_admin: user.is_admin,
+        profile_url: (user.profile) ? user.profile.url : null
       }
+
+      console.log(result);
 
       const { browser, version } = req.useragent;
 

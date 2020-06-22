@@ -14,7 +14,11 @@ module.exports = {
     try {
       const page = req.query.page || 1;
       const options = {
-        include: { association: 'user', required: true }
+        include: {
+          association: 'user',
+          required: true,
+          include: { association: 'profile'}
+        }
       };
 
       const Pagination = new PaginationClass(ConsultantModel);
@@ -34,7 +38,11 @@ module.exports = {
     try {
       const { id } = req.params;
       const consultant = await ConsultantModel.findByPk(id,  {
-          include: { association: 'user', required: true }
+        include: {
+          association: 'user',
+          required: true,
+          include: { association: 'profile'}
+        }
       });
 
       if (!consultant) {
@@ -91,27 +99,29 @@ module.exports = {
 
     try {
 
+      //========================
       //Image
-      const {
-        originalname: name,
-        size,
-        filename: key,
-        mimetype: mime,
-      } = req.file;
+      let image;
+      if (req.file) {
+        const {
+          originalname: name, size, filename: key, mimetype: mime,
+        } = req.file;
 
-      let image = await ImageModel.create({
-        name,
-        size,
-        key,
-        mime
-      }, { transaction: t });
+        const url = `${process.env.BASE_URL}/files/${key}`;
 
+        image = await ImageModel.create({
+          name, size, key, mime, url
+        }, { transaction: t });
+      }
+
+      //========================
       //User
       const { ...camposUser } = req.body
+      camposUser.password = UserModel.generateHash(camposUser.password);
 
       let user = await UserModel.create({
         ...camposUser,
-        id_image_profile: image.id
+        id_image_profile: (image) ? image.id : null
       }, { transaction: t });
       const consultant = await ConsultantModel.create({
         id_user: user.id
@@ -120,8 +130,8 @@ module.exports = {
 
       const result = {
         ...consultant.toJSON(),
-        image: { ...image.toJSON()},
-        user: { ...user.toJSON(['password', 'updatedAt', 'createdAt'], "e")}
+        user: { ...user.toJSON(['password', 'updatedAt', 'createdAt'], "e")},
+        image: (image) ? { ...image.toJSON(['updatedAt', 'createdAt'], "e")} : null
       };
 
       await t.commit();
@@ -129,7 +139,7 @@ module.exports = {
       return res.json(Util.response(result, 'Inserido com Sucesso'));
 
     } catch (e) {
-      Util.removeFile(req.file.filename);
+      if (req.file) Util.removeFile(req.file.filename);
       await t.rollback();
       const result = Exception._(e);
       return res.status(400).json(Util.response(result));
@@ -142,25 +152,74 @@ module.exports = {
 
     try {
       /** Validações */
-
       const { id } = req.params;
       let consultant = await ConsultantModel.findByPk(id,  {
         include: { association: 'user', required: true }
       });
-      if (!consultant) throw new Exception("Investidor não existe", "id_consultant");
+      if (!consultant) throw new Exception("Consultor não existe", "id_consultant");
 
-      let user = await UserModel.findByPk(consultant.id_user);
+      let user = await UserModel.findByPk(consultant.id_user, {
+        attributes: {
+          include: ['password']
+        }
+      });
       if (!user) throw new Exception("Usuário não existe", "id_user");
 
       const { ...camposUser } = req.body;
+      if (camposUser.password && !user.validPassword(camposUser.password)) {
+        camposUser.password = UserModel.generateHash(camposUser.password);
+      } else {
+        delete(camposUser.password);
+      }
 
+      //=========================
+      //Imagem
+      let image;
+      let updateImg = false;
+      let imageDB = image = await ImageModel.findByPk(user.id_image_profile);
+
+      if (req.file) {
+        if (!imageDB || imageDB.name != req.file.originalname) {
+
+          const {
+            originalname: name, size, filename: key, mimetype: mime,
+          } = req.file;
+          const url = `${process.env.BASE_URL}/files/${key}`;
+
+          imageNew = await ImageModel.create({
+            name, size, key, mime, url
+          }, { transaction: t });
+
+          image = imageNew;
+          updateImg = true
+          //Util.removeFile(req.file.filename); //image.name
+        }
+      } else if (imageDB) {
+        image = null;
+        updateImg = true //irá deletar
+      }
+
+      //=========================
       /** Update */
+      user = await user.update({
+        ...camposUser,
+        id_image_profile: (image) ? image.id : null
+      }, { transaction: t });
 
-      user = await user.update(camposUser, { transaction: t });
+      //=========================
+      //Imagem antiga deve ser deletada
+      if (updateImg && imageDB) {
+        Util.removeFile(imageDB.key);
+        await imageDB.destroy( { transaction: t } );
+      } else if(req.file && !updateImg) {
+        Util.removeFile(req.file.filename);
+      }
 
+      //=========================
       const result = {
         ...consultant.toJSON(),
-        user: { ...user.toJSON() }
+        user: { ...user.toJSON(['password', 'updatedAt', 'createdAt'], "e")},
+        image: (image) ? { ...image.toJSON(['updatedAt', 'createdAt'], "e")} : null
       };
 
       await t.commit();
@@ -168,6 +227,7 @@ module.exports = {
       return res.json(Util.response(result, 'Alterado com sucesso'));
 
     } catch (e) {
+      if (req.file) Util.removeFile(req.file.filename);
       await t.rollback();
       const result = Exception._(e);
       return res.status(400).json(Util.response(result));

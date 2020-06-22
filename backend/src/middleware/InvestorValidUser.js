@@ -1,25 +1,23 @@
-const ContractModel = require('@/src/models/Contract');
+const InvestorModel = require('@/src/models/Investor');
 
 const Util = require('@/src/class/Util');
 const Exception = require('@/src/class/Exeption');
 
 module.exports = async (req, res, next) => {
 
+  if (process.env.DESENVOLVIMENTO == 'true') return next();
+
   try {
 
     const { id } = req.params;
-    const contract = await ContractModel.findByPk(id);
-    if (!contract) {
-      throw new Exception("Contrato não existe");
+    const investor = await InvestorModel.findByPk(id);
+    if (!investor) {
+      res.status(404);
+      throw new Exception("Investidor não existe");
     }
 
-    // console.log(
-    //   contract.id_investor,
-    //   req.user.id,
-    //   req.user.is_admin,
-    // );
-
-    if (contract.id_investor != req.user.id && !req.user.is_admin ) {
+    if (investor.id_user != req.user.id_user && !req.user.is_admin ) {
+      res.status(401);
       throw new Exception("Você não tem direito de acesso");
     }
     return next();

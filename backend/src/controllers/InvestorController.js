@@ -110,14 +110,11 @@ module.exports = {
 
   async create(req, res) {
 
-    //console.log(req.file);
-
     const t = await InvestorModel.sequelize.transaction();
 
     try {
 
-      const { id_consultant, ...camposUser } = req.body
-
+      const { id_consultant, ...camposUser } = req.body;
       camposUser.password = UserModel.generateHash(camposUser.password);
 
       //Consultant
@@ -126,25 +123,26 @@ module.exports = {
         throw new Exception("Consultor não existe", "id_consultant");
       }
 
+      //========================
       //Image
-      const {
-        originalname: name,
-        size,
-        filename: key,
-        mimetype: mime,
-      } = req.file;
+      let image;
+      if (req.file) {
+        const {
+          originalname: name, size, filename: key, mimetype: mime,
+        } = req.file;
 
-      let image = await ImageModel.create({
-        name,
-        size,
-        key,
-        mime
-      }, { transaction: t });
+        const url = `${process.env.BASE_URL}/files/${key}`;
 
+        image = await ImageModel.create({
+          name, size, key, mime, url
+        }, { transaction: t });
+      }
+
+      //========================
       //User
       let user = await UserModel.create({
         ...camposUser,
-        id_image_profile: image.id
+        id_image_profile: (image) ? image.id : null
       }, { transaction: t });
 
       const investor = await InvestorModel.create({
@@ -155,8 +153,8 @@ module.exports = {
 
       const result = {
         ...investor.toJSON(),
-        image: { ...image.toJSON()},
-        user: { ...user.toJSON()}
+        user: { ...user.toJSON(['password', 'updatedAt', 'createdAt'], "e")},
+        image: (image) ? { ...image.toJSON(['updatedAt', 'createdAt'], "e")} : null
       };
 
       await t.commit();
@@ -164,7 +162,7 @@ module.exports = {
       return res.json(Util.response(result, 'Inserido com Sucesso'));
 
     } catch (e) {
-      Util.removeFile(req.file.filename);
+      if (req.file) Util.removeFile(req.file.filename);
       await t.rollback();
       const result = Exception._(e);
       return res.status(400).json(Util.response(result));
@@ -177,31 +175,81 @@ module.exports = {
 
     try {
       /** Validações */
-
       const { id } = req.params;
       let investor = await InvestorModel.findByPk(id,  {
         include: { association: 'user', required: true }
       });
       if (!investor) throw new Exception("Investidor não existe", "id_investor");
 
-      let user = await UserModel.findByPk(investor.id_user);
+      let user = await UserModel.findByPk(investor.id_user, {
+        attributes: {
+          include: ['password']
+        }
+      });
       if (!user) throw new Exception("Usuário não existe", "id_user");
 
       const { id_consultant, ...camposUser } = req.body;
+      if (camposUser.password && !user.validPassword(camposUser.password)) {
+        camposUser.password = UserModel.generateHash(camposUser.password);
+      } else {
+        delete(camposUser.password);
+      }
 
       const consultant = await ConsultantModel.findByPk(id_consultant);
       if (!consultant) {
         throw new Exception("Consultor não existe", "id_consultant");
       }
 
+      //=========================
+      //Imagem
+      let image;
+      let updateImg = false;
+      let imageDB = image = await ImageModel.findByPk(user.id_image_profile);
+
+      if (req.file) {
+        if (!imageDB || imageDB.name != req.file.originalname) {
+
+          const {
+            originalname: name, size, filename: key, mimetype: mime,
+          } = req.file;
+          const url = `${process.env.BASE_URL}/files/${key}`;
+
+          imageNew = await ImageModel.create({
+            name, size, key, mime, url
+          }, { transaction: t });
+
+          image = imageNew;
+          updateImg = true
+          //Util.removeFile(req.file.filename); //image.name
+        }
+      } else if (imageDB) {
+        image = null;
+        updateImg = true //irá deletar
+      }
+
+      //=========================
       /** Update */
-
       investor = await investor.update({ id_consultant }, { transaction: t });
-      user = await user.update(camposUser, { transaction: t });
+      user = await user.update({
+        ...camposUser,
+        id_image_profile: (image) ? image.id : null
+      }, { transaction: t });
 
+      //=========================
+      //Imagem antiga deve ser deletada e o arquivo removido
+      if (updateImg && imageDB) {
+        Util.removeFile(imageDB.key);
+        await imageDB.destroy( { transaction: t } );
+      } else if(req.file && !updateImg) {
+        //Arquivo deve ser removido casa não seja usado
+        Util.removeFile(req.file.filename);
+      }
+
+      //=========================
       const result = {
         ...investor.toJSON(),
-        user: { ...user.toJSON() }
+        user: { ...user.toJSON(['password', 'updatedAt', 'createdAt'], "e")},
+        image: (image) ? { ...image.toJSON(['updatedAt', 'createdAt'], "e")} : null
       };
 
       await t.commit();
