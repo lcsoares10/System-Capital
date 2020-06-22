@@ -12,7 +12,12 @@ routes.get('/:id', ConsultantController.get);
 routes.get('/:id/investors', ConsultantController.getInvestors);
 
 //routes.post('/', ConsultantController.create);
-routes.post('/', authAdmin, multer(multerConfig).single("profile"), ConsultantController.create);
+routes.post(
+  '/',
+  authAdmin,
+  multer(multerConfig).single('profile'),
+  ConsultantController.create
+);
 routes.put('/:id', authAdmin, ConsultantController.update);
 routes.delete('/:id', authAdmin, ConsultantController.delete);
 
