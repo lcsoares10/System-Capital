@@ -75,12 +75,17 @@ export default function NewUser() {
       last_name: lastName,
       tel,
       id_consultant: user.id,
-
+    };
+    const data_contract = {
       begin: startContract,
       time: timeContract,
       value: valueInvest,
     };
-    const returnMessage = await createUser(newInvestor ? true : false, data);
+    const returnMessage = await createUser(
+      newInvestor ? true : false,
+      data,
+      data_contract
+    );
     alert(returnMessage);
     return;
   }

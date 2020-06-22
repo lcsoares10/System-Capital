@@ -4,7 +4,7 @@ function gerarPassword() {
   return Math.random().toString(36).slice(-10);
 }
 
-async function createUser(typeUser, data) {
+async function createUser(typeUser, data, data_contract) {
   data = {
     ...data,
     password: gerarPassword(),
@@ -14,10 +14,12 @@ async function createUser(typeUser, data) {
   if (typeUser === 'investor') {
     try {
       const id_investor = await api.post(`/investors`, data);
-      data = {
-        ...data,
+
+      data_contract = {
+        ...data_contract,
         id_investor,
       };
+
       await api.post(`/contracts`, data);
       return 'Investidor e contrato criado com sucesso';
     } catch (error) {
