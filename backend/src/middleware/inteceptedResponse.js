@@ -1,6 +1,6 @@
 //https://medium.com/@selvaganesh93/how-node-js-middleware-works-d8e02a936113
 
-const logger = require('@/src/services/logger');
+const logger = require('@/src/modules/log/logger');
 
 /** Interceptando o response */
 module.exports = (req, res, next) => {

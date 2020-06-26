@@ -1,3 +1,5 @@
+const moment = require('moment');
+
 const MessageBoxModel = require('@/src/models/MessageBox');
 const UserModel = require('@/src/models/User');
 const InvestorModel = require('@/src/models/Investor');
@@ -41,10 +43,6 @@ module.exports = {
             id
           }
       });
-
-      if (!result) {
-          return res.status(400).json(Util.response(result, 'Mensagem não existe'));
-      }
 
       return res.json(Util.response(result));
 
@@ -122,5 +120,50 @@ module.exports = {
     }
 
   },
+
+  async setViewed(req, res) {
+
+    try {
+
+      const { id } = req.params
+
+      const messageUserView = await MessageUserViewModel.findOne({
+        where: {
+          id_message_box: id,
+          id_user: req.user.id_user
+        }
+      });
+
+      // console.log('1', moment.locale());
+      // console.log('2', moment().utc().format());
+      // console.log('3', moment().utc().local().format());
+      // console.log('4', moment().utc().local());
+      // console.log('5', moment().local());
+
+      /**
+       * O banco de dados salva a hora como UTC!
+       * Caso a hora seja necessaria, deve se converte o UTC para local
+       *
+       * moment(result.time_view).local().format();
+      */
+      let result = await messageUserView.update({
+        viewed: (messageUserView.viewed) ? 0 : 1,
+        time_view: (messageUserView.viewed) ? null :  moment()
+      });
+      result = result.toJSON();
+
+      //devolvendo a hora certa
+      if (result.time_view) {
+        result.time_view = moment(result.time_view).local().format();
+      }
+
+      return res.json(Util.response(result));
+
+    } catch (e) {
+      const result = Exception._(e);
+      return res.status(400).json(Util.response(result));
+    }
+
+  }
 
 };

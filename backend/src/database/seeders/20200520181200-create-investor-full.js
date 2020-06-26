@@ -1,6 +1,7 @@
 'use strict';
 
 const bcrypt = require('bcrypt');
+const cpf = require("@fnando/cpf/commonjs");
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
@@ -28,6 +29,7 @@ module.exports = {
                   login: `consultant_${key}`,
                   email: `consultant_${key}@gmail.com`,
                   password: bcrypt.hashSync(key, bcrypt.genSaltSync(10)),
+                  identif: cpf.generate(),
                   is_admin: (key % 2 === 0) ? true : false,
                   name: `Consultor_${key}`,
                   last_name: `Consultor_ln`,
@@ -54,6 +56,7 @@ module.exports = {
                   login: `investor_${key}`,
                   email: `investor_${key}@gmail.com`,
                   password: bcrypt.hashSync(key, bcrypt.genSaltSync(10)),
+                  identif: cpf.generate(),
                   name: `Investidor_${key}`,
                   last_name: `Investidor_ln`,
                   tel: '219'+ Math.floor(10000000 + Math.random() * 9999999),

@@ -2,12 +2,15 @@ const express = require('express');
 const routes = express.Router();
 
 const authAdmin = require('@/src/middleware/authAdmin');
-const userValidUser = require('@/src/middleware/userValidUser');
+const { valid } = require('@/src/middleware/routers/user');
 
 const UserController = require('@/src/controllers/UserController');
 
 routes.get('/', authAdmin, UserController.index);
 routes.get('/:id', authAdmin, UserController.get);
-routes.get('/:id/messages', userValidUser, UserController.getMessages);
+routes.get('/:id/messages', valid, UserController.getMessages);
+
+routes.post('/:id/toggle_active', authAdmin, UserController.toggleActive);
+routes.post('/:id/toggle_activated_user', authAdmin, UserController.toggleActivatedUser);
 
 module.exports = routes;

@@ -113,9 +113,7 @@ module.exports = {
     const t = await InvestorModel.sequelize.transaction();
 
     try {
-
       const { id_consultant, ...camposUser } = req.body;
-      camposUser.password = UserModel.generateHash(camposUser.password);
 
       //Consultant
       const consultant = await ConsultantModel.findByPk(id_consultant);
@@ -127,15 +125,7 @@ module.exports = {
       //Image
       let image;
       if (req.file) {
-        const {
-          originalname: name, size, filename: key, mimetype: mime,
-        } = req.file;
-
-        const url = `${process.env.BASE_URL}/files/${key}`;
-
-        image = await ImageModel.create({
-          name, size, key, mime, url
-        }, { transaction: t });
+        image = await ImageModel.create(ImageModel.file2Image(req.file), { transaction: t });
       }
 
       //========================
@@ -146,10 +136,8 @@ module.exports = {
       }, { transaction: t });
 
       const investor = await InvestorModel.create({
-        id_user: user.id,
-        id_consultant
-      }
-      , { transaction: t });
+        id_user: user.id, id_consultant
+      }, { transaction: t });
 
       const result = {
         ...investor.toJSON(),
@@ -179,6 +167,7 @@ module.exports = {
       let investor = await InvestorModel.findByPk(id,  {
         include: { association: 'user', required: true }
       });
+
       if (!investor) throw new Exception("Investidor não existe", "id_investor");
 
       let user = await UserModel.findByPk(investor.id_user, {
@@ -186,14 +175,10 @@ module.exports = {
           include: ['password']
         }
       });
+
       if (!user) throw new Exception("Usuário não existe", "id_user");
 
       const { id_consultant, ...camposUser } = req.body;
-      if (camposUser.password && !user.validPassword(camposUser.password)) {
-        camposUser.password = UserModel.generateHash(camposUser.password);
-      } else {
-        delete(camposUser.password);
-      }
 
       const consultant = await ConsultantModel.findByPk(id_consultant);
       if (!consultant) {
@@ -208,19 +193,10 @@ module.exports = {
 
       if (req.file) {
         if (!imageDB || imageDB.name != req.file.originalname) {
-
-          const {
-            originalname: name, size, filename: key, mimetype: mime,
-          } = req.file;
-          const url = `${process.env.BASE_URL}/files/${key}`;
-
-          imageNew = await ImageModel.create({
-            name, size, key, mime, url
-          }, { transaction: t });
+          imageNew = await ImageModel.create(ImageModel.file2Image(req.file), { transaction: t });
 
           image = imageNew;
           updateImg = true
-          //Util.removeFile(req.file.filename); //image.name
         }
       } else if (imageDB) {
         image = null;
@@ -301,7 +277,9 @@ module.exports = {
       return res.status(400).json(Util.response(result, 'Erro ao Deletar'));
     }
 
-  }
+  },
+
+  /** Outros*/
 
 };
 

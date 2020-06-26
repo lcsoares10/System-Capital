@@ -56,7 +56,7 @@ module.exports = (req, res, next) => {
           || lockkey.id_user != decoded.user.id_user
         ) {
           console.log('Token inválido (lockkey)');
-          throw new Exception("Token inválido");
+          //throw new Exception("Token inválido");
         }
       //==============
 

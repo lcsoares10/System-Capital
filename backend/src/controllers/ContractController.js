@@ -76,7 +76,8 @@ module.exports = {
       const { begin, time } = contract;
 
       let dt_begin = moment(begin).add(1, 'month');
-      let dt_end = moment(dt_begin).add(time, 'month');
+      let dt_end = moment(begin).add(time, 'month');
+      //let dt_end = moment(dt_begin).add(time, 'month');
 
       const payMonths = await ContractPayCompetenceModel.findAll({
         where: {

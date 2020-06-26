@@ -4,16 +4,16 @@ const multer = require('multer');
 const multerConfig = require('@/src/config/multer');
 
 const authAdmin = require('@/src/middleware/authAdmin');
-const InvestorValidUser = require('@/src/middleware/InvestorValidUser');
+const { valid, validCreate } = require('@/src/middleware/routers/investor');
 
-const InvestorController = require('@/src/controllers/InvestorController');
+const InvestorController = require('@/src/controllers/investorController');
 
 routes.get('/', authAdmin, InvestorController.index);
-routes.get('/:id', InvestorValidUser, InvestorController.get);
-routes.get('/:id/contracts', InvestorController.contracts);
+routes.get('/:id', valid, InvestorController.get);
+routes.get('/:id/contracts', valid, InvestorController.contracts);
 
-routes.post('/', authAdmin, multer(multerConfig).single("profile"), InvestorController.create);
-routes.put('/:id', InvestorValidUser, multer(multerConfig).single("profile"), InvestorController.update);
+routes.post('/', validCreate, multer(multerConfig).single("profile"), InvestorController.create);
+routes.put('/:id', valid, multer(multerConfig).single("profile"), InvestorController.update);
 routes.delete('/:id', authAdmin, InvestorController.delete);
 
 module.exports = routes;
