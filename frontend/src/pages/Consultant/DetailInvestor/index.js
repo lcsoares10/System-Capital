@@ -4,6 +4,7 @@ import moment from 'moment';
 import Container from '../../../components/Container';
 import HeaderBackground from '../../../components/HeaderBackground';
 import FooterBackground from '../../../components/FooterBackground';
+import Alert from '../../../components/Alert';
 
 import convertCoinBr from '../../../utils/convertCoinBr';
 
@@ -17,11 +18,13 @@ import './styles.css';
 export default function DetailInvestment(props) {
   const [investor, setInvestor] = useState([]);
   const [contractsInvestor, setContractsInvestor] = useState([]);
-
+  console.log(props.location.state);
   useEffect(() => {
     async function requestGetInvestorAssciated() {
-      const dataInvestor = await getInvestorAssociated(props.match.params.id);
-      const contractsInvestor = await allContracts(props.match.params.id);
+      const dataInvestor = props.location.state.investor;
+      const contractsInvestor = await allContracts(
+        props.location.state.investor.id
+      );
       setInvestor(dataInvestor.user);
       setContractsInvestor(contractsInvestor);
     }
@@ -30,7 +33,7 @@ export default function DetailInvestment(props) {
     }, 500);
   }, []);
 
-  let tel = investor.tel;
+  let tel = investor.tel ? investor.tel : 0;
   tel = parseInt(tel);
 
   return (
@@ -55,6 +58,13 @@ export default function DetailInvestment(props) {
           <div className="content-contracts">
             <h2>Contratos</h2>
             <div className="list-contracts">
+              {contractsInvestor[0] ? (
+                ''
+              ) : (
+                <p>
+                  <Alert>Esse investor não possui contratos</Alert>;
+                </p>
+              )}
               {contractsInvestor.map((contract) => (
                 <div className="contracts">
                   <p>Cod: {contract.id.toString().padStart('5', '0')}</p>
@@ -63,6 +73,10 @@ export default function DetailInvestment(props) {
                     <b style={{ color: 'green' }}>
                       {convertCoinBr(contract.value)}
                     </b>
+                  </p>
+                  <p>
+                    Dia de pagamento:{' '}
+                    <b>{contract.day.toString().padStart('2', '0')}</b>
                   </p>
                   <div className="time-contract">
                     <p>Inicio: {moment(contract.begin).format('L')}</p>
