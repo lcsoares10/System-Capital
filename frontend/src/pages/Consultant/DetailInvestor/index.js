@@ -4,6 +4,7 @@ import moment from 'moment';
 import Container from '../../../components/Container';
 import HeaderBackground from '../../../components/HeaderBackground';
 import FooterBackground from '../../../components/FooterBackground';
+import Alert from '../../../components/Alert';
 
 import convertCoinBr from '../../../utils/convertCoinBr';
 
@@ -57,6 +58,13 @@ export default function DetailInvestment(props) {
           <div className="content-contracts">
             <h2>Contratos</h2>
             <div className="list-contracts">
+              {contractsInvestor[0] ? (
+                ''
+              ) : (
+                <p>
+                  <Alert>Esse investor não possui contratos</Alert>;
+                </p>
+              )}
               {contractsInvestor.map((contract) => (
                 <div className="contracts">
                   <p>Cod: {contract.id.toString().padStart('5', '0')}</p>
