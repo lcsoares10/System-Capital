@@ -8,7 +8,6 @@ const mailer = require("@/src/modules/mailer");
 const UserModel = require('@/src/models/User');
 const Util = require('@/src/class/Util');
 const Exception = require('@/src/class/Exeption');
-const mailer = require("@/src/modules/mailer");
 
 //https://www.youtube.com/watch?v=aVAl8GzS0d0
 
