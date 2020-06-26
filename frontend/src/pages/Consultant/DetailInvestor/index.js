@@ -17,10 +17,10 @@ import './styles.css';
 export default function DetailInvestment(props) {
   const [investor, setInvestor] = useState([]);
   const [contractsInvestor, setContractsInvestor] = useState([]);
-
+  console.log(props.location.state);
   useEffect(() => {
     async function requestGetInvestorAssciated() {
-      const dataInvestor = await getInvestorAssociated(props.match.params.id);
+      const dataInvestor = props.location.state.investor;
       const contractsInvestor = await allContracts(props.match.params.id);
       setInvestor(dataInvestor.user);
       setContractsInvestor(contractsInvestor);
@@ -30,7 +30,7 @@ export default function DetailInvestment(props) {
     }, 500);
   }, []);
 
-  let tel = investor.tel;
+  let tel = investor.tel ? investor.tel : 0;
   tel = parseInt(tel);
 
   return (
