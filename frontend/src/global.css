@@ -131,3 +131,7 @@ a {
     margin-bottom: 0px;
   }
 }
+
+input::placeholder {
+  color: rgb(32, 32, 32);
+}

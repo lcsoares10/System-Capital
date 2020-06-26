@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const CryptoJS = require("crypto-js");
 const Crypto = require("crypto");
 const moment = require("moment");
+const mailer = require("@/src/modules/mailer");
 //const authConfig = require('@/src/config/auth');
 
 const UserModel = require('@/src/models/User');
@@ -12,35 +13,32 @@ const mailer = require("@/src/modules/mailer");
 //https://www.youtube.com/watch?v=aVAl8GzS0d0
 
 module.exports = {
-
   async login(req, res) {
-
     try {
-
       /**
        * Por algum motivo as associações do findOne vem como String
        * talvez seja por causa da associção hasOne
        */
 
       const { email, password } = req.body;
-      let user = await UserModel.findOne( {
+      let user = await UserModel.findOne({
         include: [
-          { association: 'investor', },
+          { association: 'investor' },
           { association: 'consultant' },
-          { association: 'profile' }
+          { association: 'profile' },
         ],
         attributes: {
-          include: ['password']
+          include: ['password'],
         },
         where: {
-          email
-        }
+          email,
+        },
       });
 
-      if (!user) throw new Exception("Usuário ou senha incorretos");
+      if (!user) throw new Exception('Usuário ou senha incorretos');
 
       if (!user.validPassword(password)) {
-        throw new Exception("Usuário ou senha incorretos");
+        throw new Exception('Usuário ou senha incorretos');
       }
 
       //console.log(user.toJSON());
@@ -51,11 +49,11 @@ module.exports = {
       let type;
 
       switch (true) {
-        case (user.investor != null):
+        case user.investor != null:
           id = user.investor.id;
           type = 'investor';
           break;
-        case (user.consultant != null):
+        case user.consultant != null:
           id = user.consultant.id;
           type = 'consultant';
           break;
@@ -69,8 +67,8 @@ module.exports = {
         email: user.email,
         name: user.name,
         is_admin: user.is_admin,
-        profile_url: (user.profile) ? user.profile.url : null
-      }
+        profile_url: user.profile ? user.profile.url : null,
+      };
 
       //console.log(result);
 
@@ -80,7 +78,7 @@ module.exports = {
         id_user: user.id,
         remote_andress: req.ip, //https://stackoverflow.com/questions/19266329/node-js-get-clients-i
         browser,
-        version: version.match(/(\d*)\./)[1]
+        version: version.match(/(\d*)\./)[1],
       };
       lockkey = CryptoJS.enencrypt(JSON.stringify(lockkey));
 
@@ -90,18 +88,20 @@ module.exports = {
       //https://stackoverflow.com/questions/37959945/how-to-destroy-jwt-tokens-on-logout
 
       //const token = jwt.sign({ user: result, lockkey  }, authConfig.secret, {
-      const token = jwt.sign({ user: result, lockkey  }, process.env.SECRET_KEY_JWT, {
-        expiresIn: 86400 //1 dia
-      });
+      const token = jwt.sign(
+        { user: result, lockkey },
+        process.env.SECRET_KEY_JWT,
+        {
+          expiresIn: 86400, //1 dia
+        }
+      );
       //==========
 
       return res.json(Util.response({ token }, 'Logado com Sucesso'));
-
     } catch (e) {
       const result = Exception._(e);
       return res.status(400).json(Util.response(result));
     }
-
   },
 
   async forgot_password(req, res) {

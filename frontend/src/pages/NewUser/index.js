@@ -4,6 +4,9 @@ import Container from '../../components/Container';
 import HeaderBackground from '../../components/HeaderBackground';
 import FooterBackground from '../../components/FooterBackground';
 
+import { createUser } from '../../controller/user';
+import { useAuthContext } from '../../Context/AuthContext';
+
 const Contract = (props) => {
   return (
     <div className="inputs-contracts">
@@ -15,7 +18,7 @@ const Contract = (props) => {
         <span className="icon-prefix">R$</span>
         <input
           id="valueInvest"
-          type="text"
+          type="number"
           value={props.valueInvest}
           onChange={(e) => props.handlevalueInvest(e.target.value)}
         />
@@ -34,14 +37,14 @@ const Contract = (props) => {
       </div>
 
       <div className="edit-form">
-        <label htmlFor="doneContract" className="label">
-          Final do Contrato
+        <label htmlFor="handleTimeContract" className="label">
+          Duração do contrato
         </label>
         <input
-          type="date"
-          id="doneContract"
-          value={props.doneContract}
-          onChange={(e) => props.handleDoneContract(e.target.value)}
+          type="number"
+          id="doneCohandleTimeContractntract"
+          value={props.timeContract}
+          onChange={(e) => props.handleTimeContract(e.target.value)}
         />
       </div>
     </div>
@@ -49,7 +52,9 @@ const Contract = (props) => {
 };
 
 export default function NewUser() {
-  const newInvestor = true;
+  //Variavel que fara o controle de criação de usuario ou consultor
+  const newInvestor = false;
+  const { user } = useAuthContext();
 
   const [name, setName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -58,7 +63,32 @@ export default function NewUser() {
 
   const [valueInvest, setValueInvest] = useState(0);
   const [startContract, setStartContract] = useState('');
-  const [doneContract, setDoneContract] = useState('');
+  const [timeContract, setTimeContract] = useState('');
+
+  //Função para tratar a requisição que será feita de um novo usuário.
+  async function handleNewIncident(e) {
+    e.preventDefault();
+    const data = {
+      login: name,
+      email,
+      name,
+      last_name: lastName,
+      tel,
+      id_consultant: user.id,
+    };
+    const data_contract = {
+      begin: startContract,
+      time: timeContract,
+      value: valueInvest,
+    };
+    const returnMessage = await createUser(
+      newInvestor ? true : false,
+      data,
+      data_contract
+    );
+    alert(returnMessage);
+    return;
+  }
 
   return (
     <Container className="container-login">
@@ -73,7 +103,7 @@ export default function NewUser() {
         </div>
 
         <div className="content-form">
-          <form>
+          <form onSubmit={handleNewIncident}>
             <div className="edit-form">
               <label htmlFor="nome" className="label">
                 Nome
@@ -90,7 +120,6 @@ export default function NewUser() {
               </label>
               <input
                 type="text"
-                value=""
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
               />
@@ -102,9 +131,12 @@ export default function NewUser() {
               </label>
               <input
                 id="tel"
-                type="text"
+                type="tel"
                 value={tel}
-                onChange={(e) => setTel(e.target.value)}
+                onChange={() => {}}
+                placeholder="(21) 969075358"
+                onInput={(e) => setTel(e.target.value)}
+                pattern="[0-9]{11}"
               />
             </div>
 
@@ -124,8 +156,8 @@ export default function NewUser() {
                 handlevalueInvest={setValueInvest}
                 startContract={startContract}
                 handleStartContract={setStartContract}
-                doneContract={doneContract}
-                handleDoneContract={setDoneContract}
+                timeContract={timeContract}
+                handleTimeContract={setTimeContract}
               />
             )}
             <button style={{ padding: '10px 90px', marginTop: '30px' }}>
