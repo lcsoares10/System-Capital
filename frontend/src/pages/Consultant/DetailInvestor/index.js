@@ -21,7 +21,9 @@ export default function DetailInvestment(props) {
   useEffect(() => {
     async function requestGetInvestorAssciated() {
       const dataInvestor = props.location.state.investor;
-      const contractsInvestor = await allContracts(props.match.params.id);
+      const contractsInvestor = await allContracts(
+        props.location.state.investor.id
+      );
       setInvestor(dataInvestor.user);
       setContractsInvestor(contractsInvestor);
     }
@@ -63,6 +65,10 @@ export default function DetailInvestment(props) {
                     <b style={{ color: 'green' }}>
                       {convertCoinBr(contract.value)}
                     </b>
+                  </p>
+                  <p>
+                    Dia de pagamento:{' '}
+                    <b>{contract.day.toString().padStart('2', '0')}</b>
                   </p>
                   <div className="time-contract">
                     <p>Inicio: {moment(contract.begin).format('L')}</p>

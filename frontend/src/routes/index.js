@@ -116,7 +116,10 @@ export default function Routes() {
             path="/associatedInvestors/:id"
             component={AssociatedInvestors}
           />
-          <PrivateRoute path="/detailInvestor/:id" component={DetailInvestor} />
+          <PrivateRoute
+            path="/detailInvestor/:name"
+            component={DetailInvestor}
+          />
           <PrivateRoute
             path="/incomeConsultant/:id"
             component={IncomeConsultant}

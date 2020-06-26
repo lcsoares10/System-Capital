@@ -50,7 +50,7 @@ export default function DetailInvestment(props) {
                 <List
                   key={key}
                   value_col_1={`${investor.user.name} ${investor.user.last_name}`}
-                  url={`/detailInvestor/${investor.user.id}`}
+                  url={`/detailInvestor/${investor.user.name}`}
                   stateLink={investor}
                 />
               ))}

@@ -18,7 +18,6 @@ const Ul = styled.ul`
 
 export default function ListContracts(props) {
   const investor = props.stateLink;
-  console.log(investor);
 
   return (
     <Ul>
@@ -27,7 +26,12 @@ export default function ListContracts(props) {
 
       {props.url && (
         <li>
-          <Link to={props.url} state={{ investor }}>
+          <Link
+            to={{
+              pathname: props.url,
+              state: { investor },
+            }}
+          >
             <NavigateNextIcon
               style={{
                 color: 'green',
