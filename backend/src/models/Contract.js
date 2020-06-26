@@ -31,6 +31,8 @@ class Contract extends Model {
         type: DataTypes.FLOAT,
         allowNull: false
       },
+      contract_active: DataTypes.INTEGER,
+      contract_active_date: DataTypes.DATE,
     }, {
       sequelize,
       defaultScope: {

@@ -1,5 +1,6 @@
 const { Model, DataTypes }  = require('sequelize');
 const bcrypt = require('bcrypt');
+const cpf = require("@fnando/cpf/commonjs");
 
 //https://medium.com/@thihenos/node-salvando-imagens-em-banco-de-dados-e-convertendo-em-imagens-novamente-1a304880f285
 
@@ -31,19 +32,33 @@ class User extends Model {
         allowNull: false,
         validate: {
           notEmpty: true
-          //tem q por mais coisas
         }
       },
       // id_image_profile: {
       //   type: DataTypes.INTEGER,
       //   allowNull: false
       // },
+      identif: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+        validate: {
+          notEmpty: true,
+          is: /^[0-9]+$/i,
+          isCustom(value) {
+            //console.log('XXXXX', this.toJSON());
+            if (!cpf.isValid(value)) {
+              throw new Error('inválido!');
+            }
+          }
+        }
+      },
       name: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
           notEmpty: true,
-          is: /^[a-z]+$/i
+          is: /^[A-Za-z\s]+$/i
         }
       },
       last_name: {
@@ -62,12 +77,35 @@ class User extends Model {
         }
       },
       is_admin: DataTypes.INTEGER,
-      active: DataTypes.INTEGER
+      active: DataTypes.INTEGER,
+      user_activated: DataTypes.INTEGER,
+      user_activated_date: DataTypes.DATE,
+      password_reset_token: DataTypes.STRING,
+      password_reset_expires: DataTypes.DATE,
     }, {
+      hooks: {
+        beforeCreate: (self, options) => {
+          self.password = this.generateHash(self.password);
+        },
+        beforeUpdate: (self, options) => {
+          //quando senha não é passada no body
+          if (self.password === self.previous('password')) return;
+
+          if (!bcrypt.compareSync(self.password, self.previous('password'))) {
+            self.password = this.generateHash(self.password);
+          }
+        },
+      },
       sequelize,
       defaultScope: {
         attributes: {
-          exclude: ['createdAt', 'updatedAt', 'password']
+          exclude: [
+            'createdAt',
+            'updatedAt',
+            'password',
+            'password_reset_token',
+            'password_reset_expires'
+          ]
         },
       },
     });
@@ -94,9 +132,26 @@ class User extends Model {
   //https://medium.com/@mridu.sh92/a-quick-guide-for-authentication-using-bcrypt-on-express-nodejs-1d8791bb418f
   //https://auth0.com/blog/hashing-in-action-understanding-bcrypt/
 
+
+  //valid senha
+  static isPassowordValid(password) {
+    return password.test(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{8,}$/);
+  }
+
   //generating a hash
   static generateHash(password) {
-    return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
+    //eestá dando erro!!
+    // if (!User.isPassowordValid(camposUser.password)) {
+    //   throw new Exception(`
+    //     Senha inválida, senha deve ter
+    //     minimo de 8 caracteres,
+    //     1 número,
+    //     1 caracter especial,
+    //     1 letras maiúsculas,
+    //     1 letras minúsculas
+    //   `);
+    // }
+    return bcrypt.hashSync(password.toString(), bcrypt.genSaltSync(10));
   }
 
 }

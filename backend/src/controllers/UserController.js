@@ -83,6 +83,51 @@ module.exports = {
       return res.status(400).json(Util.response(result));
     }
 
-},
+  },
+
+  async toggleActive(req, res) {
+
+    try {
+      const { id } = req.params;
+      let user = await UserModel.findByPk(id);
+
+      await user.update({
+        active: (!!user.active) ? 0 : 1,
+      });
+
+      return res.json(Util.response(
+        user, `${(!!user.active) ? 'Ativado' : 'Desativado'} com Sucesso`
+      ));
+
+    } catch (e) {
+      await t.rollback();
+      const result = Exception._(e);
+      return res.status(400).json(Util.response(result, 'Erro ao Ativar usuário'));
+    }
+
+  },
+
+  async toggleActivatedUser(req, res) {
+
+    try {
+      const { id } = req.params;
+      let user = await UserModel.findByPk(id);
+
+      user.update({
+        user_activated: (!!user.user_activated) ? 0 : 1,
+        user_activated_date: (!!user.user_activated) ? null : new Date(),
+      });
+
+      return res.json(Util.response(
+        user, `${(!!user.user_activated) ? 'Ativado' : 'Desativado'} com Sucesso`
+      ));
+
+    } catch (e) {
+      await t.rollback();
+      const result = Exception._(e);
+      return res.status(400).json(Util.response(result, 'Erro ao Ativar usuário'));
+    }
+
+  }
 
 };

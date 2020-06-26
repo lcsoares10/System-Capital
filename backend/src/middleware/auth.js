@@ -58,7 +58,6 @@ module.exports = (req, res, next) => {
         //Removendo bloquei de mudança de token do user agente
         // throw new Exception("Token inválido");
       }
-      //==============
 
       req.user = decoded.user;
       return next();

@@ -7,7 +7,7 @@ const basename = path.basename(__filename);
 const dirmodels = path.resolve(__dirname, '../models');
 const config = require('@/src/config/database.js');
 
-const logger = require('@/src/services/logger');
+const logger = require('@/src/modules/log/logger');
 
 const dbs = {};
 const sequelize = new Sequelize(

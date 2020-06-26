@@ -9,7 +9,8 @@ const accessLogStream = rfs.createStream(()=>(
   `access.log-${moment().format('Y-MM-DD')}.log`
 ), {
   interval: '1d', // rotate daily
-  path: path.join(__dirname, '../../logs')
+  //path: path.join(__dirname, '../../logs')
+  path: path.resolve('./logs')
 })
 
 morgan.token('date', function() {

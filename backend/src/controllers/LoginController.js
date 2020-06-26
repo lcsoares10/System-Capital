@@ -1,11 +1,13 @@
 const jwt = require('jsonwebtoken');
+const CryptoJS = require("crypto-js");
+const Crypto = require("crypto");
+const moment = require("moment");
+const mailer = require("@/src/modules/mailer");
 //const authConfig = require('@/src/config/auth');
 
 const UserModel = require('@/src/models/User');
 const Util = require('@/src/class/Util');
 const Exception = require('@/src/class/Exeption');
-
-const CryptoJS = require('crypto-js');
 
 //https://www.youtube.com/watch?v=aVAl8GzS0d0
 
@@ -67,7 +69,7 @@ module.exports = {
         profile_url: user.profile ? user.profile.url : null,
       };
 
-      console.log(result);
+      //console.log(result);
 
       const { browser, version } = req.useragent;
 
@@ -96,9 +98,88 @@ module.exports = {
 
       return res.json(Util.response({ token }, 'Logado com Sucesso'));
     } catch (e) {
-      console.log(e);
       const result = Exception._(e);
       return res.status(400).json(Util.response(result));
     }
   },
+
+  async forgot_password(req, res) {
+    const { email } = req.body;
+
+    try {
+      const user = await UserModel.findOne({ where: { email }});
+      if (!user) {
+        throw new Exception("Email não cadastrado");
+      }
+
+      const token = Crypto.randomBytes(20).toString('hex');
+      const now = moment().add(30, 'minute').format();
+
+      user.update({
+        password_reset_token: token,
+        password_reset_expires: now
+      });
+
+      mailer.sendMail({
+        to: email,
+        from: 'igor.mottta@gmail.com',
+        template: 'login/forgot_password',
+        context: { token },
+      }, (err) => {
+        if (err)
+          throw new Exception(`Erro ao enviar o email de recuperação de senha. ${err.message}`);
+      });
+
+      return res.json(Util.response({}, 'Email enviado com sucesso'));
+
+    } catch (e) {
+      const result = Exception._(e);
+      return res.status(400).json(Util.response(result, 'Erro ao recuperar a senha, tente novamente'));
+    }
+
+  },
+
+  async reset_password(req, res) {
+
+    const { email, token, password } = req.body;
+
+    try {
+
+      const user = await UserModel.findOne({
+        attributes: {
+          include: ['password_reset_token', 'password_reset_expires']
+        },
+        where: { email }});
+      if (!user) {
+        throw new Exception("Usuário não encontrado");
+      }
+
+      if (token !== user.password_reset_token) {
+        throw new Exception("Token inválido");
+      }
+
+      const now = moment().format();
+      const reset_expires = moment(user.password_reset_expires).format();
+
+      if (now > reset_expires) {
+        throw new Exception("Token expirou, gere um novo");
+      }
+
+      //================================
+      const hash_password = await UserModel.generateHash(password);
+      user.update({
+        password_reset_token: null,
+        password_reset_expires: null,
+        password: hash_password
+      });
+
+      return res.json(Util.response({}, 'Senha alterada com sucesso'));
+
+    } catch (e) {
+      const result = Exception._(e);
+      return res.status(400).json(Util.response(result));
+    }
+
+  }
+
 };
