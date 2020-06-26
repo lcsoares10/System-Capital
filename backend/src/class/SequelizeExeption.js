@@ -1,5 +1,4 @@
 class SequelizeExeption {
-
   /** Sequelize */
 
   static isSequelizeException(error) {

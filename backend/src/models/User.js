@@ -1,5 +1,6 @@
 const { Model, DataTypes }  = require('sequelize');
 const bcrypt = require('bcrypt');
+const cpf = require("@fnando/cpf/commonjs");
 
 //https://medium.com/@thihenos/node-salvando-imagens-em-banco-de-dados-e-convertendo-em-imagens-novamente-1a304880f285
 
@@ -31,7 +32,6 @@ class User extends Model {
         allowNull: false,
         validate: {
           notEmpty: true
-          //tem q por mais coisas
         }
       },
       // id_image_profile: {
@@ -44,7 +44,13 @@ class User extends Model {
         unique: true,
         validate: {
           notEmpty: true,
-          is: /^[0-9]+$/i
+          is: /^[0-9]+$/i,
+          isCustom(value) {
+            //console.log('XXXXX', this.toJSON());
+            if (!cpf.isValid(value)) {
+              throw new Error('inválido!');
+            }
+          }
         }
       },
       name: {
