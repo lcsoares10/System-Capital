@@ -1,16 +1,16 @@
 const express = require('express');
 const routes = express.Router();
 
-const authAdminMiddleware = require('@/src/middleware/authAdmin');
-const messageBoxValidUser = require('@/src/middleware/messageBoxValidUser');
+const authAdmin = require('@/src/middleware/authAdmin');
+const { valid } = require('@/src/middleware/routers/messagebox');
 
 const MessageBoxController = require('@/src/controllers/MessageBoxController');
 
-routes.get('/', authAdminMiddleware, MessageBoxController.index);
-routes.get('/:id', messageBoxValidUser, MessageBoxController.get);
+routes.get('/', authAdmin, MessageBoxController.index);
+routes.get('/:id', valid, MessageBoxController.get);
 
-routes.post('/', authAdminMiddleware, MessageBoxController.create);
+routes.post('/', authAdmin, MessageBoxController.create);
 
-routes.post('/:id/viewd', messageBoxValidUser, MessageBoxController.setViewed);
+routes.post('/:id/viewd', valid, MessageBoxController.setViewed);
 
 module.exports = routes;

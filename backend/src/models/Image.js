@@ -44,6 +44,11 @@ class Image extends Model {
         }
       },
     }, {
+      hooks: {
+        beforeValidate: (self, options) => {
+          self.url = `${process.env.BASE_URL}/files/${self.key}`;
+        },
+      },
       sequelize,
       defaultScope: {
         attributes: {
@@ -57,6 +62,11 @@ class Image extends Model {
     //hasOne [1:1] - Chave estrangeira definida em B
     this.hasOne(models.User, { foreignKey: 'id_image_profile', as: 'profile' });
 
+  }
+
+  static file2Image(file) {
+    const { originalname: name, size, filename: key, mimetype: mime, } = file;
+    return {name, size, key, mime};
   }
 
 }

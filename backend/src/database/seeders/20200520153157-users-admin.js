@@ -1,6 +1,7 @@
 'use strict';
 
 const bcrypt = require('bcrypt');
+const cpf = require("@fnando/cpf/commonjs");
 
 module.exports = {
   up: (queryInterface, Sequelize) => queryInterface.bulkInsert('users',
@@ -9,6 +10,7 @@ module.exports = {
         login: 'admin',
         email: 'admin@gmail.com',
         password: bcrypt.hashSync('admin', bcrypt.genSaltSync(10)),
+        identif: cpf.generate(),
         name: 'administrador_root',
         is_admin: 1,
         last_name: `administrador_root_ln`,

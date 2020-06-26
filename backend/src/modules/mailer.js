@@ -1,3 +1,5 @@
+//https://www.youtube.com/watch?v=Zwdv9RllPqU&t=333s
+
 const path = require('path');
 const nodemailer = require('nodemailer');
 const hbs = require('nodemailer-express-handlebars'); //Substituir váriaveis HTML no node (Temples)

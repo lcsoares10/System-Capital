@@ -98,31 +98,22 @@ module.exports = {
     const t = await ConsultantModel.sequelize.transaction();
 
     try {
-
       //========================
       //Image
       let image;
       if (req.file) {
-        const {
-          originalname: name, size, filename: key, mimetype: mime,
-        } = req.file;
-
-        const url = `${process.env.BASE_URL}/files/${key}`;
-
-        image = await ImageModel.create({
-          name, size, key, mime, url
-        }, { transaction: t });
+        image = await ImageModel.create(ImageModel.file2Image(req.file), { transaction: t });
       }
 
       //========================
       //User
       const { ...camposUser } = req.body
-      camposUser.password = UserModel.generateHash(camposUser.password);
 
       let user = await UserModel.create({
         ...camposUser,
         id_image_profile: (image) ? image.id : null
       }, { transaction: t });
+
       const consultant = await ConsultantModel.create({
         id_user: user.id
       }
@@ -156,6 +147,7 @@ module.exports = {
       let consultant = await ConsultantModel.findByPk(id,  {
         include: { association: 'user', required: true }
       });
+
       if (!consultant) throw new Exception("Consultor não existe", "id_consultant");
 
       let user = await UserModel.findByPk(consultant.id_user, {
@@ -163,14 +155,10 @@ module.exports = {
           include: ['password']
         }
       });
+
       if (!user) throw new Exception("Usuário não existe", "id_user");
 
       const { ...camposUser } = req.body;
-      if (camposUser.password && !user.validPassword(camposUser.password)) {
-        camposUser.password = UserModel.generateHash(camposUser.password);
-      } else {
-        delete(camposUser.password);
-      }
 
       //=========================
       //Imagem
@@ -179,21 +167,14 @@ module.exports = {
       let imageDB = image = await ImageModel.findByPk(user.id_image_profile);
 
       if (req.file) {
+
         if (!imageDB || imageDB.name != req.file.originalname) {
-
-          const {
-            originalname: name, size, filename: key, mimetype: mime,
-          } = req.file;
-          const url = `${process.env.BASE_URL}/files/${key}`;
-
-          imageNew = await ImageModel.create({
-            name, size, key, mime, url
-          }, { transaction: t });
+          imageNew = await ImageModel.create(ImageModel.file2Image(req.file), { transaction: t });
 
           image = imageNew;
           updateImg = true
-          //Util.removeFile(req.file.filename); //image.name
         }
+
       } else if (imageDB) {
         image = null;
         updateImg = true //irá deletar
@@ -273,6 +254,8 @@ module.exports = {
       return res.status(400).json(Util.response(result, 'Erro ao Deletar'));
     }
 
-  }
+  },
+
+  /** Outros*/
 
 };

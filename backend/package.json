@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fnando/cpf": "^1.0.1",
     "@google-cloud/storage": "^5.1.0",
     "bcrypt": "^4.0.1",
     "cors": "^2.8.5",

@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@fnando/cpf@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@fnando/cpf/-/cpf-1.0.1.tgz#59838dc8dcf5e6f9e6fa6022b3411593a733f0e7"
+  integrity sha512-7KdgB+x/825Wk0/qiud0U1QmJQydSBvH/0X8SQ9pAuOzhfzwH1Xsgd6efQFILgFcxE0QvNfYu2HadpPmsUzlgQ==
+
 "@google-cloud/common@^3.0.0":
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/@google-cloud/common/-/common-3.1.1.tgz#067aaa1f9c1a729b254be6d815bd5377170f4783"

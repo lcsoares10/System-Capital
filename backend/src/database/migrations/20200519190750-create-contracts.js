@@ -32,6 +32,15 @@ module.exports = {
         type: Sequelize.FLOAT,
         allowNull: false
       },
+      contract_active: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 0
+      },
+      contract_active_date: {
+        type: Sequelize.DATE,
+        allowNull: true
+      },
       created_at: {
         type: Sequelize.DATE,
         allowNull: false

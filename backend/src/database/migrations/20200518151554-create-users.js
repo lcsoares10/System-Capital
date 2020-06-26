@@ -28,6 +28,11 @@ module.exports = {
         onUpdate: 'CASCADE', //atualiza o id do usuário caso ele mude
         onDelete: 'CASCADE' //CASCADE | SET NULL | RESTRICT
       },
+      identif: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique : true,
+      },
       name: {
         type: Sequelize.STRING,
         allowNull: false
@@ -49,6 +54,15 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         defaultValue: 1
+      },
+      user_activated: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 0
+      },
+      user_activated_date: {
+        type: Sequelize.DATE,
+        allowNull: true
       },
       password_reset_token: {
         type: Sequelize.STRING,
