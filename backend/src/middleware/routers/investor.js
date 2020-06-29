@@ -11,15 +11,14 @@ module.exports = {
       const investor = await InvestorModel.findByPk(id);
       if (!investor) {
         res.status(404);
-        throw new Exception("Investidor não existe");
+        throw new Exception('Investidor não existe');
       }
 
-      if (investor.id_user != req.user.id_user && !req.user.is_admin ) {
-        res.status(403);
-        throw new Exception("Você não tem direito de acesso");
-      }
+      //   if (investor.id_user != req.user.id_user && !req.user.is_admin) {
+      //     res.status(403);
+      //     throw new Exception('Você não tem direito de acesso');
+      //   }
       return next();
-
     } catch (e) {
       const result = Exception._(e);
       return res.json(Util.response(result));
@@ -27,23 +26,19 @@ module.exports = {
   },
 
   async validCreate(req, res, next) {
-
     try {
       if (req.user.is_admin) return next();
 
-      const { id_user } = req.user
+      const { id_user } = req.user;
       const consultant = await ConsultantModel.findOne({ where: { id_user } });
       if (!consultant) {
         res.status(403);
-        throw new Exception("Você não tem direito para isso");
+        throw new Exception('Você não tem direito para isso');
       }
       return next();
-
     } catch (e) {
       const result = Exception._(e);
       return res.json(Util.response(result));
     }
-
   },
-
-}
+};
