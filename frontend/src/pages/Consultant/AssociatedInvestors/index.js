@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import moment from 'moment';
 
 import Container from '../../../components/Container';
 import HeaderBackground from '../../../components/HeaderBackground';
@@ -7,7 +6,6 @@ import FooterBackground from '../../../components/FooterBackground';
 
 import List from '../../../components/List';
 import { AllAssoatedinvestors } from '../../../controller/Consultant';
-import convertCoinBr from '../../../utils/convertCoinBr';
 
 import './styles.css';
 //------------------------------------------------------------
@@ -25,7 +23,7 @@ export default function DetailInvestment(props) {
     setTimeout(() => {
       getAssoatedinvestors();
     }, 500);
-  }, []);
+  }, [props.match.params.id]);
 
   return (
     <Container>
