@@ -8,6 +8,9 @@ const Util = require('@/src/class/Util');
 const Exception = require('@/src/class/Exeption');
 const PaginationClass = require('@/src/class/Pagination');
 
+//Mover imagem
+//https://nodejs.docow.com/451/como-faco-para-mover-arquivos-em-node-js.html
+
 module.exports = {
 
   /** GET */

@@ -27,6 +27,13 @@ module.exports = {
       const Pagination = new PaginationClass(ContractModel);
       const result = await Pagination.select(page, options);
 
+      result.rows = result.rows.map(row => {
+        row = row.toJSON();
+        //taxa de carregamento
+        row.charging_rate = row.value * 0.015;
+        return row;
+      });
+
       return res.json(result);
 
     } catch (e) {
@@ -40,7 +47,7 @@ module.exports = {
 
     try {
       const { id } = req.params;
-      const result = await ContractModel.findByPk(id,  {
+      let result = await ContractModel.findByPk(id,  {
           include: [
               {
                   association: 'investor',
@@ -53,6 +60,9 @@ module.exports = {
       if (!result) {
         throw new Exception("Contrato não existe");
       }
+
+      result = result.toJSON();
+      result.charging_rate = result.value * 0.015;
 
       return res.json(Util.response(result));
 

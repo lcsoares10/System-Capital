@@ -6,7 +6,7 @@ const multerConfig = require('@/src/config/multer');
 const authAdmin = require('@/src/middleware/authAdmin');
 const { valid, validCreate } = require('@/src/middleware/routers/investor');
 
-const InvestorController = require('@/src/controllers/investorController');
+const InvestorController = require('@/src/controllers/InvestorController');
 
 routes.get('/', authAdmin, InvestorController.index);
 routes.get('/:id', valid, InvestorController.get);

@@ -4,7 +4,7 @@ const routes = express.Router();
 const authAdmin = require('@/src/middleware/authAdmin');
 const { valid, validCreate } = require('@/src/middleware/routers/contract');
 
-const ContractController = require('@/src/controllers/contractController');
+const ContractController = require('@/src/controllers/ContractController');
 
 routes.get('/', authAdmin, ContractController.index);
 routes.get('/:id', valid, ContractController.get);

@@ -19,6 +19,7 @@ const cors = require('cors');
 const path = require('path');
 const routes = require('@/src/routes');
 const useragent = require('express-useragent');
+const fs = require('fs');
 
 /** ==========================================================*/
 /** Custom */
@@ -69,6 +70,13 @@ app.use((err, req, res, next) => {
   })
   next()
 })
+
+//======================
+//Criação de Pastas
+fs.mkdir('./tmp/uploads', { recursive: true }, (err) => {
+  if (err) throw console.log(err.message);
+});
+//======================
 
 module.exports = app;
 

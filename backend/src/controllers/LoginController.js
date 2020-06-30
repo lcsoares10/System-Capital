@@ -166,11 +166,13 @@ module.exports = {
       }
 
       //================================
-      const hash_password = await UserModel.generateHash(password);
+      //alterar aqui!!
+      //const hash_password = await UserModel.generateHash(password);
       user.update({
         password_reset_token: null,
         password_reset_expires: null,
-        password: hash_password
+        //password: hash_password
+        password
       });
 
       return res.json(Util.response({}, 'Senha alterada com sucesso'));
