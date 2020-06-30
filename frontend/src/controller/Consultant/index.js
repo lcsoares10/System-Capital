@@ -22,4 +22,35 @@ async function getInvestorAssociated(id_investor) {
   }
 }
 
-export { AllAssoatedinvestors, getInvestorAssociated };
+async function getYeldYear(id_consultant, year) {
+  try {
+    const { data } = await api.get(
+      `/consultants/${id_consultant}/yield/${year}`
+    );
+    console.log(data);
+    return data.data;
+  } catch (error) {
+    console.log(error.response);
+    return error;
+  }
+}
+
+async function getYeldMonth(id_consultant, month, year) {
+  try {
+    const { data } = await api.get(
+      `/consultants/${id_consultant}/yield/${year}/month-detail/${month}`
+    );
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.log(error.response);
+    return error;
+  }
+}
+
+export {
+  AllAssoatedinvestors,
+  getInvestorAssociated,
+  getYeldYear,
+  getYeldMonth,
+};

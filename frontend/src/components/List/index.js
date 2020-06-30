@@ -17,19 +17,29 @@ const Ul = styled.ul`
 `;
 
 export default function ListContracts(props) {
-  const investor = props.stateLink;
+  const stateLink = props.stateLink;
+
+  let styleColumn = {};
+  let flexDirection = {};
+
+  if (props.flexColumn === true) {
+    styleColumn = { padding: '10px 0px ' };
+    flexDirection = { flexDirection: 'column' };
+  }
 
   return (
-    <Ul>
+    <Ul style={flexDirection}>
       <li className="text-white">{props.value_col_1}</li>
-      <li className="text-beige">{props.value_col_2}</li>
+      <li style={styleColumn} className="text-beige">
+        {props.value_col_2}
+      </li>
 
       {props.url && (
         <li>
           <Link
             to={{
               pathname: props.url,
-              state: { investor },
+              state: { stateLink },
             }}
           >
             <NavigateNextIcon
@@ -46,7 +56,7 @@ export default function ListContracts(props) {
 
       {props.value_col_3 && (
         <li className={`text-beige ${props.addClassCss_col_3}`}>
-          {props.value_col_3}{' '}
+          {props.value_col_3}
         </li>
       )}
     </Ul>
