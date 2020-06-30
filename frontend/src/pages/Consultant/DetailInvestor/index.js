@@ -8,7 +8,6 @@ import Alert from '../../../components/Alert';
 
 import convertCoinBr from '../../../utils/convertCoinBr';
 
-import { getInvestorAssociated } from '../../../controller/Consultant';
 import { formatTel } from '../../../controller/formatsStrings';
 import allContracts from '../../../controller/Investor/allContracts';
 
@@ -18,12 +17,12 @@ import './styles.css';
 export default function DetailInvestment(props) {
   const [investor, setInvestor] = useState([]);
   const [contractsInvestor, setContractsInvestor] = useState([]);
-  console.log(props.location.state);
+
   useEffect(() => {
     async function requestGetInvestorAssciated() {
-      const dataInvestor = props.location.state.investor;
+      const dataInvestor = props.location.state.stateLink;
       const contractsInvestor = await allContracts(
-        props.location.state.investor.id
+        props.location.state.stateLink.id
       );
       setInvestor(dataInvestor.user);
       setContractsInvestor(contractsInvestor);
@@ -42,7 +41,10 @@ export default function DetailInvestment(props) {
       <main className="main-associated-investors">
         <div className="title-header">
           <h1 className="h1-">Investidor</h1>
-          <p> &nbsp;{investor.name}</p>
+          <p>
+            {' '}
+            &nbsp;{investor.name}&nbsp;{investor.last_name}
+          </p>
         </div>
         <div className="content-detail-associated">
           <div className="detail-investor">
