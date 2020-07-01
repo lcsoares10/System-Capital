@@ -12,8 +12,18 @@ routes.get('/', authAdmin, InvestorController.index);
 routes.get('/:id', valid, InvestorController.get);
 routes.get('/:id/contracts', valid, InvestorController.contracts);
 
-routes.post('/', validCreate, multer(multerConfig).single("profile"), InvestorController.create);
-routes.put('/:id', valid, multer(multerConfig).single("profile"), InvestorController.update);
+routes.post(
+  '/',
+  validCreate,
+  multer(multerConfig).single('profile'),
+  InvestorController.create
+);
+routes.put(
+  '/:id',
+  valid,
+  multer(multerConfig).single('profile'),
+  InvestorController.update
+);
 routes.delete('/:id', authAdmin, InvestorController.delete);
 
 module.exports = routes;

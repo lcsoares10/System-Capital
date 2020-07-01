@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useHistory } from "react-router-dom";
+import { useHistory } from 'react-router-dom';
 import api from '../../services/api';
 
 export default function useAuth() {
@@ -12,10 +12,9 @@ export default function useAuth() {
   //https://blog.rocketseat.com.br/reactjs-autenticacao/
 
   useEffect(() => {
-
     function loadStorageData() {
       try {
-        const storageToken = localStorage.getItem('token');
+        const storageToken = localStorage.getItem('token_X6_Capital');
 
         if (storageToken) {
           api.defaults.headers.Authorization = `Bearer ${storageToken}`;
@@ -23,7 +22,6 @@ export default function useAuth() {
           setUser(payload.user);
           setAuthenticated(true);
         }
-
       } catch {
         alert('Token inválido');
         _logout();
@@ -45,27 +43,26 @@ export default function useAuth() {
 
   async function handleLogon(e, email, password) {
     e.preventDefault();
-      try {
-        const { data } = await api.post('/login',{ email, password });
-        const { token } = data.data;
-        const { payload } = jwtDecode(token);
+    try {
+      const { data } = await api.post('/login', { email, password });
+      const { token } = data.data;
+      const { payload } = jwtDecode(token);
 
-        localStorage.setItem('token', token);
+      localStorage.setItem('token_X6_Capital', token);
 
-        api.defaults.headers.Authorization = `Bearer ${token}`;
-        setUser(payload.user);
-        setAuthenticated(true);
+      api.defaults.headers.Authorization = `Bearer ${token}`;
+      setUser(payload.user);
+      setAuthenticated(true);
 
-        alert(data.message);
-       // history.push('/profile');
-
-      } catch(error) {
-        setAuthenticated(false);
-        //const { data } = error.response;
-        //alert(data.message);
-        //console.log(error.response);
-        alert(error.message);
-      }
+      alert(data.message);
+      // history.push('/profile');
+    } catch (error) {
+      setAuthenticated(false);
+      //const { data } = error.response;
+      //alert(data.message);
+      //console.log(error.response);
+      alert(error.message);
+    }
   }
 
   async function handleLogout(e) {
@@ -74,7 +71,7 @@ export default function useAuth() {
   }
 
   function _logout() {
-    localStorage.removeItem('token');
+    localStorage.removeItem('token_X6_Capital');
     localStorage.removeItem('user');
     api.defaults.headers.Authorization = undefined;
     setUser({});
@@ -87,7 +84,6 @@ export default function useAuth() {
     handleLogout,
     loading,
     user,
-    setUser
-  }
-
+    setUser,
+  };
 }

@@ -1,5 +1,5 @@
 //import React, { useContext } from 'react';
-import React, { useState } from 'react';
+import React from 'react';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 
 import AuthProvider, { useAuthContext } from '../Context/AuthContext';

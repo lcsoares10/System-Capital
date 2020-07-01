@@ -12,32 +12,41 @@ import './styles.css';
 import { useAuthContext } from '../../Context/AuthContext';
 
 export default function Logon() {
-    const [email, setEmail] = useState(process.env.REACT_APP_DEFAULT_USER_LOGIN);
-    const [password, setpassword] = useState(process.env.REACT_APP_DEFAULT_USER_PASSWORD);
+  const [email, setEmail] = useState(process.env.REACT_APP_DEFAULT_USER_LOGIN);
+  const [password, setpassword] = useState(
+    process.env.REACT_APP_DEFAULT_USER_PASSWORD
+  );
 
-    const { handleLogon } = useAuthContext();
+  const { handleLogon } = useAuthContext();
 
-    return (
-        <Container>
+  return (
+    <Container>
+      <HeaderBackground notLogin={false} />
 
-            <HeaderBackground notLogin={false}/>
+      <div className="content">
+        <div className="main-login">
+          <img src={logo} alt="logo" />
 
-            <div className="content">
-                <div className="main-login">
-                    <img src={logo}/>
-
-                    <form onSubmit={e=>handleLogon(e, email, password)}>
-                        <div className="form-inputs">
-                            <input type="text" value={email} placeholder="E-mail" onChange={e => setEmail(e.target.value)}></input>
-                            <input type="password" value={password} placeholder="Senha"  onChange={e => setpassword(e.target.value)}></input>
-                        </div>
-                        <button>ACESSAR</button>
-                    </form>
-                </div>
+          <form onSubmit={(e) => handleLogon(e, email, password)}>
+            <div className="form-inputs">
+              <input
+                type="text"
+                value={email}
+                placeholder="E-mail"
+                onChange={(e) => setEmail(e.target.value)}
+              ></input>
+              <input
+                type="password"
+                value={password}
+                placeholder="Senha"
+                onChange={(e) => setpassword(e.target.value)}
+              ></input>
             </div>
-            <FooterBackground notLogin={false}/>
-        </Container>
-    );
+            <button>ACESSAR</button>
+          </form>
+        </div>
+      </div>
+      <FooterBackground notLogin={false} />
+    </Container>
+  );
 }
-
-

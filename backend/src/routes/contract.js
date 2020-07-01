@@ -16,6 +16,10 @@ routes.delete('/:id', authAdmin, ContractController.delete);
 /** Contracts Pay Month */
 
 routes.get('/:id/contractspaymonth', valid, ContractController.getPayMonth);
-routes.post('/:id/contractspaymonth', authAdmin, ContractController.createPayMonth);
+routes.post(
+  '/:id/contractspaymonth',
+  authAdmin,
+  ContractController.createPayMonth
+);
 
 module.exports = routes;
