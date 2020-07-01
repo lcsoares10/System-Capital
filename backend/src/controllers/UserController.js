@@ -1,3 +1,5 @@
+const mailer = require("@/src/modules/mailer");
+
 const UserModel = require('@/src/models/User');
 const MessageBoxModel = require('@/src/models/MessageBox');
 
@@ -40,6 +42,27 @@ module.exports = {
       }
 
       return res.json(Util.response(result));
+
+    } catch (e) {
+      const result = Exception._(e);
+      return res.status(400).json(Util.response(result));
+    }
+
+  },
+
+  async getTokenResetPassword(req, res) {
+
+    try {
+      const { token } = req.params;
+      const user = await UserModel.findOne({
+        where: { password_reset_token: token  },
+      });
+
+      if (!user) {
+          return res.status(400).json({ error: 'Usuário não existe 2'} );
+      }
+
+      return res.json(Util.response(user));
 
     } catch (e) {
       const result = Exception._(e);
@@ -111,12 +134,36 @@ module.exports = {
 
     try {
       const { id } = req.params;
-      let user = await UserModel.findByPk(id);
+      let user = await UserModel.findByPk(id, {
+        attributes: {
+          include: ['password'],
+        },
+      });
 
       user.update({
+        active: 1,
         user_activated: (!!user.user_activated) ? 0 : 1,
-        user_activated_date: (!!user.user_activated) ? null : new Date(),
-      });
+        user_activated_at: (!!user.user_activated) ? null : new Date(),
+      }, { notHash: true });
+
+      //-----------
+      //Enviar e-mail
+      if (!user.first_login_at && user.user_activated) {
+        console.log('E-mail enviado');
+        mailer.sendMail({
+          to: user.email,
+          template: 'login/warn_user_active',
+          context: {
+            login: user.email,
+            password: user.password,
+            link: "http://xxxx.com.br"
+          },
+        }, (err) => {
+          if (err)
+            throw new Exception(`Erro ao enviar o email de usuário ativo. ${err.message}`);
+        });
+      }
+      //-----------
 
       return res.json(Util.response(
         user, `${(!!user.user_activated) ? 'Ativado' : 'Desativado'} com Sucesso`

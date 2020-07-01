@@ -34,11 +34,17 @@ module.exports = {
         },
       });
 
-      if (!user) throw new Exception('Usuário ou senha incorretos');
+      const msgError = "Usuário ou senha incorretos"
+
+      if (!user) throw new Exception(`${msgError} (1)`);
 
       if (!user.validPassword(password)) {
-        throw new Exception('Usuário ou senha incorretos');
+        throw new Exception(`${msgError} (2)`);
       }
+
+      if (!user.active || !user.user_activated) throw new Exception(`${msgError} (3)`);
+
+      if (!user.first_login_at) user.update({ password, first_login_at: moment().format() });
 
       //console.log(user.toJSON());
       //console.log( JSON.stringify(user.investor, null, 2) );
@@ -122,7 +128,6 @@ module.exports = {
 
       mailer.sendMail({
         to: email,
-        from: 'igor.mottta@gmail.com',
         template: 'login/forgot_password',
         context: { token },
       }, (err) => {
@@ -147,7 +152,7 @@ module.exports = {
 
       const user = await UserModel.findOne({
         attributes: {
-          include: ['password_reset_token', 'password_reset_expires']
+          include: ['password', 'password_reset_token', 'password_reset_expires']
         },
         where: { email }});
       if (!user) {

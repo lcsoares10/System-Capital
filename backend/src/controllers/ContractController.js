@@ -27,12 +27,13 @@ module.exports = {
       const Pagination = new PaginationClass(ContractModel);
       const result = await Pagination.select(page, options);
 
-      result.rows = result.rows.map(row => {
-        row = row.toJSON();
-        //taxa de carregamento
-        row.charging_rate = row.value * 0.015;
-        return row;
-      });
+      // result.rows = result.rows.map(row => {
+      //   console.log(row.virtual);
+      //   row = row.toJSON();
+      //   //taxa de carregamento
+      //   row.charging_rate = row.value * 0.015;
+      //   return row;
+      // });
 
       return res.json(result);
 

@@ -53,14 +53,14 @@ module.exports = {
       active: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        defaultValue: 1
+        defaultValue: 0
       },
       user_activated: {
         type: Sequelize.INTEGER,
         allowNull: false,
         defaultValue: 0
       },
-      user_activated_date: {
+      user_activated_at: {
         type: Sequelize.DATE,
         allowNull: true
       },
@@ -69,6 +69,10 @@ module.exports = {
         allowNull: true
       },
       password_reset_expires: {
+        type: Sequelize.DATE,
+        allowNull: true
+      },
+      first_login_at: {
         type: Sequelize.DATE,
         allowNull: true
       },

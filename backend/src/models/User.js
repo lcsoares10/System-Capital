@@ -1,5 +1,6 @@
 const { Model, DataTypes }  = require('sequelize');
 const bcrypt = require('bcrypt');
+const Crypto = require("crypto");
 const cpf = require("@fnando/cpf/commonjs");
 
 //https://medium.com/@thihenos/node-salvando-imagens-em-banco-de-dados-e-convertendo-em-imagens-novamente-1a304880f285
@@ -79,21 +80,38 @@ class User extends Model {
       is_admin: DataTypes.INTEGER,
       active: DataTypes.INTEGER,
       user_activated: DataTypes.INTEGER,
-      user_activated_date: DataTypes.DATE,
+      user_activated_at: DataTypes.DATE,
       password_reset_token: DataTypes.STRING,
       password_reset_expires: DataTypes.DATE,
+      first_login_at: DataTypes.DATE,
     }, {
       hooks: {
+        beforeValidate: (self, options) => {
+          if (!self.password && !self.first_login_at) {
+            //Criação User
+            self.password = Crypto.randomBytes(5).toString('hex');
+          }
+
+        },
         beforeCreate: (self, options) => {
-          self.password = this.generateHash(self.password);
+          //self.password = Crypto.randomBytes(5).toString('hex');
+          //self.password = this.generateHash(self.password);
         },
         beforeUpdate: (self, options) => {
           //quando senha não é passada no body
-          if (self.password === self.previous('password')) return;
 
-          if (!bcrypt.compareSync(self.password, self.previous('password'))) {
+          if (!self.previous('first_login_at') && !options.notHash) {
+            //primeiro login, tem q criptografar a senha
+            //notHash é usado na UserController:toggleActivatedUser()
             self.password = this.generateHash(self.password);
+          } else {
+            if (self.password === self.previous('password')) return;
+
+            if (!bcrypt.compareSync(self.password, self.previous('password'))) {
+              self.password = this.generateHash(self.password);
+            }
           }
+
         },
       },
       sequelize,
@@ -158,7 +176,12 @@ class User extends Model {
 
 //Prototype (Disponível no retorno de uma instâcia)
 User.prototype.validPassword = function(password) {
-  return bcrypt.compareSync(password, this.password);
+  if (!this.first_login_at) {
+    //primeiro login
+    return (password === this.password)
+  } else {
+    return bcrypt.compareSync(password, this.password);
+  }
 }
 
 module.exports = User;
