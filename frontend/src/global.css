@@ -68,13 +68,12 @@ main {
 }
 
 .back-link {
-  left: 8px;
+  height: 100%;
   position: absolute;
   background-color: var(--text-color-beige);
   color: white;
   box-shadow: var(--shadow-bottom);
-  padding: 2px;
-  border-radius: 5px;
+  padding: 14px 8px;
   display: flex;
   flex-direction: row;
 }
