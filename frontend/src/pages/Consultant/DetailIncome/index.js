@@ -44,7 +44,7 @@ export default function DetailIncome(props) {
         <div className="section">
           <div className="detail">
             <p className="weight-thin">
-              Total Faturado:{' '}
+              &nbsp;Total Faturado:
               <b className="text-white">{convertCoinBr(totIncomeMonth)}</b>
             </p>
           </div>
