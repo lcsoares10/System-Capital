@@ -21,6 +21,7 @@ const Contract = (props) => {
           type="number"
           value={props.valueInvest}
           onChange={(e) => props.handlevalueInvest(e.target.value)}
+          required
         />
       </div>
 
@@ -33,6 +34,7 @@ const Contract = (props) => {
           id="startContract"
           value={props.startContract}
           onChange={(e) => props.handleStartContract(e.target.value)}
+          required
         />
       </div>
 
@@ -45,15 +47,16 @@ const Contract = (props) => {
           id="doneCohandleTimeContractntract"
           value={props.timeContract}
           onChange={(e) => props.handleTimeContract(e.target.value)}
+          required
         />
       </div>
     </div>
   );
 };
 
-export default function NewUser() {
+export default function NewUser(props) {
   //Variavel que fara o controle de criação de usuario ou consultor
-  const newInvestor = false;
+  const newInvestor = props.location.state;
   const { user } = useAuthContext();
 
   const [name, setName] = useState('');
@@ -64,9 +67,11 @@ export default function NewUser() {
   const [valueInvest, setValueInvest] = useState(0);
   const [startContract, setStartContract] = useState('');
   const [timeContract, setTimeContract] = useState('');
+  const [errorForm, setErrorForm] = useState('');
 
   //Função para tratar a requisição que será feita de um novo usuário.
-  async function handleNewIncident(e) {
+  async function handleNewUser(e) {
+    let error = 0;
     e.preventDefault();
     const data = {
       login: name,
@@ -81,12 +86,13 @@ export default function NewUser() {
       time: timeContract,
       value: valueInvest,
     };
+
     const returnMessage = await createUser(
-      newInvestor ? true : false,
+      newInvestor === 'consultant' ? true : false,
       data,
       data_contract
     );
-    alert(returnMessage);
+
     return;
   }
 
@@ -95,7 +101,7 @@ export default function NewUser() {
       <HeaderBackground notLogin={true} />
       <main className="main-myprofile">
         <div className="title-header">
-          {newInvestor ? (
+          {newInvestor === 'investor' ? (
             <h1>Cadastro Investidor</h1>
           ) : (
             <h1>Cadastro Consultor</h1>
@@ -103,7 +109,7 @@ export default function NewUser() {
         </div>
 
         <div className="content-form">
-          <form onSubmit={handleNewIncident}>
+          <form onSubmit={handleNewUser}>
             <div className="edit-form">
               <label htmlFor="nome" className="label">
                 Nome
@@ -112,6 +118,7 @@ export default function NewUser() {
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                required
               />
             </div>
             <div className="edit-form">
@@ -122,6 +129,7 @@ export default function NewUser() {
                 type="text"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
+                required
               />
             </div>
 
@@ -137,6 +145,7 @@ export default function NewUser() {
                 placeholder="(21) 969075358"
                 onInput={(e) => setTel(e.target.value)}
                 pattern="[0-9]{11}"
+                required
               />
             </div>
 
@@ -148,9 +157,10 @@ export default function NewUser() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                required
               />
             </div>
-            {newInvestor && (
+            {newInvestor === 'investor' ? (
               <Contract
                 valueInvest={valueInvest}
                 handlevalueInvest={setValueInvest}
@@ -159,7 +169,10 @@ export default function NewUser() {
                 timeContract={timeContract}
                 handleTimeContract={setTimeContract}
               />
+            ) : (
+              ''
             )}
+            {errorForm}
             <button style={{ padding: '10px 90px', marginTop: '30px' }}>
               SALVAR
             </button>

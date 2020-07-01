@@ -32,7 +32,10 @@ export default function FooterBackground(props) {
       )}
       {props.viewAddUser && (
         <Link
-          to="/newUser"
+          to={{
+            pathname: '/newUser',
+            state: props.newUser,
+          }}
           style={{ position: 'absolute', right: '20px', marginTop: '7px' }}
         >
           <img src={icon_new} alt="" />
