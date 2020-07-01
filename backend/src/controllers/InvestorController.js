@@ -1,4 +1,4 @@
-const ImageModel = require('@/src/models/Image');
+const ImageModel =  require('@/src/models/Image');
 const UserModel = require('@/src/models/User');
 const InvestorModel = require('@/src/models/Investor');
 const ConsultantModel = require('@/src/models/Consultant');
@@ -77,6 +77,83 @@ module.exports = {
 
   /** Contracts */
 
+  async createInvestorContract(req, res) {
+
+    const t = await InvestorModel.sequelize.transaction();
+
+    try {
+
+      const bodyUser = {
+        id_consultant: req.body.id_consultant,
+        email: req.body.email,
+        login: req.body.login,
+        name: req.body.name,
+        last_name: req.body.last_name,
+        tel: req.body.tel,
+        identif: req.body.identif,
+      }
+
+      //Consultant
+      const consultant = await ConsultantModel.findByPk(bodyUser.id_consultant);
+      if (!consultant) {
+        throw new Exception("Consultor não existe", "id_consultant");
+      }
+
+      //========================
+      //Image
+      let image;
+      if (req.file) {
+        image = await ImageModel.create(ImageModel.file2Image(req.file), { transaction: t });
+      }
+
+      //========================
+      //User
+      const user = await UserModel.create({
+        ...bodyUser,
+        id_image_profile: (image) ? image.id : null
+      }, { transaction: t });
+
+      const investor = await InvestorModel.create({
+        id_user: user.id,
+        id_consultant: bodyUser.id_consultant
+      }, { transaction: t });
+
+      //========================
+      //Contract
+
+      const bodyContract = {
+        begin: req.body.begin,
+        day: req.body.day,
+        time: req.body.time,
+        value: req.body.value,
+        id_investor: investor.id,
+      }
+
+      const contract = await ContractModel.create(bodyContract, { transaction: t });
+
+      //===================================
+
+      const result = {
+        ...investor.toJSON(),
+        user: { ...user.toJSON(['password', 'updatedAt', 'createdAt'], "e")},
+        image: (image) ? { ...image.toJSON(['updatedAt', 'createdAt'], "e")} : null,
+        contract: { ...contract.toJSON()},
+      };
+
+      //===================================
+
+      await t.commit();
+
+      return res.json(Util.response(result, 'Inserido com Sucesso'));
+
+    } catch (e) {
+      if (req.file) Util.removeFile(req.file.filename);
+      await t.rollback();
+      const result = Exception._(e);
+      return res.status(400).json(Util.response(result));
+    }
+  },
+
   async contracts(req, res) {
 
     try {
@@ -112,10 +189,10 @@ module.exports = {
   /** POST */
 
   async create(req, res) {
-
     const t = await InvestorModel.sequelize.transaction();
 
     try {
+
       const { id_consultant, ...camposUser } = req.body;
 
       //Consultant
@@ -285,19 +362,3 @@ module.exports = {
   /** Outros*/
 
 };
-
-//TESTE
-/*   async get(req, res) {
-    const InvestorClass = require('@/src/class/Investor');
-    const Investor = new InvestorClass();
-
-    try {
-      const { id } = req.params;
-      await Investor.load(id);
-
-    } catch (er) {
-        return res.status(400).json({ error: er.message });
-    }
-
-    return res.json(Investor._values);
-  }, */
