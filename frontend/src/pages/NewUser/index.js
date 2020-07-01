@@ -7,6 +7,26 @@ import FooterBackground from '../../components/FooterBackground';
 import { createUser } from '../../controller/user';
 import { useAuthContext } from '../../Context/AuthContext';
 
+//masks
+import { cpfMask, maskTel, durationContractMask } from '../../utils/maskInputs';
+
+//--------------------------------------
+import IntlCurrencyInput from 'react-intl-currency-input';
+
+const currencyConfig = {
+  locale: 'pt-BR',
+  formats: {
+    number: {
+      BRL: {
+        style: 'currency',
+        currency: 'BRL',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      },
+    },
+  },
+};
+//-------------------------------------
 const Contract = (props) => {
   return (
     <div className="inputs-contracts">
@@ -16,11 +36,11 @@ const Contract = (props) => {
           Valor Investido
         </label>
         <span className="icon-prefix">R$</span>
-        <input
+        <IntlCurrencyInput
           id="valueInvest"
-          type="number"
-          value={props.valueInvest}
-          onChange={(e) => props.handlevalueInvest(e.target.value)}
+          currency="BRL"
+          config={currencyConfig}
+          onChange={props.handlevalueInvest}
           required
         />
       </div>
@@ -43,10 +63,12 @@ const Contract = (props) => {
           Duração do contrato
         </label>
         <input
-          type="number"
+          type="text"
           id="doneCohandleTimeContractntract"
           value={props.timeContract}
-          onChange={(e) => props.handleTimeContract(e.target.value)}
+          onChange={(e) =>
+            props.handleTimeContract(durationContractMask(e.target.value))
+          }
           required
         />
       </div>
@@ -61,6 +83,7 @@ export default function NewUser(props) {
 
   const [name, setName] = useState('');
   const [lastName, setLastName] = useState('');
+  const [cpf, setCpf] = useState('');
   const [tel, setTel] = useState('');
   const [email, setEmail] = useState('');
 
@@ -94,6 +117,10 @@ export default function NewUser(props) {
     );
 
     return;
+  }
+
+  function teste(value) {
+    setValueInvest(value);
   }
 
   return (
@@ -134,6 +161,19 @@ export default function NewUser(props) {
             </div>
 
             <div className="edit-form">
+              <label htmlFor="sobreNome" className="label">
+                CPF
+              </label>
+              <input
+                maxLength="14"
+                type="text"
+                value={cpf}
+                onChange={(e) => setCpf(cpfMask(e.target.value))}
+                required
+              />
+            </div>
+
+            <div className="edit-form">
               <label htmlFor="tel" className="label">
                 Telefone
               </label>
@@ -142,9 +182,10 @@ export default function NewUser(props) {
                 type="tel"
                 value={tel}
                 onChange={() => {}}
-                placeholder="(21) 969075358"
-                onInput={(e) => setTel(e.target.value)}
+                placeholder="(21) xxxxx-xxxx"
+                onInput={(e) => setTel(maskTel(e.target.value))}
                 pattern="[0-9]{11}"
+                maxLength="11"
                 required
               />
             </div>
