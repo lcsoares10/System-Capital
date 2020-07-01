@@ -192,6 +192,10 @@ const logger = winston.createLogger({
       message: `"${info.message}"`
     }
 
+    // if (info.level == 'Error') {
+    //   console.log((new Error()).stack);
+    // }
+
     return message = `${aux.date} | ${aux.level} | user: ${aux.id_user} | message: ${aux.message} | data: ${aux.data}`;
 
   }),
