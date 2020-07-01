@@ -1,5 +1,4 @@
-const InvestorModel = require('@/src/models/Investor');
-const ConsultantModel = require('@/src/models/Consultant');
+const MessageBoxModel = require('@/src/models/MessageBox');
 
 const Util = require('@/src/class/Util');
 const Exception = require('@/src/class/Exeption');
