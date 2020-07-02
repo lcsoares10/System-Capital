@@ -7,6 +7,26 @@ import FooterBackground from '../../components/FooterBackground';
 import { createUser } from '../../controller/user';
 import { useAuthContext } from '../../Context/AuthContext';
 
+//masks
+import { cpfMask, maskTel, durationContractMask } from '../../utils/maskInputs';
+
+//--------------------------------------
+import IntlCurrencyInput from 'react-intl-currency-input';
+
+const currencyConfig = {
+  locale: 'pt-BR',
+  formats: {
+    number: {
+      BRL: {
+        style: 'currency',
+        currency: 'BRL',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      },
+    },
+  },
+};
+//-------------------------------------
 const Contract = (props) => {
   return (
     <div className="inputs-contracts">
@@ -16,11 +36,12 @@ const Contract = (props) => {
           Valor Investido
         </label>
         <span className="icon-prefix">R$</span>
-        <input
+        <IntlCurrencyInput
           id="valueInvest"
-          type="number"
-          value={props.valueInvest}
-          onChange={(e) => props.handlevalueInvest(e.target.value)}
+          currency="BRL"
+          config={currencyConfig}
+          onChange={props.handlevalueInvest}
+          required
         />
       </div>
 
@@ -33,6 +54,7 @@ const Contract = (props) => {
           id="startContract"
           value={props.startContract}
           onChange={(e) => props.handleStartContract(e.target.value)}
+          required
         />
       </div>
 
@@ -41,32 +63,38 @@ const Contract = (props) => {
           Duração do contrato
         </label>
         <input
-          type="number"
+          type="text"
           id="doneCohandleTimeContractntract"
           value={props.timeContract}
-          onChange={(e) => props.handleTimeContract(e.target.value)}
+          onChange={(e) =>
+            props.handleTimeContract(durationContractMask(e.target.value))
+          }
+          required
         />
       </div>
     </div>
   );
 };
 
-export default function NewUser() {
+export default function NewUser(props) {
   //Variavel que fara o controle de criação de usuario ou consultor
-  const newInvestor = false;
+  const newInvestor = props.location.state;
   const { user } = useAuthContext();
 
   const [name, setName] = useState('');
   const [lastName, setLastName] = useState('');
+  const [cpf, setCpf] = useState('');
   const [tel, setTel] = useState('');
   const [email, setEmail] = useState('');
 
   const [valueInvest, setValueInvest] = useState(0);
   const [startContract, setStartContract] = useState('');
   const [timeContract, setTimeContract] = useState('');
+  const [errorForm, setErrorForm] = useState('');
 
   //Função para tratar a requisição que será feita de um novo usuário.
-  async function handleNewIncident(e) {
+  async function handleNewUser(e) {
+    let error = 0;
     e.preventDefault();
     const data = {
       login: name,
@@ -81,13 +109,18 @@ export default function NewUser() {
       time: timeContract,
       value: valueInvest,
     };
+
     const returnMessage = await createUser(
-      newInvestor ? true : false,
+      newInvestor === 'consultant' ? true : false,
       data,
       data_contract
     );
-    alert(returnMessage);
+
     return;
+  }
+
+  function teste(value) {
+    setValueInvest(value);
   }
 
   return (
@@ -95,7 +128,7 @@ export default function NewUser() {
       <HeaderBackground notLogin={true} />
       <main className="main-myprofile">
         <div className="title-header">
-          {newInvestor ? (
+          {newInvestor === 'investor' ? (
             <h1>Cadastro Investidor</h1>
           ) : (
             <h1>Cadastro Consultor</h1>
@@ -103,7 +136,7 @@ export default function NewUser() {
         </div>
 
         <div className="content-form">
-          <form onSubmit={handleNewIncident}>
+          <form onSubmit={handleNewUser}>
             <div className="edit-form">
               <label htmlFor="nome" className="label">
                 Nome
@@ -112,6 +145,7 @@ export default function NewUser() {
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                required
               />
             </div>
             <div className="edit-form">
@@ -122,6 +156,20 @@ export default function NewUser() {
                 type="text"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="edit-form">
+              <label htmlFor="sobreNome" className="label">
+                CPF
+              </label>
+              <input
+                maxLength="14"
+                type="text"
+                value={cpf}
+                onChange={(e) => setCpf(cpfMask(e.target.value))}
+                required
               />
             </div>
 
@@ -134,9 +182,11 @@ export default function NewUser() {
                 type="tel"
                 value={tel}
                 onChange={() => {}}
-                placeholder="(21) 969075358"
-                onInput={(e) => setTel(e.target.value)}
+                placeholder="(21) xxxxx-xxxx"
+                onInput={(e) => setTel(maskTel(e.target.value))}
                 pattern="[0-9]{11}"
+                maxLength="11"
+                required
               />
             </div>
 
@@ -148,9 +198,10 @@ export default function NewUser() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                required
               />
             </div>
-            {newInvestor && (
+            {newInvestor === 'investor' ? (
               <Contract
                 valueInvest={valueInvest}
                 handlevalueInvest={setValueInvest}
@@ -159,7 +210,10 @@ export default function NewUser() {
                 timeContract={timeContract}
                 handleTimeContract={setTimeContract}
               />
+            ) : (
+              ''
             )}
+            {errorForm}
             <button style={{ padding: '10px 90px', marginTop: '30px' }}>
               SALVAR
             </button>

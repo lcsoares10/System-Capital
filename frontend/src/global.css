@@ -66,6 +66,17 @@ main {
   flex-direction: column;
   justify-content: center;
 }
+
+.back-link {
+  height: 100%;
+  position: absolute;
+  background-color: var(--text-color-beige);
+  color: white;
+  box-shadow: var(--shadow-bottom);
+  padding: 14px 8px;
+  display: flex;
+  flex-direction: row;
+}
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
