@@ -123,7 +123,6 @@ module.exports = {
       ));
 
     } catch (e) {
-      await t.rollback();
       const result = Exception._(e);
       return res.status(400).json(Util.response(result, 'Erro ao Ativar usuário'));
     }
@@ -170,9 +169,41 @@ module.exports = {
       ));
 
     } catch (e) {
-      await t.rollback();
       const result = Exception._(e);
       return res.status(400).json(Util.response(result, 'Erro ao Ativar usuário'));
+    }
+
+  },
+
+  async alterPassword(req, res) {
+    try {
+
+      const { id } = req.params;
+      const user = await UserModel.findByPk(id, {
+        attributes: {
+          include: ['password']
+        }
+      });
+      //if (user) throw new Exception('Usuário não existe');
+
+      const { password_old, password_new, password_new_confirm } = req.body;
+
+      if (password_new !== password_new_confirm) {
+        throw new Exception('Password novo e confirmação não são iguais');
+      }
+
+      if (user.validPassword(password_old)) {
+        throw new Exception('Password novo é igual ao antigo');
+      }
+
+      await user.update({ password: password_old});
+
+      //return res.json(Util.response(user.toJSON(['password'], 'e'), 'Senha alterada com sucesso'));
+      return res.json(Util.response({}, 'Senha alterada com sucesso'));
+
+    } catch (e) {
+      const result = Exception._(e);
+      return res.status(400).json(Util.response(result, 'Erro ao alterar senha'));
     }
 
   }

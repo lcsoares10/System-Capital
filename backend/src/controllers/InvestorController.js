@@ -258,11 +258,15 @@ module.exports = {
 
       if (!user) throw new Exception("Usuário não existe", "id_user");
 
-      const { id_consultant, ...camposUser } = req.body;
+      let { id_consultant, ...camposUser } = req.body;
 
-      const consultant = await ConsultantModel.findByPk(id_consultant);
-      if (!consultant) {
-        throw new Exception("Consultor não existe", "id_consultant");
+      if (id_consultant) {
+        const consultant = await ConsultantModel.findByPk(id_consultant);
+        if (!consultant) {
+          throw new Exception("Consultor não existe", "id_consultant");
+        }
+      } else {
+        id_consultant = investor.id_consultant;
       }
 
       //=========================
