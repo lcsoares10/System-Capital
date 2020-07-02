@@ -31,18 +31,18 @@ class Contract extends Model {
         type: DataTypes.FLOAT,
         allowNull: false
       },
+      charging_rate: {
+        type: DataTypes.FLOAT,
+        allowNull: false
+      },
       contract_active: DataTypes.INTEGER,
       contract_active_date: DataTypes.DATE,
-      charging_rate: {
-        type: DataTypes.VIRTUAL(DataTypes.FLOAT),
-        get() {
-          return (this.value * 0.015);
-        },
-        set(value) {
-          throw new Error('Do not try to set the `charging_rate` value!');
+    }, {
+      hooks: {
+        beforeValidate: (self, options) => {
+          self.charging_rate = self.value * 0.15;
         }
       },
-    }, {
       sequelize,
       defaultScope: {
         attributes: {
