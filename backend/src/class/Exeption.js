@@ -15,6 +15,8 @@ class Exception {
     this._errorJson = JSON.parse(JSON.stringify(e));
     this._error = e;
 
+    console.log(this._error.stack);
+
     switch (true) {
       case (SequelizeExeption.isSequelizeException(this._error)):
         return SequelizeExeption.SequelizeExeption(this._error);

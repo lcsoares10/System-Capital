@@ -10,7 +10,8 @@ const transport = nodemailer.createTransport({
   auth: {
     user: process.env.MAILER_USER,
     pass: process.env.MAILER_PASSOWORD
-  }
+  },
+  from : "igor.mottta@gmail.com",
 });
 
 transport.use('compile', hbs({

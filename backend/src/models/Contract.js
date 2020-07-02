@@ -33,6 +33,15 @@ class Contract extends Model {
       },
       contract_active: DataTypes.INTEGER,
       contract_active_date: DataTypes.DATE,
+      charging_rate: {
+        type: DataTypes.VIRTUAL(DataTypes.FLOAT),
+        get() {
+          return (this.value * 0.015);
+        },
+        set(value) {
+          throw new Error('Do not try to set the `charging_rate` value!');
+        }
+      },
     }, {
       sequelize,
       defaultScope: {
