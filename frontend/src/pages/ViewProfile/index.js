@@ -1,6 +1,4 @@
-import React,{useState} from 'react';
-
-import api from '../../services/api';
+import React, { useState, useEffect } from 'react';
 
 import Container from '../../components/Container';
 import HeaderBackground from '../../components/HeaderBackground';
@@ -8,93 +6,153 @@ import FooterBackground from '../../components/FooterBackground';
 
 import icon_profile_my from '../../assets/icon-profile-my.png';
 import EditIcon from '@material-ui/icons/Edit';
-
-import './styles.css';
+import VpnKeyIcon from '@material-ui/icons/VpnKey';
+//masks
+import { cpfMask, maskTel, durationContractMask } from '../../utils/maskInputs';
 //------------------------------------------------------------
 import { useAuthContext } from '../../Context/AuthContext';
+import { detailUser, editUser } from '../../controller/Investor/index';
 
-
+import './styles.css';
+import { Link } from 'react-router-dom';
 
 export default function ViewProfile() {
-
   const { user } = useAuthContext();
-  const [tel,setTel] = useState(user.tel);
-  const [email,setEmail] = useState(user.email);
-  const [img,setImg] = useState(user.id_image_profile);
+  // const [login, setLogin] = useState('');
+  const [name, setName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [cpf, setCpf] = useState('');
+  const [tel, setTel] = useState('');
+  const [email, setEmail] = useState('');
+  const [imgProfile, setImgProfile] = useState('');
 
-  async function handdleInpunt(e, email, tel) {
+  useEffect(() => {
+    async function getDetailProfile() {
+      const data = await detailUser(user.id);
+      //  setLogin(data.login);
+      setName(data.name);
+      setLastName(data.last_name);
+      setCpf(data.identif);
+      setTel(maskTel(data.tel));
+      setEmail(data.email);
+      setImgProfile(data.profile);
+    }
+
+    getDetailProfile();
+  }, []);
+
+  //Funçao trata os dados passados no formulario , e chamara funçao que fara a requisiçao de update.
+  async function handdleSubmit(e) {
     e.preventDefault();
-  
-      try {
-        const { data } = await api.get(`/investor/${user.id}`,{
 
-          email,
-          tel,
-          id_image_profile: null,
-          profile: null
+    let formData = new FormData();
 
-        });
-        console.log(data.user.name);
-        return data.user;
-  
-      } catch (error) {
-          console.log(error);
-          return error;
-      }
+    formData.append('profile', e.target[0].files[0]);
+    formData.append('tel', tel.replace(/[()-]/g, ''));
+    formData.append('email', email);
+    formData.append('id_consultant', 1);
+
+    const response = await editUser(formData, user.id);
+    alert(response);
   }
- 
-    console.log(user)
- 
-    return (
-        <Container className="container-login" >    
-          <HeaderBackground notLogin={true}/>
-          <main className="main-myprofile">
-            <div className="title-header">
-              <h1>Perfil</h1>
+
+  function handdleInputImage(image) {
+    const reader = new FileReader();
+
+    if (image.type.search(/[Ii]+[Mm]+[Aa]+[Gg]+[Ee]/) === -1) {
+      alert('Por favor insira uma imagem');
+      return;
+    }
+
+    reader.onload = () => setImgProfile({ url: reader.result });
+    reader.readAsDataURL(image);
+  }
+
+  return (
+    <Container className="container-login">
+      <HeaderBackground notLogin={true} />
+      <main className="main-myprofile">
+        <div className="title-header">
+          <h1>Perfil</h1>
+          <Link>
+            <VpnKeyIcon style={{ color: 'yellow', marginTop: '20px' }} />
+          </Link>
+        </div>
+
+        <div className="content-form">
+          <form
+            encType="multipart/form-data"
+            onSubmit={(e) => handdleSubmit(e)}
+          >
+            <div className="upload-photo">
+              <label htmlFor="photo" style={{ cursor: 'pointer' }}>
+                <div className="photo-ptofile">
+                  <img
+                    src={imgProfile !== null ? imgProfile.url : icon_profile_my}
+                  />
+                </div>
+                <span>ALTERAR FOTO</span>
+              </label>
+              <input
+                id="photo"
+                type="file"
+                style={{ display: 'none' }}
+                onChange={(e) => handdleInputImage(e.target.files[0])}
+              />
             </div>
 
-            <div className="content-form">
-
-              <div className="photo-ptofile">
-                <img src={icon_profile_my}/>
-              </div>
-              <form enctype="multipart/form-data" onSubmit={e=>handdleInpunt(e, email, tel)}>
-                  <div className="upload-photo">
-                    <label for="photo">ALTERAR FOTO</label>
-                    <input id="photo" type="file" style={{display:"none"}}/>
-                  </div>
-                  
-                  <div className ='no-edit-form'>
-                    <label for="nome" className="label">Nome</label>
-                    <input type="text" readonly='true' value={user.name}/>
-                  </div>
-                  <div className ='no-edit-form'>
-                    <label for="sobreNome" className="label">Sobre nome</label>
-                    <input type="text" readonly='true' value={user.last_name}/>
-                  </div>
-
-                  <div className ='edit-form'>
-                    <label for="tel" className="label"> Telefone</label>
-                    <input id="tel" type="text" onChange={e => setTel(e.target.value)} value={user}/>
-                    <EditIcon className="icon-edit"/>
-                  </div>
-                  
-                  <div className='edit-form'>
-                    <label for="email" className="label">Email</label>
-                    <input type="email" onChange={e => setEmail(e.target.value)} value={email}/>
-                    <EditIcon className="icon-edit"/>
-                  </div>  
-
-                    <button style={{'padding': '10px 90px','margin-top':'30px' }}>SALVAR</button>
-          
-              </form>
-             
-
+            <div className="no-edit-form">
+              <label htmlFor="nome" className="label">
+                Nome
+              </label>
+              <input type="text" readOnly={true} value={name} />
+            </div>
+            <div className="no-edit-form">
+              <label htmlFor="sobreNome" className="label">
+                Sobre nome
+              </label>
+              <input type="text" readOnly={true} value={lastName} />
             </div>
 
-          </main>
-        <FooterBackground notLogin={true}/>
-        
-      </Container>
-    );
+            <div className="edit-form">
+              <label htmlFor="tel" className="label">
+                Telefone
+              </label>
+              <input
+                id="tel"
+                type="text"
+                onChange={(e) => setTel(maskTel(e.target.value))}
+                value={tel}
+              />
+              <EditIcon className="icon-edit" />
+            </div>
+
+            <div className="edit-form">
+              <label htmlFor="email" className="label">
+                Email
+              </label>
+              <input
+                type="email"
+                onChange={(e) => setEmail(e.target.value)}
+                value={email}
+              />
+              <EditIcon className="icon-edit" />
+            </div>
+
+            <button style={{ padding: '10px 90px', marginTop: '30px' }}>
+              SALVAR
+            </button>
+          </form>
+        </div>
+      </main>
+      <FooterBackground notLogin={true} />
+    </Container>
+  );
 }
+
+/* <div className="no-edit-form">
+<label htmlFor="login" className="label">
+  Login
+</label>
+<input type="text" readOnly={true} value={login} />
+</div> */

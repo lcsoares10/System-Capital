@@ -87,13 +87,13 @@ export default function IncomeConsultant(props) {
         <div className="section">
           <div className="detail">
             <p className="weight-thin">
-              Total Faturado:
-              <b className="text-white">{convertCoinBr(totIncome)}</b>
+              &nbsp;Total Faturado:
+              <b className="text-white">&nbsp;{convertCoinBr(totIncome)}</b>
             </p>
             <p className="weight-thin" style={{ marginTop: '10px' }}>
-              Faturado {monthCurrent}:
+              &nbsp;Faturado {monthCurrent}:
               <b className="text-white">
-                {convertCoinBr(monthValueCurrent.value)}
+                &nbsp;{convertCoinBr(monthValueCurrent.value)}
               </b>
             </p>
           </div>

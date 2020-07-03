@@ -77,7 +77,11 @@ export default function Profile() {
           </div>
         </div>
       </main>
-      <FooterBackground viewAddUser={true} notLogin={true} />
+      <FooterBackground
+        viewAddUser={true}
+        newUser={'investor'}
+        notLogin={true}
+      />
     </Container>
   );
 }
