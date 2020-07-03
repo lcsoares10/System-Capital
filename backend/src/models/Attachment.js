@@ -31,7 +31,7 @@ class Attachment extends Model {
     this.belongsTo(models.Image, {foreignKey: 'id_image', as: 'image'});
 
     //belongsTo [1:1] - Chave estrageira definida em A
-    this.belongsTo(models.CategoryAttachment, {foreignKey: 'id_category_attachment', as: 'category'});
+    this.belongsTo(models.CategoryAttachment, {foreignKey: 'id_category_attachment', as: 'category_attachment'});
 
   }
 

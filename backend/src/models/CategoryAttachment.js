@@ -30,7 +30,7 @@ class CategoryAttachment extends Model {
 
   static associate(models) {
     //hasOne [1:1] - Chave estrangeira definida em B
-    this.hasOne(models.Attachment, { foreignKey: 'id_category_attachment', as: 'category' });
+    this.hasOne(models.Attachment, { foreignKey: 'id_category_attachment', as: 'category_attachment' });
   }
 
 }
