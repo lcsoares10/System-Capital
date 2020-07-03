@@ -93,7 +93,7 @@ module.exports = {
                   day: 5,
                   time: '12',
                   value: 10000,
-                  charging_rate: 10000 * 0.15,
+                  charging_rate: 10000 * 0.015,
                   created_at: new Date(),
                   updated_at: new Date(),
                 },
