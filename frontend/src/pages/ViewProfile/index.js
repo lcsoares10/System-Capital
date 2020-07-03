@@ -50,10 +50,10 @@ export default function ViewProfile() {
     formData.append('profile', e.target[0].files[0]);
     formData.append('tel', tel.replace(/[()-]/g, ''));
     formData.append('email', email);
-    formData.append('id_consultant', 1);
 
     const response = await editUser(formData, user.id);
     alert(response);
+    window.location.reload(false);
   }
 
   function handdleInputImage(image) {

@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
-
 import Container from '../../components/Container';
 import HeaderBackground from '../../components/HeaderBackground';
 import FooterBackground from '../../components/FooterBackground';
 
-import { createUser } from '../../controller/user';
+import { createUserInvestor } from '../../controller/user';
 import { useAuthContext } from '../../Context/AuthContext';
+import clearFormatCoin from '../../utils/clearFormatCoin';
 
 //masks
 import { cpfMask, maskTel, durationContractMask } from '../../utils/maskInputs';
 
 //--------------------------------------
 import IntlCurrencyInput from 'react-intl-currency-input';
+import { useHistory } from 'react-router-dom';
 
 const currencyConfig = {
   locale: 'pt-BR',
@@ -28,6 +29,12 @@ const currencyConfig = {
 };
 //-------------------------------------
 const Contract = (props) => {
+  const handlevalueInvestInput = (event, value, maskedValue) => {
+    event.preventDefault();
+    props.handlevalueInvest(value); // value without mask (ex: 1234.56)
+    console.log(maskedValue); // masked value (ex: R$1234,56)
+  };
+
   return (
     <div className="inputs-contracts">
       <h3 style={{ margin: '28px auto' }}>Cadastrar Contrato</h3>
@@ -35,12 +42,12 @@ const Contract = (props) => {
         <label htmlFor="valueInvest" className="label">
           Valor Investido
         </label>
-        <span className="icon-prefix">R$</span>
+
         <IntlCurrencyInput
           id="valueInvest"
           currency="BRL"
           config={currencyConfig}
-          onChange={props.handlevalueInvest}
+          onChange={handlevalueInvestInput}
           required
         />
       </div>
@@ -77,6 +84,7 @@ const Contract = (props) => {
 };
 
 export default function NewUser(props) {
+  const history = useHistory();
   //Variavel que fara o controle de criação de usuario ou consultor
   const newInvestor = props.location.state;
   const { user } = useAuthContext();
@@ -94,33 +102,28 @@ export default function NewUser(props) {
 
   //Função para tratar a requisição que será feita de um novo usuário.
   async function handleNewUser(e) {
-    let error = 0;
     e.preventDefault();
     const data = {
-      login: name,
+      // login: name,
       email,
       name,
       last_name: lastName,
-      tel,
+      tel: tel.replace(/[()-]/g, ''),
       id_consultant: user.id,
-    };
-    const data_contract = {
+      identif: cpf.replace(/[.-]/g, ''),
       begin: startContract,
-      time: timeContract,
+      time: timeContract.replace(/[ ]|[meses]/g, ''),
       value: valueInvest,
+      day: 5,
     };
 
-    const returnMessage = await createUser(
-      newInvestor === 'consultant' ? true : false,
-      data,
-      data_contract
-    );
-
-    return;
-  }
-
-  function teste(value) {
-    setValueInvest(value);
+    try {
+      const returnMessage = await createUserInvestor(data);
+      alert(returnMessage);
+      history.push('/');
+    } catch (error) {
+      alert(error);
+    }
   }
 
   return (
@@ -184,8 +187,6 @@ export default function NewUser(props) {
                 onChange={() => {}}
                 placeholder="(21) xxxxx-xxxx"
                 onInput={(e) => setTel(maskTel(e.target.value))}
-                pattern="[0-9]{11}"
-                maxLength="11"
                 required
               />
             </div>

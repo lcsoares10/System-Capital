@@ -4,35 +4,18 @@ function gerarPassword() {
   return Math.random().toString(36).slice(-10);
 }
 
-async function createUser(typeUser, data, data_contract) {
-  data = {
-    ...data,
-    password: gerarPassword(),
-  };
-
-  if (typeUser === 'investor') {
-    try {
-      const id_investor = await api.post(`/investors`, data);
-
-      data_contract = {
-        ...data_contract,
-        id_investor,
-      };
-
-      await api.post(`/contracts`, data);
-      return 'Investidor e contrato criado com sucesso';
-    } catch (error) {
-      console.log(error);
-      return error;
-    }
-  }
-
+async function createUserInvestor(data) {
+  data = { ...data, login: 'naoDefinido' };
   try {
-    await api.post(`/consultants`, data);
+    const id_investor = await api.post(
+      `/investors/createInvestorContract`,
+      data
+    );
+    return 'Investidor e contrato criado com sucesso';
   } catch (error) {
-    console.log(error);
+    console.log(Response.data);
     return error;
   }
 }
 
-export { createUser };
+export { createUserInvestor };
