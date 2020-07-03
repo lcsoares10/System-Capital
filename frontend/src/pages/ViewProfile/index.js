@@ -6,6 +6,7 @@ import FooterBackground from '../../components/FooterBackground';
 
 import icon_profile_my from '../../assets/icon-profile-my.png';
 import EditIcon from '@material-ui/icons/Edit';
+import VpnKeyIcon from '@material-ui/icons/VpnKey';
 //masks
 import { cpfMask, maskTel, durationContractMask } from '../../utils/maskInputs';
 //------------------------------------------------------------
@@ -13,6 +14,7 @@ import { useAuthContext } from '../../Context/AuthContext';
 import { detailUser, editUser } from '../../controller/Investor/index';
 
 import './styles.css';
+import { Link } from 'react-router-dom';
 
 export default function ViewProfile() {
   const { user } = useAuthContext();
@@ -42,48 +44,55 @@ export default function ViewProfile() {
   //Funçao trata os dados passados no formulario , e chamara funçao que fara a requisiçao de update.
   async function handdleSubmit(e) {
     e.preventDefault();
-    const data = {
-      // name,
-      // last_name: lastName,
-      tel,
-      email,
-      profile: imgProfile.profile,
-    };
-    const response = await editUser(data);
+
+    let formData = new FormData();
+
+    formData.append('profile', e.target[0].files[0]);
+    formData.append('tel', tel.replace(/[()-]/g, ''));
+    formData.append('email', email);
+    formData.append('id_consultant', 1);
+
+    const response = await editUser(formData, user.id);
     alert(response);
   }
 
   function handdleInputImage(image) {
     const reader = new FileReader();
-    const pattern = '/[Ii]+[Mm]+[Aa]+[Gg]+[Ee]/';
-    if (image.profile.type.search(pattern) === -1) {
+
+    if (image.type.search(/[Ii]+[Mm]+[Aa]+[Gg]+[Ee]/) === -1) {
       alert('Por favor insira uma imagem');
       return;
     }
 
-    reader.onload = () => setImgProfile({ url: reader.result, profile: image });
+    reader.onload = () => setImgProfile({ url: reader.result });
     reader.readAsDataURL(image);
   }
 
-  console.log(imgProfile);
   return (
     <Container className="container-login">
       <HeaderBackground notLogin={true} />
       <main className="main-myprofile">
         <div className="title-header">
           <h1>Perfil</h1>
+          <Link>
+            <VpnKeyIcon style={{ color: 'yellow', marginTop: '20px' }} />
+          </Link>
         </div>
 
         <div className="content-form">
-          <div className="photo-ptofile">
-            <img src={imgProfile.url ? imgProfile.url : icon_profile_my} />
-          </div>
           <form
             encType="multipart/form-data"
             onSubmit={(e) => handdleSubmit(e)}
           >
             <div className="upload-photo">
-              <label htmlFor="photo">ALTERAR FOTO</label>
+              <label htmlFor="photo" style={{ cursor: 'pointer' }}>
+                <div className="photo-ptofile">
+                  <img
+                    src={imgProfile !== null ? imgProfile.url : icon_profile_my}
+                  />
+                </div>
+                <span>ALTERAR FOTO</span>
+              </label>
               <input
                 id="photo"
                 type="file"
@@ -134,8 +143,6 @@ export default function ViewProfile() {
               SALVAR
             </button>
           </form>
-
-          <h3>Alterar senha</h3>
         </div>
       </main>
       <FooterBackground notLogin={true} />

@@ -3,7 +3,7 @@ import api from '../../services/api';
 async function detailUser(id_user) {
   try {
     const { data } = await api.get(`/investors/${id_user}`);
-    console.log(data.data.user);
+
     return data.data.user;
   } catch (error) {
     console.log(error);
@@ -11,10 +11,14 @@ async function detailUser(id_user) {
   }
 }
 
-async function editUser(data, id_user) {
+async function editUser(dataForm, id_user) {
+  const config = {
+    headers: { 'content-type': 'multipart/form-data' },
+  };
+
   try {
-    const { data } = await api.get(`/investors/${id_user}`, { ...data });
-    console.log(data.data.user);
+    const { data } = await api.put(`/investors/${id_user}`, dataForm, config);
+
     return 'Dados alterados com sucesso';
   } catch (error) {
     console.log(error);
