@@ -81,6 +81,7 @@ export default function Profile() {
         viewAddUser={true}
         newUser={'investor'}
         notLogin={true}
+        notBack={false}
       />
     </Container>
   );
