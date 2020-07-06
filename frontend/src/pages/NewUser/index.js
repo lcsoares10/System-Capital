@@ -5,7 +5,6 @@ import FooterBackground from '../../components/FooterBackground';
 
 import { createUserInvestor } from '../../controller/user';
 import { useAuthContext } from '../../Context/AuthContext';
-import clearFormatCoin from '../../utils/clearFormatCoin';
 
 //masks
 import { cpfMask, maskTel, durationContractMask } from '../../utils/maskInputs';
