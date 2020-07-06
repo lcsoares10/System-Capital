@@ -91,6 +91,6 @@ main .content-investor .detail-associated button {
   color: var(--text-color-button);
   box-shadow: var(--shadow-top);
   transition: 0.8;
-  font-weight: 200;
+  font-weight: 400;
   font-size: 12px;
 }
