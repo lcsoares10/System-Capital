@@ -8,22 +8,6 @@ class Util {
   }
 
   //======================================
-  static fileExist(path) {
-    const fs = require('fs');
-    fs.access(path, fs.F_OK, (err) => {
-      if (err) return false;
-      return true;
-    })
-  }
-
-  static removeFile(fileName) {
-    //https://www.youtube.com/watch?v=MkkbUfcZUZM -- Upload de arquivos: back-end com NodeJS | Diego Fernandes
-    promisify(fs.unlink)(path.resolve(__dirname, '../../tmp/uploads', fileName));
-  }
-
-  //======================================
-  //======================================
-
   static response(data, message='') {
 
     let typeData = typeof data;
@@ -42,7 +26,6 @@ class Util {
 
   }
 
-  //======================================
   //======================================
 
   //https://medium.com/@thihenos/node-salvando-imagens-em-banco-de-dados-e-convertendo-em-imagens-novamente-1a304880f285

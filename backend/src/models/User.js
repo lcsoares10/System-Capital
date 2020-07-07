@@ -87,10 +87,10 @@ class User extends Model {
     }, {
       hooks: {
         beforeValidate: (self, options) => {
-          if (!self.password && !self.first_login_at) {
-            //Criação User
-            self.password = Crypto.randomBytes(5).toString('hex');
-          }
+          // if (!self.password && !self.first_login_at) {
+          //   //Criação User
+          //   self.password = Crypto.randomBytes(5).toString('hex');
+          // }
 
         },
         beforeCreate: (self, options) => {
@@ -100,17 +100,27 @@ class User extends Model {
         beforeUpdate: (self, options) => {
           //quando senha não é passada no body
 
-          if (!self.previous('first_login_at') && !options.notHash) {
-            //primeiro login, tem q criptografar a senha
-            //notHash é usado na UserController:toggleActivatedUser()
-            self.password = this.generateHash(self.password);
-          } else {
-            if (self.password === self.previous('password')) return;
+          /** 05-07-2020
+           * Quando for cadastrar tem q gerar a senha
+           * Quando fizer o primeiro login tem por o hash na senha
+           * Atualizar a senha tem uma rota propria
+           */
 
-            if (!bcrypt.compareSync(self.password, self.previous('password'))) {
-              self.password = this.generateHash(self.password);
-            }
-          }
+          // if (!options.update_password) return;
+
+          // if (!self.previous('first_login_at') && !options.notHash) {
+
+          //   //primeiro login, tem q criptografar a senha
+          //   //notHash é usado na UserController:toggleActivatedUser()
+          //   self.password = this.generateHash(self.password);
+          // } else {
+
+          //   if (self.password === self.previous('password')) return;
+
+          //   if (!bcrypt.compareSync(self.password, self.previous('password'))) {
+          //     self.password = this.generateHash(self.password);
+          //   }
+          // }
 
         },
       },

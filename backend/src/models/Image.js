@@ -46,7 +46,7 @@ class Image extends Model {
     }, {
       hooks: {
         beforeValidate: (self, options) => {
-          self.url = `${process.env.BASE_URL}/files/${self.key}`;
+          //self.url = `${process.env.BASE_URL}/files/${self.key}`;
         },
       },
       sequelize,
@@ -64,10 +64,12 @@ class Image extends Model {
 
   }
 
-  static file2Image(file) {
+  static file2Image(file, id_user) {
     const { originalname: name, size, filename: key, mimetype: mime, } = file;
-    return {name, size, key, mime};
+    const url = `${process.env.BASE_URL}/files/${id_user}/${key}`;
+    return {name, size, key, mime, url};
   }
 
 }
+
 module.exports = Image;
