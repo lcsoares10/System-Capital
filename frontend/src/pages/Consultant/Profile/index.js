@@ -5,10 +5,7 @@ import Container from '../../../components/Container';
 import HeaderBackground from '../../../components/HeaderBackground';
 import FooterBackground from '../../../components/FooterBackground';
 import LineChart from '../../../components/ Graphics/line';
-import DoughnutChart from '../../../components/ Graphics/doughnut';
 
-import allContracts from '../../../controller/Investor/allContracts';
-import calculateProjection from '../../../controller/Investor/calculateProjection';
 import { AllAssoatedinvestors } from '../../../controller/Consultant';
 import { getYeldYear } from '../../../controller/Consultant';
 // import api from '../../services/api';
@@ -20,7 +17,6 @@ import { useAuthContext } from '../../../Context/AuthContext';
 
 export default function Profile() {
   const { user } = useAuthContext();
-  const [contracts, setContracts] = useState([]);
   const [dataProjection, setDataProjection] = useState({
     values: [],
     months: [],
@@ -29,19 +25,14 @@ export default function Profile() {
 
   useEffect(() => {
     // Create an scoped async function in the hook
-    async function getContracts() {
+    async function getInvestor() {
       const data = await AllAssoatedinvestors(user.id);
-      setContracts(contracts);
       setTotInvestors(data.totrows);
     }
-    getContracts();
+    getInvestor();
     //Execute the created function directly
   }, []);
 
-  /**Por causa das execuções asyncronas do React
-   * handleCalculationProjection só pode ser carregada quando
-   * contracts tiver valor
-   */
   useEffect(() => {
     async function handleYealdYear() {
       const dateCurrent = new Date();
@@ -54,10 +45,10 @@ export default function Profile() {
 
   function handleProjection(data) {
     let values = data.map((month, count) => {
-      return String(month.value);
+      return month.value;
     });
     let months = data.map((month) => {
-      return month.month;
+      return moment(month.month).format('MMM').capitalize();
     });
     return { values, months };
   }
