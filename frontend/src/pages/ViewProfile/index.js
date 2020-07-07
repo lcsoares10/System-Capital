@@ -74,7 +74,7 @@ export default function ViewProfile() {
       <main className="main-myprofile">
         <div className="title-header">
           <h1>Perfil</h1>
-          <Link>
+          <Link to="/">
             <VpnKeyIcon style={{ color: 'yellow', marginTop: '20px' }} />
           </Link>
         </div>
