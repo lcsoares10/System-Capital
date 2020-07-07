@@ -1,8 +1,9 @@
 import React from 'react';
-import {Line} from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
 import convertCoinBr from '../../../utils/convertCoinBr';
 
 export default function LineChart(props) {
+  console.log(props.data.months);
 
   const months = props.data.months || [];
   const values = props.data.values || [];
@@ -17,9 +18,9 @@ export default function LineChart(props) {
         backgroundColor: 'rgba(75,192,192,1)',
         borderColor: 'rgba(255,255,255)',
         borderWidth: 2,
-        data: values
-      }
-    ]
+        data: values,
+      },
+    ],
   };
 
   return (
@@ -28,14 +29,14 @@ export default function LineChart(props) {
         data={state}
         options={{
           responsive: true,
-          title:{
-            display:true,
-            text:'Lucro',
-            fontSize:15,
+          title: {
+            display: true,
+            text: 'Lucro',
+            fontSize: 15,
           },
-          legend:{
-            display:false,
-            position:'left',
+          legend: {
+            display: false,
+            position: 'left',
           },
           tooltips: {
             // mode: 'index',
@@ -43,12 +44,15 @@ export default function LineChart(props) {
             callbacks: {
               label: function (tooltipItem, data) {
                 //let label = data.datasets[tooltipItem.datasetIndex].label + ' - ' + data.labels[tooltipItem.index];
-                let datasetLabel = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                let datasetLabel =
+                  data.datasets[tooltipItem.datasetIndex].data[
+                    tooltipItem.index
+                  ];
                 //return `<ul><li>${label}</li><li>${convertCoinBr(datasetLabel)}</li></ul>`;
                 return convertCoinBr(datasetLabel);
-              }
-            }
-        },
+              },
+            },
+          },
         }}
       />
     </div>
