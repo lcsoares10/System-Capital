@@ -13,9 +13,7 @@ class Attachment extends Model {
         allowNull: true,
       },
     }, {
-      sequelize,
-      timestamps: false,
-      //tableName: 'Investors'
+      sequelize
     });
   }
 

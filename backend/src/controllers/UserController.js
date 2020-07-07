@@ -252,7 +252,7 @@ module.exports = {
     let image;
     switch (true) {
       case Boolean(!file && user.id_image_profile):
-        console.log('deleta image');
+        //console.log('deleta image');
         image = await ImageModel.findByPk(user.id_image_profile);
         await image.destroy({ transaction: t });
         await sFile.removeFile(`attachments/${user.id}/${image.key}`);
