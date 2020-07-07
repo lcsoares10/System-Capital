@@ -26,4 +26,5 @@ yarn-error.log*
 #log
 /logs
 
+/attachments
 /tmp
