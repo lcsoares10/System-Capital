@@ -48,7 +48,8 @@ module.exports = {
   async attach(req, res) {
 
     const t = await AttachmentModel.sequelize.transaction();
-    const { id_user } = req.params;
+    //const { id_user } = req.params;
+    const id_user = req.user.id_user;
 
     try {
 
@@ -129,7 +130,7 @@ module.exports = {
   },
 
   /**
-   * @description Valixar anexo de um usuário
+   * @description Validar anexo de um usuário
    */
 
   async toogleValidAttachment(req, res) {

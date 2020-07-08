@@ -3,16 +3,16 @@ const routes = express.Router();
 const multer = require('multer');
 const multerConfig = require('@/src/config/multer');
 
-//const authAdmin = require('@/src/middleware/authAdmin');
-//const { valid } = require('@/src/middleware/routers/consultant');
+const authAdmin = require('@/src/middleware/authAdmin');
+const { validAttach } = require('@/src/middleware/routers/attachment');
 
 const AttachmentController = require('@/src/controllers/AttachmentController');
 
-routes.get('/attachmentsForValid', AttachmentController.attachmentsForValid);
+routes.get('/attachmentsForValid', authAdmin, AttachmentController.attachmentsForValid);
 
-routes.post('/attach/:id_user', multer(multerConfig).single('file'), AttachmentController.attach);
-routes.delete('/detach/:id', AttachmentController.detach);
+routes.post('/attach', validAttach, multer(multerConfig).single('file'), AttachmentController.attach);
+routes.delete('/detach/:id', authAdmin, AttachmentController.detach);
 
-routes.post('/toogleValidAttachment/:id', AttachmentController.toogleValidAttachment);
+routes.post('/toogleValidAttachment/:id', authAdmin, AttachmentController.toogleValidAttachment);
 
 module.exports = routes;
