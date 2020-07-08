@@ -32,6 +32,10 @@ module.exports = {
         type: Sequelize.FLOAT,
         allowNull: false
       },
+      charging_rate: {
+        type: Sequelize.FLOAT,
+        allowNull: false
+      },
       contract_active: {
         type: Sequelize.INTEGER,
         allowNull: false,

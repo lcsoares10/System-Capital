@@ -1,9 +1,11 @@
-// const fs = require('fs')
-const Util = require('./src/class/Util');
 const path = require('path');
+const fs = require('fs');
 
-let pathEnv = path.resolve(__dirname, `.env.${process.env.NODE_ENV}.local`);
-if (!Util.fileExist(pathEnv)) {
+let pathEnv
+try {
+  pathEnv = path.resolve(__dirname, `.env.${process.env.NODE_ENV}.local`);
+  fs.accessSync(pathEnv);
+} catch (err) {
   pathEnv = path.resolve(__dirname, `.env`);
 }
 

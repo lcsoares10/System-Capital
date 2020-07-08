@@ -44,7 +44,12 @@ module.exports = {
 
       if (!user.active || !user.user_activated) throw new Exception(`${msgError} (3)`);
 
-      if (!user.first_login_at) user.update({ password, first_login_at: moment().format() });
+      if (!user.first_login_at) {
+        user.update({
+          password: UserModel.generateHash(password),
+          first_login_at: moment().format()
+        });
+      }
 
       //console.log(user.toJSON());
       //console.log( JSON.stringify(user.investor, null, 2) );
@@ -172,12 +177,12 @@ module.exports = {
 
       //================================
       //alterar aqui!!
-      //const hash_password = await UserModel.generateHash(password);
+      //const password = UserModel.generateHash(password);
       user.update({
         password_reset_token: null,
         password_reset_expires: null,
         //password: hash_password
-        password
+        password: UserModel.generateHash(password)
       });
 
       return res.json(Util.response({}, 'Senha alterada com sucesso'));

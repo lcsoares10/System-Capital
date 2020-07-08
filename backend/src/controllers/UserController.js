@@ -1,11 +1,15 @@
 const mailer = require("@/src/modules/mailer");
 
 const UserModel = require('@/src/models/User');
+const ImageModel =  require('@/src/models/Image');
 const MessageBoxModel = require('@/src/models/MessageBox');
 
 const Util = require('@/src/class/Util');
 const Exception = require('@/src/class/Exeption');
 const PaginationClass = require('@/src/class/Pagination');
+
+const Crypto = require("crypto");
+const sFile = require('@/src/utils/file');
 
 module.exports = {
 
@@ -123,7 +127,6 @@ module.exports = {
       ));
 
     } catch (e) {
-      await t.rollback();
       const result = Exception._(e);
       return res.status(400).json(Util.response(result, 'Erro ao Ativar usuário'));
     }
@@ -144,7 +147,7 @@ module.exports = {
         active: 1,
         user_activated: (!!user.user_activated) ? 0 : 1,
         user_activated_at: (!!user.user_activated) ? null : new Date(),
-      }, { notHash: true });
+      });
 
       //-----------
       //Enviar e-mail
@@ -170,11 +173,147 @@ module.exports = {
       ));
 
     } catch (e) {
-      await t.rollback();
       const result = Exception._(e);
       return res.status(400).json(Util.response(result, 'Erro ao Ativar usuário'));
     }
 
+  },
+
+  async alterPassword(req, res) {
+    try {
+
+      const { id } = req.params;
+      const user = await UserModel.findByPk(id, {
+        attributes: {
+          include: ['password']
+        }
+      });
+      //if (user) throw new Exception('Usuário não existe');
+
+      const { password_old, password_new, password_new_confirm } = req.body;
+
+      if (password_new !== password_new_confirm) {
+        throw new Exception('Password novo e confirmação não são iguais');
+      }
+
+      if (user.validPassword(password_old)) {
+        throw new Exception('Password novo é igual ao antigo');
+      }
+
+      await user.update({ password: password_old});
+
+      //return res.json(Util.response(user.toJSON(['password'], 'e'), 'Senha alterada com sucesso'));
+      return res.json(Util.response({}, 'Senha alterada com sucesso'));
+
+    } catch (e) {
+      const result = Exception._(e);
+      return res.status(400).json(Util.response(result, 'Erro ao alterar senha'));
+    }
+
+  },
+
+  /** Support Investor e Consultant */
+
+  async create(body, t) {
+
+    //========================
+    //User
+    const { bodyUser, file } = body;
+    bodyUser.password = Crypto.randomBytes(5).toString('hex');
+    let user = await UserModel.create({...bodyUser,}, { transaction: t });
+
+    //========================
+    //Image
+    let image;
+    if (file) {
+      image = await ImageModel.create(ImageModel.file2Image(file, user.id), { transaction: t });
+      await user.update({ id_image_profile: image.id }, { transaction: t });
+      await sFile.moveFile(`tmp/uploads/${file.filename}`, `attachments/${user.id}/${file.filename}`);
+    }
+
+    user = user.toJSON(['password', 'updatedAt', 'createdAt'], "e");
+    user.profile = (image) ? image.toJSON() : null;
+
+    return user;
+  },
+
+  async update(id, body, t) {
+
+    delete body.password;
+
+    const { bodyUser, file } = body;
+
+    let user = await UserModel.findByPk(id, {
+      include: { association: 'profile'  }
+    });
+
+    user = await user.update({ ...bodyUser, }, { transaction: t });
+
+    let image;
+    switch (true) {
+      case Boolean(!file && user.id_image_profile):
+        //console.log('deleta image');
+        image = await ImageModel.findByPk(user.id_image_profile);
+        await image.destroy({ transaction: t });
+        await sFile.removeFile(`attachments/${user.id}/${image.key}`);
+        image = null;
+
+        break;
+
+      case Boolean((file && user.profile) && file.originalname == user.profile.name):
+        //console.log('Apenas deleta tmp');
+        await sFile.removeFile(`tmp/uploads/${file.filename}`);
+
+        break;
+
+      case Boolean((file && user.profile) && file.originalname !== user.profile.name):
+        //console.log('atualiza image');
+        let imageOLD = await ImageModel.findByPk(user.id_image_profile);
+        await imageOLD.destroy({ transaction: t });
+        await sFile.removeFile(`attachments/${user.id}/${imageOLD.key}`);
+        //--
+        image = await ImageModel.create(ImageModel.file2Image(file, user.id), { transaction: t });
+        await user.update({ id_image_profile: image.id }, { transaction: t });
+        await sFile.moveFile(`tmp/uploads/${file.filename}`, `attachments/${user.id}/${file.filename}`);
+        break;
+
+      case Boolean(file && !user.id_image_profile):
+        //console.log('cria image');
+        image = await ImageModel.create(ImageModel.file2Image(file, user.id), { transaction: t });
+        await user.update({ id_image_profile: image.id }, { transaction: t });
+        await sFile.moveFile(`tmp/uploads/${file.filename}`, `attachments/${user.id}/${file.filename}`);
+
+        break;
+
+      default:
+        break;
+    }
+
+    user = user.toJSON(['password', 'updatedAt', 'createdAt'], "e");
+    user.profile = (image) ? image.toJSON() : null;
+
+    return user;
+  },
+
+  async delete(id, t) {
+
+    let user = await UserModel.findByPk(id);
+    if (!user) throw new Exception("Usuário não existe", "id_user");
+
+    //const result = await investor.destroy({ transaction: t });
+    user = await user.destroy({ transaction: t });
+
+    //image
+    const image = await ImageModel.findByPk(user.id_image_profile);
+    if (image) {
+      await image.destroy({ transaction: t });
+      await sFile.removeFile(`attachments/${user.id}/${image.key}`);
+    }
+
+    user = user.toJSON()
+    user.profile = (image) ? image.toJSON() : null;
+
+    return user;
   }
 
 };

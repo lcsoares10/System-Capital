@@ -1,8 +1,12 @@
+const UserController = require('@/src/controllers/UserController');
+
 const ImageModel =  require('@/src/models/Image');
 const UserModel = require('@/src/models/User');
 const InvestorModel = require('@/src/models/Investor');
 const ConsultantModel = require('@/src/models/Consultant');
 const ContractModel = require('@/src/models/Contract');
+
+const file = require('@/src/utils/file');
 
 const Util = require('@/src/class/Util');
 const Exception = require('@/src/class/Exeption');
@@ -93,6 +97,7 @@ module.exports = {
         identif: req.body.identif,
       }
 
+      //========================
       //Consultant
       const consultant = await ConsultantModel.findByPk(bodyUser.id_consultant);
       if (!consultant) {
@@ -100,19 +105,11 @@ module.exports = {
       }
 
       //========================
-      //Image
-      let image;
-      if (req.file) {
-        image = await ImageModel.create(ImageModel.file2Image(req.file), { transaction: t });
-      }
+      //User
+      const user = await UserController.create({ bodyUser, file: req.file }, t);
 
       //========================
-      //User
-      const user = await UserModel.create({
-        ...bodyUser,
-        id_image_profile: (image) ? image.id : null
-      }, { transaction: t });
-
+      //Investor
       const investor = await InvestorModel.create({
         id_user: user.id,
         id_consultant: bodyUser.id_consultant
@@ -135,19 +132,22 @@ module.exports = {
 
       const result = {
         ...investor.toJSON(),
-        user: { ...user.toJSON(['password', 'updatedAt', 'createdAt'], "e")},
-        image: (image) ? { ...image.toJSON(['updatedAt', 'createdAt'], "e")} : null,
+        user,
         contract: { ...contract.toJSON()},
       };
 
       //===================================
+      //mover imagem
+      //await file.moveFile(`tmp/uploads/${req.file.filename}`, `attachments/${user.id}/${req.file.filename}`);
 
+      //===================================
+      //throw new Exception("Erro teste !!!");
       await t.commit();
 
       return res.json(Util.response(result, 'Inserido com Sucesso'));
 
     } catch (e) {
-      if (req.file) Util.removeFile(req.file.filename);
+      if (req.file) await file.removeFile(`tmp/uploads/${req.file.filename}`);
       await t.rollback();
       const result = Exception._(e);
       return res.status(400).json(Util.response(result));
@@ -189,52 +189,46 @@ module.exports = {
   /** POST */
 
   async create(req, res) {
+
     const t = await InvestorModel.sequelize.transaction();
 
     try {
 
-      const { id_consultant, ...camposUser } = req.body;
+      const { ...bodyUser } = req.body
 
       //Consultant
-      const consultant = await ConsultantModel.findByPk(id_consultant);
+      const consultant = await ConsultantModel.findByPk(bodyUser.id_consultant);
       if (!consultant) {
         throw new Exception("Consultor não existe", "id_consultant");
       }
 
-      //========================
-      //Image
-      let image;
-      if (req.file) {
-        image = await ImageModel.create(ImageModel.file2Image(req.file), { transaction: t });
-      }
-
-      //========================
+      //----
       //User
-      let user = await UserModel.create({
-        ...camposUser,
-        id_image_profile: (image) ? image.id : null
-      }, { transaction: t });
+      const user = await UserController.create({ bodyUser, file: req.file }, t);
 
+      //----
+      //Consultant
       const investor = await InvestorModel.create({
-        id_user: user.id, id_consultant
-      }, { transaction: t });
+        id_consultant: bodyUser.id_consultant,
+        id_user: user.id
+      },
+      { transaction: t });
 
-      const result = {
-        ...investor.toJSON(),
-        user: { ...user.toJSON(['password', 'updatedAt', 'createdAt'], "e")},
-        image: (image) ? { ...image.toJSON(['updatedAt', 'createdAt'], "e")} : null
-      };
+      const result = { ...investor.toJSON(), user };
+
+      //throw new Exception("Error Teste");
 
       await t.commit();
 
-      return res.json(Util.response(result, 'Inserido com Sucesso'));
+      return res.json(Util.response(result, 'Alterado com sucesso'));
 
     } catch (e) {
-      if (req.file) Util.removeFile(req.file.filename);
+      if (req.file) await file.removeFile(`tmp/uploads/${req.file.filename}`);
       await t.rollback();
       const result = Exception._(e);
       return res.status(400).json(Util.response(result));
     }
+
   },
 
   async update(req, res) {
@@ -242,75 +236,34 @@ module.exports = {
     const t = await InvestorModel.sequelize.transaction();
 
     try {
-      /** Validações */
+
       const { id } = req.params;
-      let investor = await InvestorModel.findByPk(id,  {
-        include: { association: 'user', required: true }
-      });
+      let investor = await InvestorModel.findByPk(id);
 
-      if (!investor) throw new Exception("Investidor não existe", "id_investor");
+      const { id_consultant, ...bodyUser } = req.body;
 
-      let user = await UserModel.findByPk(investor.id_user, {
-        attributes: {
-          include: ['password']
-        }
-      });
-
-      if (!user) throw new Exception("Usuário não existe", "id_user");
-
-      let { id_consultant, ...camposUser } = req.body;
-
+      //----
+      //Investor
       if (id_consultant) {
         const consultant = await ConsultantModel.findByPk(id_consultant);
         if (!consultant) {
           throw new Exception("Consultor não existe", "id_consultant");
         }
-      } else {
-        id_consultant = investor.id_consultant;
+        investor = await investor.update({ id_consultant }, { transaction: t });
       }
 
-      //=========================
-      //Imagem
-      let image;
-      let updateImg = false;
-      let imageDB = image = await ImageModel.findByPk(user.id_image_profile);
+      //----
+      //User
+      const user = await UserController.update(
+        investor.id_user, { bodyUser, file: req.file }, t
+      );
 
-      if (req.file) {
-        if (!imageDB || imageDB.name != req.file.originalname) {
-          imageNew = await ImageModel.create(ImageModel.file2Image(req.file), { transaction: t });
-
-          image = imageNew;
-          updateImg = true
-        }
-      } else if (imageDB) {
-        image = null;
-        updateImg = true //irá deletar
-      }
-
-      //=========================
-      /** Update */
-      investor = await investor.update({ id_consultant }, { transaction: t });
-      user = await user.update({
-        ...camposUser,
-        id_image_profile: (image) ? image.id : null
-      }, { transaction: t });
-
-      //=========================
-      //Imagem antiga deve ser deletada e o arquivo removido
-      if (updateImg && imageDB) {
-        Util.removeFile(imageDB.key);
-        await imageDB.destroy( { transaction: t } );
-      } else if(req.file && !updateImg) {
-        //Arquivo deve ser removido casa não seja usado
-        Util.removeFile(req.file.filename);
-      }
-
-      //=========================
       const result = {
         ...investor.toJSON(),
-        user: { ...user.toJSON(['password', 'updatedAt', 'createdAt'], "e")},
-        image: (image) ? { ...image.toJSON(['updatedAt', 'createdAt'], "e")} : null
+        user
       };
+
+      //throw new Exception("Error Teste");
 
       await t.commit();
 
@@ -331,29 +284,20 @@ module.exports = {
     try {
 
       const { id } = req.params;
-      let investor = await InvestorModel.findByPk(id,  {
-        include: { association: 'user', required: true }
-      });
+      let investor = await InvestorModel.findByPk(id);
+      if (!investor) throw new Exception('Investidor não existe');
 
-      let user = await UserModel.findByPk(investor.id_user);
-      if (!user) throw new Exception("Usuário não existe", "id_user");
+      //----
+      //User
+      const user = await UserController.delete(investor.id_user, t);
 
-      //const result = await investor.destroy({ transaction: t });
-      const result = await user.destroy({ transaction: t });
+      const result = { ...investor.toJSON(), user };
 
-      //image
-      const image = await ImageModel.findByPk(result.id_image_profile);
-      if (image) {
-        await image.destroy({ transaction: t });
-        await Util.removeFile(image.key);
-      }
+      //throw new Exception("Error Teste");
 
       await t.commit();
 
-      return res.json(Util.response({
-        result,
-        profile: { ...image.toJSON() },
-      }, 'Deletado com sucesso'));
+      return res.json(Util.response(result, 'Deletado com sucesso'));
 
     } catch (e) {
       await t.rollback();

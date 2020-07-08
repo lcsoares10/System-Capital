@@ -59,6 +59,6 @@ module.exports = {
     })
   },
 
-  down: (queryInterface) => queryInterface.bulkDelete('users', null, {}),
+  down: (queryInterface) => queryInterface.bulkDelete('messages_box', null, {}),
 };
 

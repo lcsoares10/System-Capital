@@ -14,10 +14,11 @@ module.exports = {
         throw new Exception('Investidor não existe');
       }
 
-      //   if (investor.id_user != req.user.id_user && !req.user.is_admin) {
-      //     res.status(403);
-      //     throw new Exception('Você não tem direito de acesso');
-      //   }
+      if (investor.id_user != req.user.id_user && !req.user.is_admin) {
+        res.status(403);
+        throw new Exception('Você não tem direito de acesso');
+      }
+
       return next();
     } catch (e) {
       const result = Exception._(e);

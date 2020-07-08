@@ -17,9 +17,10 @@ require('@/src/database');
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const routes = require('@/src/routes');
 const useragent = require('express-useragent');
-const fs = require('fs');
+
+const routes = require('@/src/routes');
+const { mkDir } = require('@/src/utils/file');
 
 /** ==========================================================*/
 /** Custom */
@@ -47,7 +48,8 @@ app.use(require('@/src/modules/log/morgan.js'));
 /** ==========================================================*/
 //Statics
 //https://www.youtube.com/watch?v=MkkbUfcZUZM - Upload de arquivos: back-end com NodeJS | Diego Fernandes
-app.use('/files', express.static(path.resolve(__dirname, '../tmp/uploads')));
+//app.use('/files', express.static(path.resolve(__dirname, '../tmp/uploads')));
+app.use('/files', express.static(path.resolve('./attachments')));
 
 /** ==========================================================*/
 /** Disponibilizar req for Log  */
@@ -71,12 +73,7 @@ app.use((err, req, res, next) => {
   next()
 })
 
-//======================
-//Criação de Pastas
-fs.mkdir('./tmp/uploads', { recursive: true }, (err) => {
-  if (err) throw console.log(err.message);
-});
-//======================
+mkDir('tmp/uploads');
 
 module.exports = app;
 

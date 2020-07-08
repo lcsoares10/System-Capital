@@ -16,4 +16,6 @@ routes.get('/password_reset_token/:token', authAdmin, UserController.getTokenRes
 routes.post('/:id/toggle_active', authAdmin, UserController.toggleActive);
 routes.post('/:id/toggle_activated_user', authAdmin, UserController.toggleActivatedUser);
 
+routes.put('/:id/alter_password', valid, UserController.alterPassword);
+
 module.exports = routes;
