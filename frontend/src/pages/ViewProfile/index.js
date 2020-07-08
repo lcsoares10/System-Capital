@@ -145,7 +145,7 @@ export default function ViewProfile() {
           </form>
         </div>
       </main>
-      <FooterBackground notLogin={true} />
+      <FooterBackground notBack={true} notLogin={true} />
     </Container>
   );
 }
