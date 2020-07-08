@@ -1,6 +1,7 @@
 {
   "short_name": "X6 Capital",
   "name": "Sistema X6 capital",
+  "scope": "193.168.100.7/",
   "icons": [
     {
       "src": "favicon.ico",

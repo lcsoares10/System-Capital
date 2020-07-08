@@ -118,7 +118,7 @@ export default function IncomeConsultant(props) {
           </div>
         </div>
       </main>
-      <FooterBackground notLogin={true} />
+      <FooterBackground notLogin={true} notBack={true} />
     </Container>
   );
 }
