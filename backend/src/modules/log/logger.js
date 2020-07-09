@@ -177,26 +177,37 @@ const logger = winston.createLogger({
   //   service: 'user-service'
   // },
   format: winston.format.printf((info) => {
+
+    //console.log('XXX', logger.req);
+    //console.log(logger.req.body);
+
     const ignore = (obj) => {
-      if (obj.token) obj.token = '...';
-      if (obj.password) obj.password = '...';
-      return obj;
+      const { data } = obj;
+      if (data.token) data.token = '...';
+      if (data.password) data.password = '...';
+      return { ...obj, data };
     };
 
-    const aux = {
-      date: moment().format('@HH:mm:ss'),
-      level: info.level.toUpperCase(),
-      id_user: (logger.req && logger.req.user) ? logger.req.user.id_user : null,
-      data: (info.obj) ? JSON.stringify(ignore(info.obj)) : null,
-      reqBody: (logger.req) ? logger.req.body : null,
-      message: `"${info.message}"`
+    let msg;
+    msg += `=========================================================================\r\n`
+        + `==================== ${moment().format('@HH:mm:ss')} ====================\r\n`
+        + `=========================================================================\r\n`
+        +`LEVEL: ${info.level.toUpperCase()}\r\n`
+        +`USER: ${(logger.req && logger.req.user) ? logger.req.user.id_user : null}\r\n`
+        +`ROUTE: ${(logger.req) ? logger.req.originalUrl : null}\r\n`
+        +`MESSAGE: ${info.message}\r\n`
+        if (process.env.NODE_ENV == "development") {
+          msg += `BODY: ${(logger.req) ? JSON.stringify(ignore({ data: logger.req.body }), null, '\t') : null}\r\n`
+        }
+
+    if (info.level === 'error') {
+      msg += `TRACE: ${info.obj.stack}\r\n`
+    } else {
+      msg += `RESPONSE: ${(info.obj) ? JSON.stringify(ignore(info.obj), null, '\t') : null}\r\n`
     }
+    msg += `\r\n`
 
-    // if (info.level == 'Error') {
-    //   console.log((new Error()).stack);
-    // }
-
-    return message = `${aux.date} | ${aux.level} | user: ${aux.id_user} | message: ${aux.message} | data: ${aux.data}`;
+    return msg;
 
   }),
   transports: [
@@ -221,16 +232,17 @@ const logger = winston.createLogger({
 
 if (process.env.NODE_ENV !== 'production') {
   logger.add(new winston.transports.Console({
-    format: winston.format.simple()
+    format: winston.format.simple(),
+    level: 'error'
   }));
 }
 
-logger.info = (message, obj) => {
+logger.info = (message, obj, err={}) => {
   logger.log('info', message, { obj });
   //console.log(`message: ${message}`, `obj: ${JSON.stringify(obj)}`);
 }
 
-logger.error = (message, obj) => {
+logger.error = (message, obj, err={}) => {
   logger.log('error', message, { obj });
   //console.log(`message: ${message}`, `obj: ${JSON.stringify(obj)}`);
 }
@@ -238,3 +250,9 @@ logger.error = (message, obj) => {
 module.exports = logger;
 
 //https://stackoverflow.com/questions/61428648/how-do-i-log-messages-using-winston-and-passport-session
+
+
+// const fsPromises = require('fs').promises;
+// fsPromises.appendFile('./tmp/test-sync.txt', 'Hey there!\r\n').then(() => {
+//   console.log('aqui');
+// });

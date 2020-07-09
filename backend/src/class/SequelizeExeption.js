@@ -27,7 +27,7 @@ class SequelizeExeption {
           aux.push({
             type: this._error.name,
             message: `${this.idTable2Text(field)} não existe`,
-            "id": field
+            "id": field,
           });
           break;
 
@@ -35,7 +35,7 @@ class SequelizeExeption {
           aux.push({
             type: "other",
             message: this._error.message,
-            "id": null
+            "id": null,
           });
           break;
       };
@@ -60,7 +60,7 @@ class SequelizeExeption {
         aux.push({
           type: "validate",
           message,
-          "id": field
+          "id": field,
         });
       };
 

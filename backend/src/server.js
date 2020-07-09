@@ -15,7 +15,7 @@ require('dotenv').config({
 });
 
 //Faz com q o console.log() mostra todos os objetos
-require("util").inspect.defaultOptions.depth = null;
+//require("util").inspect.defaultOptions.depth = null;
 
 const app = require('./app');
 

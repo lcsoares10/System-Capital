@@ -27,7 +27,6 @@ module.exports = {
     } else {
       //Corrigir retorno de erro
       cb(new Error('Tipo de arquivo inválido'));
-      console.log('Tipo de arquivo inválido');
     }
   },
 };

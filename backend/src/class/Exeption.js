@@ -1,4 +1,5 @@
 const SequelizeExeption = require('./SequelizeExeption');
+const logger = require('@/src/modules/log/logger');
 
 class Exception {
 
@@ -15,28 +16,31 @@ class Exception {
     this._errorJson = JSON.parse(JSON.stringify(e));
     this._error = e;
 
-    console.log(this._error.stack);
+    let err;
 
     switch (true) {
       case (SequelizeExeption.isSequelizeException(this._error)):
-        return SequelizeExeption.SequelizeExeption(this._error);
+        err =  SequelizeExeption.SequelizeExeption(this._error);
 
       case (this._isError(this._error)):
-        return {
+        err = {
           type: this._error.name,
           message: this._error.message,
-          "id": null
+          "id": null,
         };
 
       default:
-        return {
+        err =  {
           type: this._error.name,
           message: this._error.message,
-          "id": this._error.campo
+          "id": this._error.campo,
         };
         break;
     }
 
+    logger.error(err.message, this._error);
+
+    return err;
   }
 
   static _isError(err) {
