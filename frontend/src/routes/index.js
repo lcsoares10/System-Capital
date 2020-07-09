@@ -23,6 +23,8 @@ import DetailInvestor from '../pages/Consultant/DetailInvestor';
 import IncomeConsultant from '../pages/Consultant/IncomeConsultant';
 import DetailIncome from '../pages/Consultant/DetailIncome';
 
+import AdmProfile from '../pages/Adm/Profile';
+
 import Loading from '../components/Loading';
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
