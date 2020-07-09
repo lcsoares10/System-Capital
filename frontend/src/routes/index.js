@@ -13,7 +13,7 @@ import Messages from '../pages/Messages';
 import RegisterContract from '../pages/RegisterContract';
 import RegisterUsers from '../pages/RegisterUsers';
 import DetailInvestment from '../pages/Investor/DetailInvestment';
-import DetailContract from '../pages/DetailContract';
+import DetailContract from '../pages/Investor/DetailContract';
 import NewUser from '../pages/NewUser';
 import Page404 from '../pages/Page404';
 
@@ -22,6 +22,8 @@ import AssociatedInvestors from '../pages/Consultant/AssociatedInvestors';
 import DetailInvestor from '../pages/Consultant/DetailInvestor';
 import IncomeConsultant from '../pages/Consultant/IncomeConsultant';
 import DetailIncome from '../pages/Consultant/DetailIncome';
+
+import AdmProfile from '../pages/Adm/Profile';
 
 import Loading from '../components/Loading';
 

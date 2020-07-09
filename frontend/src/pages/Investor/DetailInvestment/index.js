@@ -59,7 +59,7 @@ export default function DetailInvestment(props) {
           </div>
         </div>
       </main>
-      <FooterBackground notLogin={true} />
+      <FooterBackground notBack={true} notLogin={true} />
     </Container>
   );
 }

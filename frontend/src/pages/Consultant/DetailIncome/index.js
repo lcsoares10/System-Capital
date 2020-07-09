@@ -73,7 +73,7 @@ export default function DetailIncome(props) {
           </div>
         </div>
       </main>
-      <FooterBackground notLogin={true} />
+      <FooterBackground notLogin={true} notBack={true} />
     </Container>
   );
 }

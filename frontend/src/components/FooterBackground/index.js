@@ -21,9 +21,12 @@ export default function FooterBackground(props) {
 
   return (
     <footer>
-      <Link className="back-link" to={props.backPage ? props.backPage : '/'}>
-        <ArrowBackIcon style={{ color: 'white' }} />
-      </Link>
+      {props.notBack && (
+        <Link className="back-link" to={props.backPage ? props.backPage : '/'}>
+          <ArrowBackIcon style={{ color: 'white' }} />
+        </Link>
+      )}
+
       {/* {props.notLogin === true ? <ContentFooter textview1="Bem Vindo" textview2="Lucas Soares"/>:''} */}
       {props.notLogin === true ? (
         <ContentFooter textview1="Bem Vindo" textview2={user.name} />

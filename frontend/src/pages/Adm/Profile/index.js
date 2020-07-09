@@ -15,7 +15,7 @@ import './styles.css';
 //------------------------------------------------------------
 import { useAuthContext } from '../../../Context/AuthContext';
 
-export default function Profile() {
+export default function AdmProfile() {
   const { user } = useAuthContext();
   const [dataProjection, setDataProjection] = useState({
     values: [],
