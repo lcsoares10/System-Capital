@@ -11,7 +11,7 @@ import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import { cpfMask, maskTel, durationContractMask } from '../../utils/maskInputs';
 //------------------------------------------------------------
 import { useAuthContext } from '../../Context/AuthContext';
-import { detailUser, editUser } from '../../controller/Investor/index';
+import { editUser, detailUser } from '../../controller/user';
 
 import './styles.css';
 import { Link } from 'react-router-dom';
@@ -28,7 +28,7 @@ export default function ViewProfile() {
 
   useEffect(() => {
     async function getDetailProfile() {
-      const data = await detailUser(user.id);
+      const data = await detailUser(user.id, user.type);
       //  setLogin(data.login);
       setName(data.name);
       setLastName(data.last_name);
@@ -51,9 +51,9 @@ export default function ViewProfile() {
     formData.append('tel', tel.replace(/[()-]/g, ''));
     formData.append('email', email);
 
-    const response = await editUser(formData, user.id);
+    const response = await editUser(formData, user.id, user.type);
     alert(response);
-    window.location.reload(false);
+    // window.location.reload(false);
   }
 
   function handdleInputImage(image) {
@@ -67,7 +67,7 @@ export default function ViewProfile() {
     reader.onload = () => setImgProfile({ url: reader.result });
     reader.readAsDataURL(image);
   }
-
+  console.log(user);
   return (
     <Container className="container-login">
       <HeaderBackground notLogin={true} />
@@ -145,7 +145,7 @@ export default function ViewProfile() {
           </form>
         </div>
       </main>
-      <FooterBackground notLogin={true} />
+      <FooterBackground notBack={true} notLogin={true} />
     </Container>
   );
 }

@@ -72,7 +72,7 @@ export default function Messages() {
           })}
         </div>
       </main>
-      <FooterBackground notLogin={true} />
+      <FooterBackground notBack={true} notLogin={true} />
     </Container>
   );
 }
