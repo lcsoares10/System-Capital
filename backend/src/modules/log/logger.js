@@ -183,8 +183,8 @@ const logger = winston.createLogger({
 
     const ignore = (obj) => {
       const { data } = obj;
-      if (data.token) data.token = '...';
-      if (data.password) data.password = '...';
+      if (data && data.token) data.token = '...';
+      if (data && data.password) data.password = '...';
       return { ...obj, data };
     };
 

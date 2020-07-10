@@ -32,6 +32,9 @@ module.exports = {
           {
             association: 'consultant',
             include : {association: 'user'}
+          },
+          {
+            association: 'contracts'
           }
         ]
       };
