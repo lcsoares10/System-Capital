@@ -48,7 +48,6 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
             />
           );
         } else if (props.match.path === '/login' && authenticated) {
-          console.log('aqui');
 
           switch (user.type) {
             case 'investor':
@@ -61,6 +60,16 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
                 />
               );
             case 'consultant':
+              if(user.is_admin){
+                return (
+                  <Redirect
+                  to={{
+                    pathname: '/admProfile',
+                    state: { from: props.location },
+                  }}
+                />
+                );
+              }
               return (
                 <Redirect
                   to={{
@@ -127,6 +136,9 @@ export default function Routes() {
             component={IncomeConsultant}
           />
           <PrivateRoute path="/detailIncome/:id" component={DetailIncome} />
+
+
+          <PrivateRoute path="/admProfile" component={AdmProfile}></PrivateRoute>
           <PrivateRoute path="/*" component={Page404} />
         </Switch>
       </AuthProvider>

@@ -17,17 +17,7 @@ main .title-header .h1-profile {
   font-size: var(--font-size-36);
   padding: 0px;
 }
-main .title-header .select-contract {
-  margin-left: 10px;
-  background-color: var(--bg-color-05);
-  border: 0px;
-  border-radius: 10px;
-  box-shadow: var(--shadow-bottom);
-  padding: 2px 15px;
-  color: var(--text-color-beige);
-}
-
-main .content-projection {
+main .content-panel {
   margin-top: 28px;
   border-radius: 10px;
   padding: 5px;
@@ -35,14 +25,20 @@ main .content-projection {
   box-shadow: var(--shadow-bottom);
 }
 
-main .content-projection p {
+main .content-panel p {
   color: white;
   background-color: transparent;
   font-size: 12px;
   padding: 10px;
 }
+main h2 {
+  margin-top: var(--margin-title);
+  color: white;
+  font-weight: var(--font-weight-thin);
+  font-size: var(--font-size-36);
+}
 
-main .content-projection button {
+main .content-panel button {
   margin-top: 5px;
   color: var(--bg-color-button);
   border: 1px var(--bg-color-05) solid;
@@ -53,36 +49,28 @@ main .content-projection button {
   background-color: var(--bg-color);
 }
 
-main h2 {
-  margin-top: var(--margin-title);
-  color: white;
-  font-weight: var(--font-weight-thin);
-  font-size: var(--font-size-36);
-}
-
-main .content-investor {
-  background-color: var(--bg-color-05);
-  box-shadow: var(--shadow-bottom);
-  border-radius: 10px;
-}
-main .content-investor h3 {
+main .content-panel h3 {
   margin-top: 5px;
   padding: 5px;
   text-align: center;
 }
-main .content-investor span {
-  color: var(--text-color-beige);
-  font-weight: 600;
-  font-size: 35px;
-}
-main .content-investor .detail-associated {
+
+
+
+main .detail-content {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
   padding: 20px 20px;
 }
-main .content-investor .detail-associated button {
+
+main .content-panel .detail-content span {
+  color: var(--text-color-beige);
+  font-weight: 600;
+  font-size: 35px;
+}
+main .content-panel  button {
   background-color: var(--bg-color-button);
   border: none;
   margin-top: 10px;
@@ -94,3 +82,4 @@ main .content-investor .detail-associated button {
   font-weight: 400;
   font-size: 12px;
 }
+

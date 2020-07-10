@@ -12,9 +12,9 @@ import './styles.css';
 import { useAuthContext } from '../../Context/AuthContext';
 
 export default function Logon() {
-  const [email, setEmail] = useState(process.env.REACT_APP_DEFAULT_USER_LOGIN);
+  const [email, setEmail] = useState('consultant_65260@gmail.com');
   const [password, setpassword] = useState(
-    process.env.REACT_APP_DEFAULT_USER_PASSWORD
+    '65260'
   );
 
   const { handleLogon } = useAuthContext();
