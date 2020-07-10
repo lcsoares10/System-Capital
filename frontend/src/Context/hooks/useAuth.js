@@ -51,6 +51,7 @@ export default function useAuth() {
       localStorage.setItem('token_X6_Capital', token);
 
       api.defaults.headers.Authorization = `Bearer ${token}`;
+      console.log(payload.user)
       setUser(payload.user);
       setAuthenticated(true);
 
