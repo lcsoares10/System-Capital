@@ -86,6 +86,7 @@ export default function NewUser(props) {
   const history = useHistory();
   //Variavel que fara o controle de criação de usuario ou consultor
   const newInvestor = props.location.state;
+
   const { user } = useAuthContext();
 
   const [name, setName] = useState('');
@@ -97,7 +98,7 @@ export default function NewUser(props) {
   const [valueInvest, setValueInvest] = useState(0);
   const [startContract, setStartContract] = useState('');
   const [timeContract, setTimeContract] = useState('');
-  const [errorForm, setErrorForm] = useState('');
+  const [alertMessage, setAlertMessage] = useState('');
 
   //Função para tratar a requisição que será feita de um novo usuário.
   async function handleNewUser(e) {
@@ -116,12 +117,12 @@ export default function NewUser(props) {
       day: 5,
     };
 
-    try {
-      const returnMessage = await createUserInvestor(data);
+    const returnMessage = await createUserInvestor(data);
+    if (returnMessage.response.data.message) {
+      setAlertMessage(returnMessage.response.data.message);
+    } else {
       alert(returnMessage);
-      history.push('/');
-    } catch (error) {
-      alert(error);
+      history('/');
     }
   }
 
@@ -213,14 +214,14 @@ export default function NewUser(props) {
             ) : (
               ''
             )}
-            {errorForm}
+            {alertMessage}
             <button style={{ padding: '10px 90px', marginTop: '30px' }}>
               SALVAR
             </button>
           </form>
         </div>
       </main>
-      <FooterBackground notLogin={true} />
+      <FooterBackground notLogin={true} notBack={true} />
     </Container>
   );
 }

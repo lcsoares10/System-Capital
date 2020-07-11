@@ -5,8 +5,7 @@ import Container from '../../../components/Container';
 import HeaderBackground from '../../../components/HeaderBackground';
 import FooterBackground from '../../../components/FooterBackground';
 
-
-import {getAllInvestors,getAllConsultants} from '../../../controller/Adm'
+import { getAllInvestors, getAllConsultants } from '../../../controller/Adm';
 // import api from '../../services/api';
 
 import './styles.css';
@@ -36,7 +35,6 @@ export default function AdmProfile() {
     //Execute the created function directly
   }, []);
 
-
   return (
     <Container className="container-login">
       <HeaderBackground notLogin={true} />
@@ -46,24 +44,22 @@ export default function AdmProfile() {
         </div>
         <div className="dashboard">
           <div className="content-panel">
-              <h3>Investidores</h3>
-              <div className="detail-content">
-                <span>{totInvestors}</span>
-                <Link to={`/associatedInvestors/${user.id}`}>
-                  <button>Gerenciar</button>
+            <h3>Investidores</h3>
+            <div className="detail-content">
+              <span>{totInvestors}</span>
+              <Link to={`/investors`}>
+                <button>Gerenciar</button>
               </Link>
-              </div>
-
             </div>
+          </div>
           <div className="content-panel">
             <h3>Consultores</h3>
             <div className="detail-content">
               <span>{totConsultants}</span>
               <Link to={`/associatedInvestors/${user.id}`}>
                 <button>Gerenciar</button>
-            </Link>
+              </Link>
             </div>
-
           </div>
         </div>
       </main>

@@ -39,7 +39,7 @@ export default function DetailInvestment(props) {
         <div className="content-ivestment">
           <div className="detail-invest">
             <p className="weight-thin">
-              Data da Aplicao:{' '}
+              Data da Aplicação:{' '}
               <b className="text-white">
                 {' '}
                 {moment(contract.begin).format('L')}

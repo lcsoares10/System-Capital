@@ -31,7 +31,7 @@ export default function Profile() {
     }
     getInvestor();
     //Execute the created function directly
-  }, []);
+  }, [user.id]);
 
   useEffect(() => {
     async function handleYealdYear() {
@@ -41,7 +41,7 @@ export default function Profile() {
       setDataProjection(handleProjection(data.yield_year));
     }
     handleYealdYear();
-  }, []);
+  }, [user.id]);
 
   function handleProjection(data) {
     let values = data.map((month, count) => {

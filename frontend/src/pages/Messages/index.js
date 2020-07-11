@@ -19,14 +19,14 @@ export default function Messages() {
     async function getMessages() {
       try {
         const { data } = await api.get(`/users/${user.id_user}/messages`);
-        console.log(data.data);
+
         setMessages(data.data);
       } catch (error) {
-        console.log(error);
+        alert(error.response);
       }
     }
     getMessages();
-  }, []);
+  }, [user.id_user]);
   console.log(messages);
   return (
     <Container>

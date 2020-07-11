@@ -24,6 +24,7 @@ import IncomeConsultant from '../pages/Consultant/IncomeConsultant';
 import DetailIncome from '../pages/Consultant/DetailIncome';
 
 import AdmProfile from '../pages/Adm/Profile';
+import InvestorRegisters from '../pages/Adm/InvestorsRegisters';
 
 import Loading from '../components/Loading';
 
@@ -48,7 +49,6 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
             />
           );
         } else if (props.match.path === '/login' && authenticated) {
-
           switch (user.type) {
             case 'investor':
               return (
@@ -60,14 +60,14 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
                 />
               );
             case 'consultant':
-              if(user.is_admin){
+              if (user.is_admin) {
                 return (
                   <Redirect
-                  to={{
-                    pathname: '/admProfile',
-                    state: { from: props.location },
-                  }}
-                />
+                    to={{
+                      pathname: '/admProfile',
+                      state: { from: props.location },
+                    }}
+                  />
                 );
               }
               return (
@@ -137,8 +137,16 @@ export default function Routes() {
           />
           <PrivateRoute path="/detailIncome/:id" component={DetailIncome} />
 
+          <PrivateRoute
+            path="/admProfile"
+            component={AdmProfile}
+          ></PrivateRoute>
 
-          <PrivateRoute path="/admProfile" component={AdmProfile}></PrivateRoute>
+          <PrivateRoute
+            path="/investors"
+            component={InvestorRegisters}
+          ></PrivateRoute>
+
           <PrivateRoute path="/*" component={Page404} />
         </Switch>
       </AuthProvider>

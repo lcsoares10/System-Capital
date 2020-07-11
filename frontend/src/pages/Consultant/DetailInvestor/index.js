@@ -12,11 +12,18 @@ import { formatTel } from '../../../controller/formatsStrings';
 import allContracts from '../../../controller/Investor/allContracts';
 
 import './styles.css';
+import { Link } from 'react-router-dom';
+
+import EditIcon from '@material-ui/icons/Edit';
+
+import { useAuthContext } from '../../../Context/AuthContext';
 //------------------------------------------------------------
 
 export default function DetailInvestment(props) {
+  const { user } = useAuthContext();
   const [investor, setInvestor] = useState([]);
   const [contractsInvestor, setContractsInvestor] = useState([]);
+  const [investorConsultant, setInvestorConsultant] = useState({});
 
   useEffect(() => {
     async function requestGetInvestorAssciated() {
@@ -25,12 +32,16 @@ export default function DetailInvestment(props) {
         props.location.state.stateLink.id
       );
       setInvestor(dataInvestor.user);
+      if (dataInvestor.consultant) {
+        setInvestorConsultant(dataInvestor.consultant.user);
+      }
+
       setContractsInvestor(contractsInvestor);
     }
     setTimeout(() => {
       requestGetInvestorAssciated();
     }, 500);
-  }, []);
+  }, [props.location.state.stateLink, props.location.state.stateLink.id]);
 
   let tel = investor.tel ? investor.tel : 0;
   tel = parseInt(tel);
@@ -41,6 +52,11 @@ export default function DetailInvestment(props) {
       <main className="main-associated-investors">
         <div className="title-header">
           <h1 className="h1-">Investidor</h1>
+          {user.is_admin && (
+            <div className="button-controler-user">
+              <EditIcon />
+            </div>
+          )}
           <p>
             {' '}
             &nbsp;{investor.name}&nbsp;{investor.last_name}
@@ -52,9 +68,15 @@ export default function DetailInvestment(props) {
               Telefone:{' '}
               <b className="text-white">{formatTel(tel.toString())}</b>
             </p>
-            <p style={{ marginTop: '10px' }} className="weight-thin">
+            <p styled={{ marginTop: '10px' }} className="weight-thin">
               E-mail: <b className="text-white">{investor.email}</b>
             </p>
+            {user.is_admin && (
+              <p styled={{ marginTop: '10px' }} className="weight-thin">
+                Consultor:{' '}
+                <b className="text-white">{investorConsultant.name}</b>
+              </p>
+            )}
           </div>
 
           <div className="content-contracts">
@@ -63,16 +85,17 @@ export default function DetailInvestment(props) {
               {contractsInvestor[0] ? (
                 ''
               ) : (
-                <p>
+                <div>
                   <Alert>Esse investor não possui contratos</Alert>;
-                </p>
+                </div>
               )}
-              {contractsInvestor.map((contract) => (
-                <div className="contracts">
+              {contractsInvestor.map((contract, key) => (
+                <div className="contracts" key={key}>
                   <p>Cod: {contract.id.toString().padStart('5', '0')}</p>
+
                   <p>
                     Valor Investido:{' '}
-                    <b style={{ color: 'green' }}>
+                    <b styled={{ color: 'green' }}>
                       {convertCoinBr(contract.value)}
                     </b>
                   </p>
@@ -89,6 +112,9 @@ export default function DetailInvestment(props) {
                         .format('L')}
                     </p>
                   </div>
+                  <Link to={`/detail-investment/${contract.id}`}>
+                    <button className="detail-pay"> PAGAMENTOS</button>
+                  </Link>
                 </div>
               ))}
             </div>

@@ -1,8 +1,8 @@
 import api from '../services/api';
 
-function gerarPassword() {
-  return Math.random().toString(36).slice(-10);
-}
+// function gerarPassword() {
+//   return Math.random().toString(36).slice(-10);
+// }
 
 async function createUserInvestor(data) {
   data = { ...data, login: 'naoDefinido' };
@@ -11,9 +11,9 @@ async function createUserInvestor(data) {
       `/investors/createInvestorContract`,
       data
     );
-    return 'Investidor e contrato criado com sucesso';
+    return `Investidor ${id_investor.data.user.name} e contrato criado com sucesso`;
   } catch (error) {
-    console.log(Response.data);
+    //console.log(error);
     return error;
   }
 }
@@ -37,7 +37,7 @@ async function editUser(dataForm, id_user, type) {
 
   try {
     const { data } = await api.put(url, dataForm, config);
-    return 'Dados alterados com sucesso';
+    return `${data.data.user.name} seus dados foram alterados com sucesso`;
   } catch (error) {
     console.log(error);
     return error;
