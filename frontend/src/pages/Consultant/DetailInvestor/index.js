@@ -15,6 +15,8 @@ import './styles.css';
 import { Link } from 'react-router-dom';
 
 import EditIcon from '@material-ui/icons/Edit';
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 import { useAuthContext } from '../../../Context/AuthContext';
 //------------------------------------------------------------
@@ -49,12 +51,55 @@ export default function DetailInvestment(props) {
   return (
     <Container>
       <HeaderBackground notLogin={true} />
-      <main className="main-associated-investors">
+      <main className="main-ivestors">
         <div className="title-header">
-          <h1 className="h1-">Investidor</h1>
+          <h1 className="h1">Investidor</h1>
           {user.is_admin && (
             <div className="button-controler-user">
-              <EditIcon />
+              <Link
+                to={{
+                  pathname: '/newUser',
+                  state: { user: investor, type: 'investor', isEdit: true },
+                }}
+              >
+                {' '}
+                <EditIcon
+                  title="Editar"
+                  style={{
+                    backgroundColor: ' #a0770a',
+                    padding: '2px',
+                    borderRadius: '5px',
+                    boxShadow: 'var(--shadow-bottom)',
+                  }}
+                />
+              </Link>
+
+              <Link to={``}>
+                {' '}
+                <HighlightOffIcon
+                  style={{
+                    margin: '0px 5px',
+                    backgroundColor: ' #a0770a',
+                    padding: '2px',
+                    borderRadius: '5px',
+                    boxShadow: 'var(--shadow-bottom)',
+                  }}
+                  tilte="Desativar"
+                />
+              </Link>
+
+              <Link to={``}>
+                {' '}
+                <DeleteIcon
+                  style={{
+                    backgroundColor: 'red',
+                    padding: '2px',
+                    borderRadius: '5px',
+                    boxShadow: 'var(--shadow-bottom)',
+                  }}
+                  title="Excluir"
+                />
+              </Link>
             </div>
           )}
           <p>
@@ -62,7 +107,7 @@ export default function DetailInvestment(props) {
             &nbsp;{investor.name}&nbsp;{investor.last_name}
           </p>
         </div>
-        <div className="content-detail-associated">
+        <div className="content-detail-investor">
           <div className="detail-investor">
             <p className="weight-thin">
               Telefone:{' '}
