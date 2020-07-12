@@ -13,7 +13,7 @@ async function createUserInvestor(data) {
     );
     return `Investidor ${id_investor.data.user.name} e contrato criado com sucesso`;
   } catch (error) {
-    //console.log(error);
+    // console.log(error.response.data.message);
     return error;
   }
 }
@@ -40,7 +40,7 @@ async function editUser(dataForm, id_user, type) {
     return `${data.data.user.name} seus dados foram alterados com sucesso`;
   } catch (error) {
     console.log(error);
-    return error;
+    return error.response.message;
   }
 }
 
@@ -67,7 +67,7 @@ async function detailUser(id_user, type) {
     return data.user;
   } catch (error) {
     console.log(error);
-    return error;
+    return error.response.message;
   }
 }
 
