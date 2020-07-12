@@ -35,7 +35,7 @@ export default function InvestorRegisters(props) {
           <Link
             to={{
               pathname: '/newUser',
-              state: 'investor',
+              state: { type: 'investor' },
             }}
             style={{ position: 'absolute', right: '20px', marginTop: '7px' }}
           >

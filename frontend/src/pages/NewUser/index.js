@@ -6,12 +6,15 @@ import FooterBackground from '../../components/FooterBackground';
 import { createUserInvestor } from '../../controller/user';
 import { useAuthContext } from '../../Context/AuthContext';
 
+import AlertPopUp from '../../components/AlertPopUp';
+
 //masks
 import { cpfMask, maskTel, durationContractMask } from '../../utils/maskInputs';
 
 //--------------------------------------
 import IntlCurrencyInput from 'react-intl-currency-input';
 import { useHistory } from 'react-router-dom';
+import { useEffect } from 'react';
 
 const currencyConfig = {
   locale: 'pt-BR',
@@ -85,9 +88,11 @@ const Contract = (props) => {
 export default function NewUser(props) {
   const history = useHistory();
   //Variavel que fara o controle de criação de usuario ou consultor
-  const newInvestor = props.location.state;
+  console.log(props.location);
+  const newUser = props.location.state;
 
   const { user } = useAuthContext();
+  console.log(user);
 
   const [name, setName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -98,7 +103,7 @@ export default function NewUser(props) {
   const [valueInvest, setValueInvest] = useState(0);
   const [startContract, setStartContract] = useState('');
   const [timeContract, setTimeContract] = useState('');
-  const [alertMessage, setAlertMessage] = useState('');
+  const [alertMessage, setAlertMessage] = useState(false);
 
   //Função para tratar a requisição que será feita de um novo usuário.
   async function handleNewUser(e) {
@@ -125,16 +130,28 @@ export default function NewUser(props) {
       history('/');
     }
   }
+  useEffect(() => {
+    function fillInputFormEdit() {
+      setName(newUser.user.name);
+      setLastName(newUser.user.last_name);
+      setCpf(cpfMask(newUser.user.identif));
+      setTel(maskTel(newUser.user.tel));
+      setEmail(newUser.user.email);
+    }
+    if (newUser.user) {
+      fillInputFormEdit();
+    }
+  }, [newUser]);
 
   return (
     <Container className="container-login">
       <HeaderBackground notLogin={true} />
       <main className="main-myprofile">
         <div className="title-header">
-          {newInvestor === 'investor' ? (
-            <h1>Cadastro Investidor</h1>
+          {newUser.type === 'investor' ? (
+            <h1>{newUser.isEdit ? 'Editar' : 'Cadastro'} Investidor</h1>
           ) : (
-            <h1>Cadastro Consultor</h1>
+            <h1>{newUser.isEdit ? 'Editar' : 'Cadastro'} Consultor</h1>
           )}
         </div>
 
@@ -202,7 +219,9 @@ export default function NewUser(props) {
                 required
               />
             </div>
-            {newInvestor === 'investor' ? (
+            {newUser.type === 'investor' &&
+            user.is_admin == false &&
+            newUser.isEdit == false ? (
               <Contract
                 valueInvest={valueInvest}
                 handlevalueInvest={setValueInvest}
@@ -214,14 +233,20 @@ export default function NewUser(props) {
             ) : (
               ''
             )}
-            {alertMessage}
+
             <button style={{ padding: '10px 90px', marginTop: '30px' }}>
               SALVAR
             </button>
           </form>
         </div>
       </main>
+
       <FooterBackground notLogin={true} notBack={true} />
+      {alertMessage && (
+        <AlertPopUp handleSetAlertMessage={setAlertMessage}>
+          {alertMessage}
+        </AlertPopUp>
+      )}
     </Container>
   );
 }
