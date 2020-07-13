@@ -7,6 +7,7 @@ class SequelizeExeption {
   }
 
   static SequelizeExeption(error) {
+    //backend\node_modules\sequelize\lib\errors\validation-error.js
 
     this._errorJson = JSON.parse(JSON.stringify(error));
     this._error = error;
@@ -24,6 +25,7 @@ class SequelizeExeption {
       switch (this._error.name) {
         case 'SequelizeForeignKeyConstraintError':
           const [ field ] = this._error.fields;
+
           aux.push({
             type: this._error.name,
             message: `${this.idTable2Text(field)} não existe`,
@@ -99,8 +101,12 @@ class SequelizeExeption {
       break;
     }
 
-    let field = err.path.split('.')[1];
-    if (!field) field = err.path;
+    let afield = err.path.split('.');
+    let field = (afield.length > 1) ? afield[1] : afield[0];
+
+    if (err.instance.rawAttributes[field].alias) {
+      field = err.instance.rawAttributes[field].alias;
+    }
 
     message = `${field.capitalize()} ${message}`;
 

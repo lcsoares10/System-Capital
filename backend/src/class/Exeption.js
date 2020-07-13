@@ -22,13 +22,19 @@ class Exception {
       case (SequelizeExeption.isSequelizeException(this._error)):
         err =  SequelizeExeption.SequelizeExeption(this._error);
 
+        let aux = [];
+        err.map((obj) => {if (obj.message) aux.push(obj.message);});
+        err.message = aux.join(', ');
+        err.typeData = 'Array';
+
+        break;
       case (this._isError(this._error)):
         err = {
           type: this._error.name,
           message: this._error.message,
           "id": null,
         };
-
+        break;
       default:
         err =  {
           type: this._error.name,

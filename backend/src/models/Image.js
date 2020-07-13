@@ -3,12 +3,13 @@ const { Model, DataTypes }  = require('sequelize');
 class Image extends Model {
 
   static get _name() {
-    return 'Imagens';
+    return 'Imagem';
   }
 
   static init(sequelize) { //recebe a conexão do banco de dados
     return super.init({
       name: {
+        alias: 'Nome',
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -16,6 +17,7 @@ class Image extends Model {
         }
       },
       size: {
+        alias: 'Tamanho',
         type: DataTypes.FLOAT,
         allowNull: false,
         validate: {
@@ -23,6 +25,7 @@ class Image extends Model {
         }
       },
       key: {
+        alias: 'Chave',
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -30,6 +33,7 @@ class Image extends Model {
         }
       },
       mime: {
+        alias: 'Tipo',
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -37,6 +41,7 @@ class Image extends Model {
         }
       },
       url: {
+        alias: 'Url',
         type: DataTypes.TEXT,
         allowNull: false,
         validate: {

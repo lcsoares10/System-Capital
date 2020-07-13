@@ -15,6 +15,9 @@ module.exports = (req, res, next) => {
     //if (sucess) logger.info(data.message, data.data);
     //if (sucess) logger.info(data.message);
     //else logger.error(data.message, data.data);
+
+    //console.log(new Error('TESTE'));
+
     if (sucess) {
       logger.info(data.message, data);
     }

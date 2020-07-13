@@ -9,6 +9,7 @@ class Attachment extends Model {
   static init(sequelize) { //recebe a conexão do banco de dados
     return super.init({
       comment: {
+        alias: 'Comentário',
         type: DataTypes.TEXT,
         allowNull: true,
       },

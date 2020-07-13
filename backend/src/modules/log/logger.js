@@ -188,17 +188,19 @@ const logger = winston.createLogger({
       return { ...obj, data };
     };
 
-    let msg;
-    msg += `=========================================================================\r\n`
-        + `==================== ${moment().format('@HH:mm:ss')} ====================\r\n`
-        + `=========================================================================\r\n`
-        +`LEVEL: ${info.level.toUpperCase()}\r\n`
-        +`USER: ${(logger.req && logger.req.user) ? logger.req.user.id_user : null}\r\n`
-        +`ROUTE: ${(logger.req) ? logger.req.originalUrl : null}\r\n`
-        +`MESSAGE: ${info.message}\r\n`
-        if (process.env.NODE_ENV == "development") {
+    //console.log('XXXXX', info);
+
+    let msg = ""
+      + `=========================================================================\r\n`
+      + `==================== ${moment().format('@HH:mm:ss')} ====================\r\n`
+      + `=========================================================================\r\n`
+      +`LEVEL: ${info.level.toUpperCase()}\r\n`
+      +`USER: ${(logger.req && logger.req.user) ? logger.req.user.id_user : null}\r\n`
+      +`ROUTE: ${(logger.req) ? logger.req.originalUrl : null}\r\n`
+      +`MESSAGE: ${info.message}\r\n`
+      if (process.env.NODE_ENV == "development") {
           msg += `BODY: ${(logger.req) ? JSON.stringify(ignore({ data: logger.req.body }), null, '\t') : null}\r\n`
-        }
+      }
 
     if (info.level === 'error') {
       msg += `TRACE: ${info.obj.stack}\r\n`

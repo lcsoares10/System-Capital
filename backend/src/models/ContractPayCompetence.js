@@ -5,10 +5,12 @@ class ContractPayCompetence extends Model {
   static init(sequelize) { //recebe a conexão do banco de dados
     return super.init({
       value: {
+        alias: 'Valor',
         type: DataTypes.FLOAT,
         allowNull: false
       },
       competence: {
+        alias: 'Competência',
         type: DataTypes.STRING(6),
         allowNull: false,
         validate: {
