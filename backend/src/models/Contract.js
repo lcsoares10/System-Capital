@@ -2,9 +2,14 @@ const { Model, DataTypes }  = require('sequelize');
 
 class Contract extends Model {
 
+  static get _name() {
+    return 'Contrato';
+  }
+
   static init(sequelize) { //recebe a conexão do banco de dados
     return super.init({
       begin: { //início
+        alias: 'Início',
         type: DataTypes.DATE,
         allowNull: false,
         validate: {
@@ -12,6 +17,7 @@ class Contract extends Model {
         }
       },
       day: { //dia do pagamento
+        alias: 'Dia',
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
@@ -21,6 +27,7 @@ class Contract extends Model {
         }
       },
       time: { //Prazo
+        alias: 'Prazo',
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
@@ -28,10 +35,12 @@ class Contract extends Model {
         }
       },
       value: {
+        alias: 'Valor',
         type: DataTypes.FLOAT,
         allowNull: false
       },
       charging_rate: {
+        alias: 'Taxa de carregamento',
         type: DataTypes.FLOAT,
         allowNull: false
       },

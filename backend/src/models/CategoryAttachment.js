@@ -9,6 +9,7 @@ class CategoryAttachment extends Model {
   static init(sequelize) { //recebe a conexão do banco de dados
     return super.init({
       category: {
+        alias: 'Categoria',
         type: DataTypes.STRING,
         allowNull: false,
         validate: {

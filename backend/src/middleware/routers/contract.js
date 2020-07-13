@@ -28,7 +28,7 @@ module.exports = {
       if (req.user.is_admin) {
         return next();
 
-      } else if (req.user.type === 'consultant') {
+      } else if (req.user.type == 'consultant') {
         if (contract.investor.id_consultant != req.user.id ) {
           hasRight = false;
         }

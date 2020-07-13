@@ -2,9 +2,14 @@ const { Model, DataTypes }  = require('sequelize');
 
 class MessageBox extends Model {
 
+  static get _name() {
+    return 'Mensagem';
+  }
+
   static init(sequelize) { //recebe a conexão do banco de dados
     return super.init({
       messagem: {
+        alias: 'Mensagem',
         type: DataTypes.TEXT,
         allowNull: false,
         validate: {
@@ -12,6 +17,7 @@ class MessageBox extends Model {
         }
       },
       to_group_user: {
+        alias: 'Grupo de envio',
         type: DataTypes.INTEGER,
         allowNull: false,
         defaultValue: 0

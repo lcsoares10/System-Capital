@@ -7,6 +7,8 @@ const Exception = require('@/src/class/Exeption');
 module.exports = {
   async valid(req, res, next) {
     try {
+      if (req.user.is_admin) return next();
+
       const { id } = req.params;
       const investor = await InvestorModel.findByPk(id);
       if (!investor) {
@@ -14,7 +16,15 @@ module.exports = {
         throw new Exception('Investidor não existe');
       }
 
-      if (investor.id_user != req.user.id_user && !req.user.is_admin) {
+      let hasRight = true;
+
+      if (req.user.type == 'consultant' && investor.id_consultant != req.user.id) {
+        hasRight = false;
+      } else if (investor.id != req.user.id) {
+        hasRight = false;
+      }
+
+      if (!hasRight) {
         res.status(403);
         throw new Exception('Você não tem direito de acesso');
       }

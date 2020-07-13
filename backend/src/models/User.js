@@ -14,6 +14,7 @@ class User extends Model {
   static init(sequelize) { //recebe a conexão do banco de dados
     return super.init({
       login: {
+        alias: 'Login',
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -22,6 +23,7 @@ class User extends Model {
       },
       //Vê validador de senha
       email: {
+        alias: 'E-mail',
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -29,6 +31,7 @@ class User extends Model {
         }
       },
       password: {
+        alias: 'Senha',
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -40,6 +43,7 @@ class User extends Model {
       //   allowNull: false
       // },
       identif: {
+        alias: 'CPF',
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
@@ -55,6 +59,7 @@ class User extends Model {
         }
       },
       name: {
+        alias: 'Nome',
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -63,6 +68,7 @@ class User extends Model {
         }
       },
       last_name: {
+        alias: 'Sobrenome',
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -71,6 +77,7 @@ class User extends Model {
         }
       },
       tel: {
+        alias: 'Telefone',
         type: DataTypes.STRING,
         allowNull: true,
         validate: {
