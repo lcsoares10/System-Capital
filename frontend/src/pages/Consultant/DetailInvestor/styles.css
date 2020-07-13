@@ -15,7 +15,10 @@
   font-size: 16px;
   font-weight: var(--font-weight-thin);
 }
-
+.main-ivestors .name_user {
+  color: white;
+  font-size: 16px;
+}
 .main-ivestors .content-detail-investor {
   display: flex;
   flex-direction: column;
@@ -27,6 +30,9 @@
   font-size: var(--font-size-18);
   color: var(--text-color-beige);
   font-size: 16px;
+}
+.main-ivestors .content-detail-investor .detail-investor p {
+  margin: 5px;
 }
 
 .main-ivestors .content-contracts {

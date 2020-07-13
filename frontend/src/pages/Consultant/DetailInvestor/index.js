@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
+import { useHistory } from 'react-router-dom';
 
 import Container from '../../../components/Container';
 import HeaderBackground from '../../../components/HeaderBackground';
@@ -10,20 +11,24 @@ import convertCoinBr from '../../../utils/convertCoinBr';
 
 import { formatTel } from '../../../controller/formatsStrings';
 import allContracts from '../../../controller/Investor/allContracts';
-
+import { deleteUser } from '../../../controller/user';
 import './styles.css';
 import { Link } from 'react-router-dom';
 
 import EditIcon from '@material-ui/icons/Edit';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import DeleteIcon from '@material-ui/icons/Delete';
+import Swal from 'sweetalert2';
 
 import { useAuthContext } from '../../../Context/AuthContext';
+
 //------------------------------------------------------------
 
 export default function DetailInvestment(props) {
+  const history = useHistory();
   const { user } = useAuthContext();
   const [investor, setInvestor] = useState([]);
+  const [userId, setUserId] = useState('');
   const [contractsInvestor, setContractsInvestor] = useState([]);
   const [investorConsultant, setInvestorConsultant] = useState({});
 
@@ -34,6 +39,7 @@ export default function DetailInvestment(props) {
         props.location.state.stateLink.id
       );
       setInvestor(dataInvestor.user);
+      setUserId(dataInvestor.id);
       if (dataInvestor.consultant) {
         setInvestorConsultant(dataInvestor.consultant.user);
       }
@@ -44,6 +50,30 @@ export default function DetailInvestment(props) {
       requestGetInvestorAssciated();
     }, 500);
   }, [props.location.state.stateLink, props.location.state.stateLink.id]);
+
+  async function handlleDeleteInvestor() {
+    const returnMessageApi = await deleteUser(userId, 'investor');
+    if (returnMessageApi.hasOwnProperty('response')) {
+      Swal.fire({
+        title: 'Erro!',
+        text: returnMessageApi.response.data.message,
+        icon: 'error',
+        confirmButtonText: 'OK',
+        background: '#121212',
+        confirmButtonColor: '#a0770a',
+      });
+    } else {
+      Swal.fire({
+        title: 'Sucesso',
+        text: returnMessageApi,
+        icon: 'success',
+        confirmButtonText: 'OK',
+        background: '#121212',
+        confirmButtonColor: '#a0770a',
+      });
+      history.push('/investors');
+    }
+  }
 
   let tel = investor.tel ? investor.tel : 0;
   tel = parseInt(tel);
@@ -59,7 +89,12 @@ export default function DetailInvestment(props) {
               <Link
                 to={{
                   pathname: '/newUser',
-                  state: { user: investor, type: 'investor', isEdit: true },
+                  state: {
+                    user: investor,
+                    userId,
+                    type: 'investor',
+                    isEdit: true,
+                  },
                 }}
               >
                 {' '}
@@ -74,7 +109,7 @@ export default function DetailInvestment(props) {
                 />
               </Link>
 
-              <Link to={``}>
+              <Link to={`/investors`}>
                 {' '}
                 <HighlightOffIcon
                   style={{
@@ -88,7 +123,7 @@ export default function DetailInvestment(props) {
                 />
               </Link>
 
-              <Link to={``}>
+              <Link to={`/investors`} onClick={(e) => handlleDeleteInvestor()}>
                 {' '}
                 <DeleteIcon
                   style={{
@@ -102,11 +137,11 @@ export default function DetailInvestment(props) {
               </Link>
             </div>
           )}
-          <p>
-            {' '}
-            &nbsp;{investor.name}&nbsp;{investor.last_name}
-          </p>
         </div>
+        <p className="name_user">
+          {' '}
+          &nbsp;{investor.name}&nbsp;{investor.last_name}
+        </p>
         <div className="content-detail-investor">
           <div className="detail-investor">
             <p className="weight-thin">
@@ -166,7 +201,11 @@ export default function DetailInvestment(props) {
           </div>
         </div>
       </main>
-      <FooterBackground notLogin={true} notBack={true} />
+      <FooterBackground
+        notLogin={true}
+        notBack={true}
+        backPage={'/investors'}
+      />
     </Container>
   );
 }

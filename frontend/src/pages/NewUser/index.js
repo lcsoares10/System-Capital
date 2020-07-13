@@ -3,11 +3,11 @@ import Container from '../../components/Container';
 import HeaderBackground from '../../components/HeaderBackground';
 import FooterBackground from '../../components/FooterBackground';
 
-import { createUserInvestor } from '../../controller/user';
+import { createUserInvestor, editUser } from '../../controller/user';
 import { useAuthContext } from '../../Context/AuthContext';
 
-import AlertPopUp from '../../components/AlertPopUp';
-
+//import AlertPopUp from '../../components/AlertPopUp';
+import Swal from 'sweetalert2';
 //masks
 import { cpfMask, maskTel, durationContractMask } from '../../utils/maskInputs';
 
@@ -86,14 +86,13 @@ const Contract = (props) => {
 };
 
 export default function NewUser(props) {
-  const history = useHistory();
   //Variavel que fara o controle de criação de usuario ou consultor
   console.log(props.location);
   const newUser = props.location.state;
+  const history = useHistory();
 
   const { user } = useAuthContext();
-  console.log(user);
-
+  //console.log(user);
   const [name, setName] = useState('');
   const [lastName, setLastName] = useState('');
   const [cpf, setCpf] = useState('');
@@ -108,26 +107,54 @@ export default function NewUser(props) {
   //Função para tratar a requisição que será feita de um novo usuário.
   async function handleNewUser(e) {
     e.preventDefault();
-    const data = {
-      // login: name,
-      email,
-      name,
-      last_name: lastName,
-      tel: tel.replace(/[()-]/g, ''),
-      id_consultant: user.id,
-      identif: cpf.replace(/[.-]/g, ''),
-      begin: startContract,
-      time: timeContract.replace(/[ ]|[meses]/g, ''),
-      value: valueInvest,
-      day: 5,
-    };
 
-    const returnMessage = await createUserInvestor(data);
-    if (returnMessage.response.data.message) {
-      setAlertMessage(returnMessage.response.data.message);
+    let returnMessage = '';
+    //Caso seja uma ação de PUT de um user é necessário criar um formdata
+    if (newUser.isEdit === true) {
+      let formData = new FormData();
+      formData.append('name', name);
+      formData.append('last_name', lastName);
+      formData.append('cpf', cpf.replace(/[.-]/g, ''));
+      formData.append('tel', tel.replace(/[()-]/g, ''));
+      formData.append('email', email);
+      returnMessage = await editUser(formData, newUser.userId, 'investor');
     } else {
-      alert(returnMessage);
-      history('/');
+      const data = {
+        // login: name,
+        email,
+        name,
+        last_name: lastName,
+        tel: tel.replace(/[()-]/g, ''),
+        id_consultant: user.id,
+        identif: cpf.replace(/[.-]/g, ''),
+        begin: startContract,
+        time: timeContract.replace(/[ ]|[meses]/g, ''),
+        value: valueInvest,
+        day: 5,
+      };
+      returnMessage = await createUserInvestor(data);
+    }
+
+    //se requisição falahar
+    if (returnMessage.hasOwnProperty('response')) {
+      Swal.fire({
+        title: 'Erro!',
+        text: returnMessage.response.data.message,
+        icon: 'error',
+        confirmButtonText: 'OK',
+        background: '#121212',
+        confirmButtonColor: '#a0770a',
+      });
+    } else {
+      Swal.fire({
+        title: 'Sucesso',
+        text: returnMessage,
+        icon: 'success',
+        confirmButtonText: 'OK',
+        background: '#121212',
+        confirmButtonColor: '#a0770a',
+      });
+      history.push('/investors');
     }
   }
   useEffect(() => {
@@ -219,9 +246,7 @@ export default function NewUser(props) {
                 required
               />
             </div>
-            {newUser.type === 'investor' &&
-            user.is_admin == false &&
-            newUser.isEdit == false ? (
+            {newUser.type === 'investor' && newUser.isEdit === false ? (
               <Contract
                 valueInvest={valueInvest}
                 handlevalueInvest={setValueInvest}
@@ -242,11 +267,6 @@ export default function NewUser(props) {
       </main>
 
       <FooterBackground notLogin={true} notBack={true} />
-      {alertMessage && (
-        <AlertPopUp handleSetAlertMessage={setAlertMessage}>
-          {alertMessage}
-        </AlertPopUp>
-      )}
     </Container>
   );
 }

@@ -40,8 +40,9 @@ const Text = styled.p`
 `;
 
 export default function AlertPopUp(props) {
+  window.scrollTo(0, document.querySelector('body'));
   return (
-    <FadeIn duration="1s" delay="0.3s">
+    <FadeIn duration="0.8s" delay="0.2s">
       <Warning>
         <WarningIcon
           style={{
