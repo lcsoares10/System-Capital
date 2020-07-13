@@ -3,15 +3,18 @@ import Container from '../../components/Container';
 import HeaderBackground from '../../components/HeaderBackground';
 import FooterBackground from '../../components/FooterBackground';
 
-import { createUserInvestor } from '../../controller/user';
+import { createUserInvestor, editUser } from '../../controller/user';
 import { useAuthContext } from '../../Context/AuthContext';
 
+//import AlertPopUp from '../../components/AlertPopUp';
+import Swal from 'sweetalert2';
 //masks
 import { cpfMask, maskTel, durationContractMask } from '../../utils/maskInputs';
 
 //--------------------------------------
 import IntlCurrencyInput from 'react-intl-currency-input';
 import { useHistory } from 'react-router-dom';
+import { useEffect } from 'react';
 
 const currencyConfig = {
   locale: 'pt-BR',
@@ -83,11 +86,13 @@ const Contract = (props) => {
 };
 
 export default function NewUser(props) {
-  const history = useHistory();
   //Variavel que fara o controle de criação de usuario ou consultor
-  const newInvestor = props.location.state;
-  const { user } = useAuthContext();
+  console.log(props.location);
+  const newUser = props.location.state;
+  const history = useHistory();
 
+  const { user } = useAuthContext();
+  //console.log(user);
   const [name, setName] = useState('');
   const [lastName, setLastName] = useState('');
   const [cpf, setCpf] = useState('');
@@ -97,43 +102,83 @@ export default function NewUser(props) {
   const [valueInvest, setValueInvest] = useState(0);
   const [startContract, setStartContract] = useState('');
   const [timeContract, setTimeContract] = useState('');
-  const [errorForm, setErrorForm] = useState('');
+  const [alertMessage, setAlertMessage] = useState(false);
 
   //Função para tratar a requisição que será feita de um novo usuário.
   async function handleNewUser(e) {
     e.preventDefault();
-    const data = {
-      // login: name,
-      email,
-      name,
-      last_name: lastName,
-      tel: tel.replace(/[()-]/g, ''),
-      id_consultant: user.id,
-      identif: cpf.replace(/[.-]/g, ''),
-      begin: startContract,
-      time: timeContract.replace(/[ ]|[meses]/g, ''),
-      value: valueInvest,
-      day: 5,
-    };
 
-    try {
-      const returnMessage = await createUserInvestor(data);
-      alert(returnMessage);
-      history.push('/');
-    } catch (error) {
-      alert(error);
+    let returnMessage = '';
+    //Caso seja uma ação de PUT de um user é necessário criar um formdata
+    if (newUser.isEdit === true) {
+      let formData = new FormData();
+      formData.append('name', name);
+      formData.append('last_name', lastName);
+      formData.append('cpf', cpf.replace(/[.-]/g, ''));
+      formData.append('tel', tel.replace(/[()-]/g, ''));
+      formData.append('email', email);
+      returnMessage = await editUser(formData, newUser.userId, 'investor');
+    } else {
+      const data = {
+        // login: name,
+        email,
+        name,
+        last_name: lastName,
+        tel: tel.replace(/[()-]/g, ''),
+        id_consultant: user.id,
+        identif: cpf.replace(/[.-]/g, ''),
+        begin: startContract,
+        time: timeContract.replace(/[ ]|[meses]/g, ''),
+        value: valueInvest,
+        day: 5,
+      };
+      returnMessage = await createUserInvestor(data);
+    }
+
+    //se requisição falahar
+    if (returnMessage.hasOwnProperty('response')) {
+      Swal.fire({
+        title: 'Erro!',
+        text: returnMessage.response.data.message,
+        icon: 'error',
+        confirmButtonText: 'OK',
+        background: '#121212',
+        confirmButtonColor: '#a0770a',
+      });
+    } else {
+      Swal.fire({
+        title: 'Sucesso',
+        text: returnMessage,
+        icon: 'success',
+        confirmButtonText: 'OK',
+        background: '#121212',
+        confirmButtonColor: '#a0770a',
+      });
+      history.push('/investors');
     }
   }
+  useEffect(() => {
+    function fillInputFormEdit() {
+      setName(newUser.user.name);
+      setLastName(newUser.user.last_name);
+      setCpf(cpfMask(newUser.user.identif));
+      setTel(maskTel(newUser.user.tel));
+      setEmail(newUser.user.email);
+    }
+    if (newUser.user) {
+      fillInputFormEdit();
+    }
+  }, [newUser]);
 
   return (
     <Container className="container-login">
       <HeaderBackground notLogin={true} />
       <main className="main-myprofile">
         <div className="title-header">
-          {newInvestor === 'investor' ? (
-            <h1>Cadastro Investidor</h1>
+          {newUser.type === 'investor' ? (
+            <h1>{newUser.isEdit ? 'Editar' : 'Cadastro'} Investidor</h1>
           ) : (
-            <h1>Cadastro Consultor</h1>
+            <h1>{newUser.isEdit ? 'Editar' : 'Cadastro'} Consultor</h1>
           )}
         </div>
 
@@ -201,7 +246,7 @@ export default function NewUser(props) {
                 required
               />
             </div>
-            {newInvestor === 'investor' ? (
+            {newUser.type === 'investor' && newUser.isEdit === false ? (
               <Contract
                 valueInvest={valueInvest}
                 handlevalueInvest={setValueInvest}
@@ -213,14 +258,15 @@ export default function NewUser(props) {
             ) : (
               ''
             )}
-            {errorForm}
+
             <button style={{ padding: '10px 90px', marginTop: '30px' }}>
               SALVAR
             </button>
           </form>
         </div>
       </main>
-      <FooterBackground notLogin={true} />
+
+      <FooterBackground notLogin={true} notBack={true} />
     </Container>
   );
 }

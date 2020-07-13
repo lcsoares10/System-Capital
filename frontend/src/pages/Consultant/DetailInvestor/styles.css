@@ -1,43 +1,52 @@
-.main-associated-investors .content-form {
+.main-ivestors .content-form {
   margin-top: 30px;
   display: flex;
   flex-direction: column;
 }
-.main-associated-investors .title-header {
+.main-ivestors .title-header {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-.main-associated-investors .title-header p {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
   color: white;
-  font-size: 18px;
+}
+.main-ivestors .title-header p {
+  color: white;
+  font-size: 16px;
   font-weight: var(--font-weight-thin);
 }
-
-.main-associated-investors .content-detail-associated {
+.main-ivestors .name_user {
+  color: white;
+  font-size: 16px;
+}
+.main-ivestors .content-detail-investor {
   display: flex;
   flex-direction: column;
   padding: 0px 0px;
 }
 
-.main-associated-investors .content-detail-associated .detail-investor {
+.main-ivestors .content-detail-investor .detail-investor {
   margin-top: 28px;
   font-size: var(--font-size-18);
   color: var(--text-color-beige);
+  font-size: 16px;
+}
+.main-ivestors .content-detail-investor .detail-investor p {
+  margin: 5px;
 }
 
-.main-associated-investors .content-contracts {
+.main-ivestors .content-contracts {
   display: flex;
   flex-direction: column;
 }
 
-.main-associated-investors .content-contracts .list-contracts {
+.main-ivestors .content-contracts .list-contracts {
   display: flex;
   flex-direction: column;
   margin: 28px 0px;
 }
 
-.main-associated-investors .content-contracts .list-contracts .contracts {
+.main-ivestors .content-contracts .list-contracts .contracts {
   background-color: #0a0a0a;
   color: white;
   padding: 20px;
@@ -47,17 +56,26 @@
   margin-top: 5px;
 }
 
-.main-associated-investors .content-contracts .list-contracts .contracts p {
+.main-ivestors .content-contracts .list-contracts .contracts p {
   margin: 20px;
 }
 
-.main-associated-investors
-  .content-contracts
-  .list-contracts
-  .contracts
-  .time-contract {
+.main-ivestors .content-contracts .list-contracts .contracts .time-contract {
   margin-top: 10px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+}
+
+/*adm*/
+
+.detail-pay {
+  float: right;
+  color: black;
+  font-weight: 200;
+  background-color: var(--bg-color-button);
+  border-radius: 10px;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 1);
+  padding: 10px 30px;
+  border: 0px;
 }

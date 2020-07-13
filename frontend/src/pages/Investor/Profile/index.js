@@ -31,7 +31,7 @@ export default function Profile() {
     }
     getContracts();
     //Execute the created function directly
-  }, []);
+  }, [user.id]);
 
   /**Por causa das execuções asyncronas do React
    * handleCalculationProjection só pode ser carregada quando

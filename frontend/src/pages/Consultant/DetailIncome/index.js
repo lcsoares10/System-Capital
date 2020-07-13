@@ -28,7 +28,11 @@ export default function DetailIncome(props) {
     setTimeout(() => {
       yeldMonth();
     }, 500);
-  }, [props.match.params.id]);
+  }, [
+    props.match.params.id,
+    props.location.state.stateLink.id_consultant,
+    props.location.state.stateLink.year,
+  ]);
 
   //O css utilizado e o msm css da page dos investidores.css definido para pagina com listas
   return (

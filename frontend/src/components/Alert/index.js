@@ -9,13 +9,14 @@ const Warning = styled.div`
   font-size: 1em;
   border-radius: 10px;
   position: relative;
+  display: flex;
 `;
 
 export default function Alert(props) {
   return (
     <Warning>
-      <WarningIcon style={{ position: 'absolute', top: '7px' }} />
-      <p style={{ paddingLeft: '30px' }}>{props.children}</p>
+      <WarningIcon styled={{ position: 'absolute', top: '7px' }} />
+      <p style={{ paddingLeft: '5px' }}>{props.children}</p>
     </Warning>
   );
 }

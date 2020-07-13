@@ -8,7 +8,7 @@ import icon_profile_my from '../../assets/icon-profile-my.png';
 import EditIcon from '@material-ui/icons/Edit';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 //masks
-import { cpfMask, maskTel, durationContractMask } from '../../utils/maskInputs';
+import { maskTel } from '../../utils/maskInputs';
 //------------------------------------------------------------
 import { useAuthContext } from '../../Context/AuthContext';
 import { editUser, detailUser } from '../../controller/user';
@@ -39,7 +39,7 @@ export default function ViewProfile() {
     }
 
     getDetailProfile();
-  }, []);
+  }, [user.id, user.type]);
 
   //Funçao trata os dados passados no formulario , e chamara funçao que fara a requisiçao de update.
   async function handdleSubmit(e) {
@@ -67,7 +67,7 @@ export default function ViewProfile() {
     reader.onload = () => setImgProfile({ url: reader.result });
     reader.readAsDataURL(image);
   }
-  console.log(user);
+
   return (
     <Container className="container-login">
       <HeaderBackground notLogin={true} />

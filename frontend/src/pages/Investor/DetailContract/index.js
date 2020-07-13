@@ -36,7 +36,7 @@ export default function DetailInvestment(props) {
     setTimeout(() => {
       getContract();
     }, 500);
-  }, []);
+  }, [props.match.params.id]);
 
   if (Object.entries(contract).length === 0) return <Loading />;
 

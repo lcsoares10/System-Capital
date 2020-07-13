@@ -146,3 +146,12 @@ a {
 input::placeholder {
   color: rgb(32, 32, 32);
 }
+
+/*ADM*/
+
+.button-controler-user {
+  margin-top: 10px;
+}
+.button-controler-user a {
+  color: white;
+}
