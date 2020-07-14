@@ -30,6 +30,20 @@ export default function DetailInvestment(props) {
     }, 500);
   }, [resetPage]);
 
+  function calculateMonthPay(option) {
+    let totalPay = 0;
+    let monthPay = 0;
+    payMonths.map((month, key) => {
+      if (month.pay === 1) {
+        totalPay += month.value;
+        monthPay++;
+      }
+      return;
+    });
+    if (option === 'total') return totalPay;
+    return monthPay;
+  }
+
   return (
     <Container>
       <HeaderBackground notLogin={true} />
@@ -51,6 +65,15 @@ export default function DetailInvestment(props) {
             <p className="weight-thin">
               Valor Investido:{' '}
               <b className="text-white">{convertCoinBr(contract.value)}</b>
+            </p>
+            <p className="weight-thin">
+              Meses Pagos: <b className="text-white">{calculateMonthPay()}</b>
+            </p>
+            <p className="weight-thin">
+              Total Pago:{' '}
+              <b className="text-green">
+                {convertCoinBr(calculateMonthPay('total'))}
+              </b>
             </p>
           </div>
 
