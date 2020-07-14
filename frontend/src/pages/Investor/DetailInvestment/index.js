@@ -8,13 +8,16 @@ import FooterBackground from '../../../components/FooterBackground';
 import ListCheckPayments from '../../../components/ListCheckPayments';
 import allContractPayMonth from '../../../controller/Investor/allContractPayMonth';
 import convertCoinBr from '../../../utils/convertCoinBr';
+import { useAuthContext } from '../../../Context/AuthContext';
 
 import './styles.css';
 //------------------------------------------------------------
 
 export default function DetailInvestment(props) {
+  const { user } = useAuthContext();
   const [payMonths, setPayMonths] = useState([]);
   const [contract, setContract] = useState([]);
+  const [resetPage, setResetPage] = useState(false);
 
   useEffect(() => {
     async function getPayMonths() {
@@ -25,7 +28,7 @@ export default function DetailInvestment(props) {
     setTimeout(() => {
       getPayMonths();
     }, 500);
-  }, [props.match.params.id]);
+  }, [resetPage]);
 
   return (
     <Container>
@@ -33,7 +36,7 @@ export default function DetailInvestment(props) {
       <main className="main-detail-investiment">
         <div className="title-header">
           <h1 className="h1-">Investimento</h1>
-          <p>contrato: {contract.id}</p>
+          <p>contrato: {String(contract.id).padStart(5, '0')}</p>
         </div>
 
         <div className="content-ivestment">
@@ -52,9 +55,15 @@ export default function DetailInvestment(props) {
           </div>
 
           <div className="check-payments">
-            <h2>Recebidos</h2>
+            {user.is_admin === 1 ? <h2>Pagos</h2> : <h2>Recebidos</h2>}
             <div className="list-check-payments">
-              <ListCheckPayments payMonths={payMonths} />
+              <ListCheckPayments
+                payMonths={payMonths}
+                isAdm={user.is_admin === 1 ? true : false}
+                contractId={contract.id}
+                contractValue={contract.value}
+                handleSetResetPage={setResetPage}
+              />
             </div>
           </div>
         </div>

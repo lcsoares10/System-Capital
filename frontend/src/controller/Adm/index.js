@@ -21,4 +21,18 @@ async function getAllConsultants() {
   }
 }
 
-export { getAllInvestors, getAllConsultants };
+async function payMonthContract(id_contract, data) {
+  try {
+    const response = await api.post(
+      `/contracts/${id_contract}/contractspaymonth`,
+      data
+    );
+
+    return response;
+  } catch (error) {
+    // console.log(error.response.data.message)
+    return error;
+  }
+}
+
+export { getAllInvestors, getAllConsultants, payMonthContract };

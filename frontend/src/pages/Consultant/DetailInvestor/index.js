@@ -128,7 +128,7 @@ export default function DetailInvestment(props) {
       <main className="main-ivestors">
         <div className="title-header">
           <h1 className="h1">Investidor</h1>
-          {user.is_admin && (
+          {user.is_admin === 1 && (
             <div className="button-controler-user">
               <Link
                 to={{
@@ -210,7 +210,7 @@ export default function DetailInvestment(props) {
             <p styled={{ marginTop: '10px' }} className="weight-thin">
               E-mail: <b className="text-white">{investor.email}</b>
             </p>
-            {user.is_admin && (
+            {user.is_admin === 1 && (
               <p styled={{ marginTop: '10px' }} className="weight-thin">
                 Consultor:{' '}
                 <b className="text-white">{investorConsultant.name}</b>
@@ -242,6 +242,10 @@ export default function DetailInvestment(props) {
                     Dia de pagamento:{' '}
                     <b>{contract.day.toString().padStart('2', '0')}</b>
                   </p>
+                  <p>
+                    Taxa de carregamento:{' '}
+                    <b>{convertCoinBr(contract.charging_rate)}</b>
+                  </p>
                   <div className="time-contract">
                     <p>Inicio: {moment(contract.begin).format('L')}</p>
                     <p>
@@ -251,9 +255,11 @@ export default function DetailInvestment(props) {
                         .format('L')}
                     </p>
                   </div>
-                  <Link to={`/detail-investment/${contract.id}`}>
-                    <button className="detail-pay"> PAGAMENTOS</button>
-                  </Link>
+                  {user.is_admin && (
+                    <Link to={`/detail-investment/${contract.id}`}>
+                      <button className="detail-pay"> PAGAMENTOS</button>
+                    </Link>
+                  )}
                 </div>
               ))}
             </div>
