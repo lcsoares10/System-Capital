@@ -35,4 +35,15 @@ async function payMonthContract(id_contract, data) {
   }
 }
 
-export { getAllInvestors, getAllConsultants, payMonthContract };
+async function sendMessage(user, messagem) {
+  try {
+    const response = await api.post(`/messagesbox`, { user, messagem });
+
+    return response;
+  } catch (error) {
+    // console.log(error.response.data.message)
+    return error;
+  }
+}
+
+export { getAllInvestors, getAllConsultants, payMonthContract, sendMessage };

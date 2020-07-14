@@ -12,6 +12,7 @@ import convertCoinBr from '../../../utils/convertCoinBr';
 import { formatTel } from '../../../controller/formatsStrings';
 import allContracts from '../../../controller/Investor/allContracts';
 import { deleteUser, statusInvestor } from '../../../controller/user';
+import { sendMessage } from '../../../controller/Adm';
 import './styles.css';
 import { Link } from 'react-router-dom';
 
@@ -19,6 +20,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import CheckIcon from '@material-ui/icons/Check';
 import DeleteIcon from '@material-ui/icons/Delete';
+
 import Swal from 'sweetalert2';
 
 import { useAuthContext } from '../../../Context/AuthContext';
@@ -119,6 +121,56 @@ export default function DetailInvestment(props) {
     }
   }
 
+  async function handleSendMessage() {
+    const { value: text } = await Swal.fire({
+      input: 'textarea',
+      title: 'Enviar mensagem para ' + investor.name,
+      inputPlaceholder: 'Escreva sua mensagem aqui',
+      inputAttributes: {
+        'aria-label': 'Escreva sua mensagem aqui',
+      },
+      showCancelButton: true,
+      background: '#121212',
+    });
+
+    if (text) {
+      Swal.fire({
+        text: text,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        camceçButtonText: 'Não',
+        confirmButtonText: 'Enviar, mensagem!',
+        background: '#121212',
+      }).then(async (result) => {
+        if (result.value) {
+          const returnMessageApi = await sendMessage(userId, text);
+          if (returnMessageApi.hasOwnProperty('response')) {
+            Swal.fire({
+              title: 'Erro!',
+              text: returnMessageApi.response.data.message,
+              icon: 'error',
+              confirmButtonText: 'OK',
+              background: '#121212',
+              confirmButtonColor: '#a0770a',
+            });
+          } else {
+            Swal.fire({
+              title: 'Sucesso',
+              text: 'Mensagem enviada',
+              icon: 'success',
+              confirmButtonText: 'OK',
+              background: '#121212',
+              confirmButtonColor: '#a0770a',
+            });
+            //history.push('/investors');
+          }
+        }
+      });
+    }
+  }
+
   let tel = investor.tel ? investor.tel : 0;
   tel = parseInt(tel);
 
@@ -128,6 +180,7 @@ export default function DetailInvestment(props) {
       <main className="main-ivestors">
         <div className="title-header">
           <h1 className="h1">Investidor</h1>
+
           {user.is_admin === 1 && (
             <div className="button-controler-user">
               <Link
@@ -216,6 +269,11 @@ export default function DetailInvestment(props) {
                 <b className="text-white">{investorConsultant.name}</b>
               </p>
             )}
+            <div className="enviar-mensage">
+              <button onClick={(e) => handleSendMessage()}>
+                Enviar Mensagem
+              </button>
+            </div>
           </div>
 
           <div className="content-contracts">
