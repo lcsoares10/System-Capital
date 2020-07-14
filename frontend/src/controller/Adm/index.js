@@ -3,10 +3,9 @@ import api from '../../services/api';
 async function getAllInvestors() {
   try {
     const { data } = await api.get('/investors');
-    console.log(data);
+
     return data.data;
   } catch (error) {
-    console.log(error.response);
     return error.response;
   }
 }

@@ -60,6 +60,7 @@ export default function InvestorRegisters(props) {
                   value_col_1={`${investor.user.name} ${investor.user.last_name}`}
                   url={`/detailInvestor/${investor.user.name}`}
                   stateLink={investor}
+                  backgroundColor={investor.user.active === 0 ? true : false}
                 />
               ))}
             </div>

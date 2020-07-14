@@ -21,14 +21,17 @@ export default function ListContracts(props) {
 
   let styleColumn = {};
   let flexDirection = {};
-
+  let deactivate = {};
   if (props.flexColumn === true) {
     styleColumn = { padding: '10px 0px ' };
     flexDirection = { flexDirection: 'column' };
   }
+  if (props.backgroundColor) {
+    deactivate = { backgroundColor: '#1d1d1d' };
+  }
 
   return (
-    <Ul style={flexDirection}>
+    <Ul style={(flexDirection, deactivate)}>
       <li className="text-white">{props.value_col_1}</li>
       <li style={styleColumn} className="text-beige">
         {props.value_col_2}
@@ -37,6 +40,7 @@ export default function ListContracts(props) {
       {props.url && (
         <li>
           <Link
+            id="link"
             to={{
               pathname: props.url,
               state: { stateLink },

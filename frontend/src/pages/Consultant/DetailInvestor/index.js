@@ -11,12 +11,13 @@ import convertCoinBr from '../../../utils/convertCoinBr';
 
 import { formatTel } from '../../../controller/formatsStrings';
 import allContracts from '../../../controller/Investor/allContracts';
-import { deleteUser } from '../../../controller/user';
+import { deleteUser, statusInvestor } from '../../../controller/user';
 import './styles.css';
 import { Link } from 'react-router-dom';
 
 import EditIcon from '@material-ui/icons/Edit';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import CheckIcon from '@material-ui/icons/Check';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Swal from 'sweetalert2';
 
@@ -52,7 +53,50 @@ export default function DetailInvestment(props) {
   }, [props.location.state.stateLink, props.location.state.stateLink.id]);
 
   async function handlleDeleteInvestor() {
-    const returnMessageApi = await deleteUser(userId, 'investor');
+    Swal.fire({
+      title: 'Deletar',
+      text:
+        'Tem certeza que deseja deletar o investidor ' +
+        investor.name +
+        ' ' +
+        investor.last_name +
+        ' ?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      camceçButtonText: 'Não',
+      confirmButtonText: 'Sim, quero deletar!',
+      background: '#121212',
+    }).then(async (result) => {
+      if (result.value) {
+        const returnMessageApi = await deleteUser(userId, 'investor');
+        if (returnMessageApi.hasOwnProperty('response')) {
+          Swal.fire({
+            title: 'Erro!',
+            text: returnMessageApi.response.data.message,
+            icon: 'error',
+            confirmButtonText: 'OK',
+            background: '#121212',
+            confirmButtonColor: '#a0770a',
+          });
+        } else {
+          Swal.fire({
+            title: 'Sucesso',
+            text: returnMessageApi,
+            icon: 'success',
+            confirmButtonText: 'OK',
+            background: '#121212',
+            confirmButtonColor: '#a0770a',
+          });
+          history.push('/investors');
+        }
+      }
+    });
+  }
+
+  async function handlleStatusInvestor() {
+    const returnMessageApi = await statusInvestor(investor.id);
     if (returnMessageApi.hasOwnProperty('response')) {
       Swal.fire({
         title: 'Erro!',
@@ -65,7 +109,7 @@ export default function DetailInvestment(props) {
     } else {
       Swal.fire({
         title: 'Sucesso',
-        text: returnMessageApi,
+        text: returnMessageApi.data.message,
         icon: 'success',
         confirmButtonText: 'OK',
         background: '#121212',
@@ -111,30 +155,45 @@ export default function DetailInvestment(props) {
 
               <Link to={`/investors`}>
                 {' '}
-                <HighlightOffIcon
-                  style={{
-                    margin: '0px 5px',
-                    backgroundColor: ' #a0770a',
-                    padding: '2px',
-                    borderRadius: '5px',
-                    boxShadow: 'var(--shadow-bottom)',
-                  }}
-                  tilte="Desativar"
-                />
+                {investor.active === 0 ? (
+                  <CheckIcon
+                    onClick={(e) => handlleStatusInvestor()}
+                    style={{
+                      margin: '0px 5px',
+                      backgroundColor: 'green',
+                      padding: '2px',
+                      borderRadius: '5px',
+                      boxShadow: 'var(--shadow-bottom)',
+                    }}
+                    title="Ativar"
+                    alt="Ativar"
+                  />
+                ) : (
+                  <HighlightOffIcon
+                    onClick={(e) => handlleStatusInvestor()}
+                    style={{
+                      margin: '0px 5px',
+                      backgroundColor: ' #a0770a',
+                      padding: '2px',
+                      borderRadius: '5px',
+                      boxShadow: 'var(--shadow-bottom)',
+                    }}
+                    title="Desativar"
+                  />
+                )}
               </Link>
 
-              <Link to={`/investors`} onClick={(e) => handlleDeleteInvestor()}>
-                {' '}
-                <DeleteIcon
-                  style={{
-                    backgroundColor: 'red',
-                    padding: '2px',
-                    borderRadius: '5px',
-                    boxShadow: 'var(--shadow-bottom)',
-                  }}
-                  title="Excluir"
-                />
-              </Link>
+              <DeleteIcon
+                onClick={(e) => handlleDeleteInvestor()}
+                style={{
+                  backgroundColor: 'red',
+                  padding: '2px',
+                  borderRadius: '5px',
+                  boxShadow: 'var(--shadow-bottom)',
+                  cursor: 'pointer',
+                }}
+                title="Excluir"
+              />
             </div>
           )}
         </div>
