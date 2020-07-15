@@ -2,7 +2,7 @@ import moment from 'moment';
 import convertCoinBr from '../../utils/convertCoinBr';
 
 export default function calculateProjection(contract) {
-  let { id, begin, final, value } = contract;
+  let { id, begin, final, value, time } = contract;
 
   let dt_begin = moment(begin);
   let dt_end = moment(final);
