@@ -84,7 +84,7 @@ export default function Profile() {
       </main>
       <FooterBackground
         viewAddUser={true}
-        newUser={{ type: 'investor' }}
+        newUser={{ type: 'investor', isEdit: false }}
         notLogin={true}
         notBack={false}
       />

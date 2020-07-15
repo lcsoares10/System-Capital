@@ -264,16 +264,18 @@ export default function DetailInvestment(props) {
               E-mail: <b className="text-white">{investor.email}</b>
             </p>
             {user.is_admin === 1 && (
-              <p styled={{ marginTop: '10px' }} className="weight-thin">
-                Consultor:{' '}
-                <b className="text-white">{investorConsultant.name}</b>
-              </p>
+              <>
+                <p styled={{ marginTop: '10px' }} className="weight-thin">
+                  Consultor:{' '}
+                  <b className="text-white">{investorConsultant.name}</b>
+                </p>
+                <div className="enviar-mensage">
+                  <button onClick={(e) => handleSendMessage()}>
+                    Enviar Mensagem
+                  </button>
+                </div>
+              </>
             )}
-            <div className="enviar-mensage">
-              <button onClick={(e) => handleSendMessage()}>
-                Enviar Mensagem
-              </button>
-            </div>
           </div>
 
           <div className="content-contracts">
@@ -313,7 +315,7 @@ export default function DetailInvestment(props) {
                         .format('L')}
                     </p>
                   </div>
-                  {user.is_admin && (
+                  {user.is_admin === 1 && (
                     <Link to={`/detail-investment/${contract.id}`}>
                       <button className="detail-pay"> PAGAMENTOS</button>
                     </Link>
