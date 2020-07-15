@@ -1,9 +1,9 @@
 const { Op } = require("sequelize");
 const moment = require("moment");
 
-const UserModel = require('@/src/models/User');
+//const UserModel = require('@/src/models/User');
 const InvestorModel = require('@/src/models/Investor');
-const ConsultantModel = require('@/src/models/Consultant');
+//const ConsultantModel = require('@/src/models/Consultant');
 
 const Util = require('@/src/class/Util');
 const Exception = require('@/src/class/Exeption');
@@ -52,10 +52,11 @@ module.exports = {
       investors.map(investor => {
         //console.log(investor.toJSON());
 
-        let {begin, value, time} = investor.contracts
+        let {begin, value, final} = investor.contracts
 
         let ini = moment(begin);
-        let fin = moment(begin).add(time, 'month');
+        let fin = moment(final);
+        //let fin = (break_contract) ? moment(break_contract): moment(begin).add(time, 'month')
 
         let yield = [];
         while (ini.format('YMM') <= fin.format('YMM')) {
@@ -150,16 +151,19 @@ module.exports = {
         where: {id_consultant: id}
       });
 
+      //return res.json(Util.response(investors));
+
       const yeldInvestor = [];
       let total = 0;
       investors.map(investor => {
         //console.log(investor.toJSON());
 
-        let {begin, value, time} = investor.contracts
+        let {begin, value, final} = investor.contracts
         let {name, last_name} = investor.user
 
         let ini = moment(begin);
-        let fin = moment(begin).add(time, 'month');
+        let fin = moment(final);
+        //let fin = (break_contract) ? moment(break_contract): moment(begin).add(time, 'month')
 
         let yield = [];
         while (ini.format('YMM') <= fin.format('YMM')) {
