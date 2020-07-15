@@ -16,6 +16,11 @@ class Contract extends Model {
           notEmpty: true
         }
       },
+      break_contract: { //quebra de contrato - Recebe valor caso o contrato seja encerrado antes do prazo original
+        alias: 'Qubra de Contrato',
+        type: DataTypes.DATE,
+        allowNull: true
+      },
       day: { //dia do pagamento
         alias: 'Dia',
         type: DataTypes.INTEGER,

@@ -94,6 +94,8 @@ module.exports = {
                   time: '12',
                   value: 10000,
                   charging_rate: 10000 * 0.015,
+                  contract_active: 1,
+                  contract_active_date: new Date(),
                   created_at: new Date(),
                   updated_at: new Date(),
                 },

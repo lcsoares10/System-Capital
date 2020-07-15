@@ -10,6 +10,7 @@ routes.get('/', authAdmin, MessageBoxController.index);
 routes.get('/:id', valid, MessageBoxController.get);
 
 routes.post('/', authAdmin, MessageBoxController.create);
+routes.post('/:id_user', authAdmin, MessageBoxController.toUser);
 
 routes.post('/:id/viewd', valid, MessageBoxController.setViewed);
 

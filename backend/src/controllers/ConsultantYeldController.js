@@ -23,16 +23,29 @@ module.exports = {
 
       //console.log(ini, fin);
       const investors = await InvestorModel.findAll({
-        include: {
-          association: 'contracts',
-          where: {
-            begin: {
-              [Op.between]: [ini, fin]
+        include: [
+          {
+            association: 'user',
+            where: {
+              [Op.and]: [
+                { active: 1 },
+                { user_activated: 1 }
+              ]
             }
-          }
-        },
+          },
+          {
+            association: 'contracts',
+            where: {
+              begin: {
+                [Op.between]: [ini, fin]
+              }
+            }
+          },
+        ],
         where: {id_consultant: id}
       });
+
+      //return res.json(Util.response(investors));
 
       //console.log(investors.length);
       const yeldInvestor = [];
@@ -118,6 +131,12 @@ module.exports = {
         include: [
           {
             association: 'user',
+            where: {
+              [Op.and]: [
+                { active: 1 },
+                { user_activated: 1 }
+              ]
+            }
           },
           {
             association: 'contracts',
