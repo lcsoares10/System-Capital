@@ -42,7 +42,7 @@ export default function AdmProfile() {
         <div className="title-header">
           <h1 className="h1-profile">Dashboard</h1>
         </div>
-        <div className="dashboard">
+        <div className=" dashboard-adm">
           <div className="content-panel">
             <h3>Investidores</h3>
             <div className="detail-content">
@@ -59,6 +59,17 @@ export default function AdmProfile() {
               <Link to={`/associatedInvestors/${user.id}`}>
                 <button>Gerenciar</button>
               </Link>
+            </div>
+          </div>
+          <div className="content-panel">
+            <h3>Pendências</h3>
+            <div className="detail-content">
+              <span>{totConsultants}</span>
+              <div>
+                <Link to={`/associatedInvestors/${user.id}`}>
+                  <button>Visualizar</button>
+                </Link>
+              </div>
             </div>
           </div>
         </div>

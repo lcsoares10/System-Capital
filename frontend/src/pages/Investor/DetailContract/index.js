@@ -26,11 +26,7 @@ export default function DetailInvestment(props) {
     async function getContract() {
       const data = await findContract(props.match.params.id);
       setContract(data);
-      getConsultant(data.investor.id_consultant);
-    }
-
-    async function getConsultant(id_consultant) {
-      setConsultant(await findConsultant(id_consultant));
+      setConsultant(data.investor.consultant.user);
     }
 
     setTimeout(() => {
@@ -74,7 +70,10 @@ export default function DetailInvestment(props) {
             </b>
           </p>
           <p className="text-beige">
-            Consultor: <b className="text-white">{consultant.name}</b>
+            Consultor:{' '}
+            <b className="text-white">
+              {consultant.name + ' ' + consultant.last_name}
+            </b>
           </p>
         </div>
       </main>
