@@ -1,3 +1,5 @@
+//Essa rota e responsavel por editar e criar , contratos,investidores e consultores.
+//o css dessa pagina se encontra no css da pagina viewProfile
 import React, { useState } from 'react';
 import Container from '../../components/Container';
 import HeaderBackground from '../../components/HeaderBackground';
@@ -34,7 +36,6 @@ const Contract = (props) => {
   const handlevalueInvestInput = (event, value, maskedValue) => {
     event.preventDefault();
     props.handlevalueInvest(value); // value without mask (ex: 1234.56)
-    console.log(maskedValue); // masked value (ex: R$1234,56)
   };
 
   return (
@@ -102,7 +103,6 @@ export default function NewUser(props) {
   const [valueInvest, setValueInvest] = useState(0);
   const [startContract, setStartContract] = useState('');
   const [timeContract, setTimeContract] = useState('');
-  const [alertMessage, setAlertMessage] = useState(false);
 
   //Função para tratar a requisição que será feita de um novo usuário.
   async function handleNewUser(e) {
@@ -130,7 +130,7 @@ export default function NewUser(props) {
         begin: startContract,
         time: timeContract.replace(/[ ]|[meses]/g, ''),
         value: valueInvest,
-        day: 5,
+        day: 5, //O dia foi setado no dia 5 pois eles so fazem pagamento mes 5
       };
       returnMessage = await createUserInvestor(data);
     }

@@ -17,9 +17,7 @@ function maskTel(value) {
 }
 
 const durationContractMask = (value) => {
-  return value
-    .replace(/\D/g, '')
-    .replace(/([0-9]{2})|([0-9]{2})+?$/, '$1 meses');
+  return value.replace(/\D/g, '').replace(/([0-9]{2})+?$/, '$1');
 };
 
 export { cpfMask, maskTel, durationContractMask };

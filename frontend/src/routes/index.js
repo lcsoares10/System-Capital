@@ -25,6 +25,7 @@ import DetailIncome from '../pages/Consultant/DetailIncome';
 
 import AdmProfile from '../pages/Adm/Profile';
 import InvestorRegisters from '../pages/Adm/InvestorsRegisters';
+import EditContract from '../pages/Adm/EditContract';
 
 import Loading from '../components/Loading';
 
@@ -145,6 +146,10 @@ export default function Routes() {
           <PrivateRoute
             path="/investors"
             component={InvestorRegisters}
+          ></PrivateRoute>
+          <PrivateRoute
+            path="/editContract"
+            component={EditContract}
           ></PrivateRoute>
 
           <PrivateRoute path="/*" component={Page404} />

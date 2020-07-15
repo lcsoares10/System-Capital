@@ -18,7 +18,6 @@
 .main-ivestors .name_user {
   color: white;
   font-size: 16px;
-  margin-top: 10px;
 }
 .main-ivestors .detail-investor .enviar-mensage button {
   background-color: #0a0a0a;
@@ -59,13 +58,42 @@
 .main-ivestors .content-contracts .list-contracts .contracts {
   background-color: #0a0a0a;
   color: white;
-  padding: 20px;
+
   display: flex;
   flex-direction: column;
   border-radius: 20px;
   margin-top: 5px;
 }
 
+.main-ivestors .content-contracts .list-contracts .contracts .header-contract {
+  color: var(--text-color-beige);
+  justify-content: space-between;
+  display: flex;
+  flex-direction: row;
+  background-color: #ffffff;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  align-items: center;
+}
+.main-ivestors
+  .content-contracts
+  .list-contracts
+  .contracts
+  .header-contract
+  .button-controler-contract {
+  margin: 10px;
+}
+.main-ivestors
+  .content-contracts
+  .list-contracts
+  .contracts
+  .header-contract
+  p {
+  margin: 15px;
+}
+.main-ivestors .content-contracts .list-contracts .contracts .article-contract {
+  padding: 20px;
+}
 .main-ivestors .content-contracts .list-contracts .contracts p {
   margin: 20px;
 }

@@ -152,6 +152,25 @@ input::placeholder {
 .button-controler-user {
   margin-top: 10px;
 }
-.button-controler-user a {
+.button-controler-user a,
+.button-controler-contract a {
   color: white;
+}
+
+.tag-active {
+  margin-left: 5px;
+  padding: 1px 10px;
+  background-color: green;
+  border-radius: 5px;
+  color: white;
+  font-size: 12px;
+}
+
+.tag-disabled {
+  margin-left: 5px;
+  padding: 1px 10px;
+  background-color: red;
+  border-radius: 5px;
+  color: white;
+  font-size: 12px;
 }
