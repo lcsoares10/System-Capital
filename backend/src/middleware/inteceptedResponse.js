@@ -13,8 +13,15 @@ module.exports = (req, res, next) => {
 
     const sucess = (res.statusCode >= 400) ? false : true;
     //if (sucess) logger.info(data.message, data.data);
-    if (sucess) logger.info(data.message);
-    else logger.error(data.message, data.data);
+    //if (sucess) logger.info(data.message);
+    //else logger.error(data.message, data.data);
+
+    //console.log(new Error('TESTE'));
+
+    if (sucess) {
+      logger.info(data.message, data);
+    }
+
 
     const result = {
       sucess,

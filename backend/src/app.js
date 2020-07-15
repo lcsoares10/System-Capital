@@ -22,6 +22,9 @@ const useragent = require('express-useragent');
 const routes = require('@/src/routes');
 const { mkDir } = require('@/src/utils/file');
 
+const Util = require('@/src/class/Util');
+const logger = require('@/src/modules/log/logger');
+
 /** ==========================================================*/
 /** Custom */
 const inteceptedResponse = require('@/src/middleware/inteceptedResponse');
@@ -64,12 +67,12 @@ app.use((req, res, next) => {
 app.use(routes);
 
 /** ==========================================================*/
-/** Entender como funciona */
+//http://expressjs.com/en/guide/error-handling.html
+//https://dev.to/nedsoft/central-error-handling-in-express-3aej
 app.use((err, req, res, next) => {
-  res.status(500).json({
-    error: err,
-    message: 'Internal server error!',
-  })
+  //console.log(err.statusCode);
+  logger.error(err.message, err);
+  res.status(404).json(Util.response(err, err.message));
   next()
 })
 

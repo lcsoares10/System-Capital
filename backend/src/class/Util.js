@@ -9,21 +9,9 @@ class Util {
 
   //======================================
   static response(data, message='') {
-
-    let typeData = typeof data;
-
-    if (message == '' && (data && data.length > 0)) {
-      typeData = 'Array';
-      let aux = [];
-      data.map((obj) => {
-        if (obj.message) aux.push(obj.message);
-      });
-      message = aux.join(', ');
-    }
-
+    let typeData = (data.typeData) ? (data.typeData) : typeof data;
     message = message || data.message || null
     return { message, typeData, data }
-
   }
 
   //======================================
