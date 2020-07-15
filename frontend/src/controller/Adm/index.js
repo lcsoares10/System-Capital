@@ -3,10 +3,9 @@ import api from '../../services/api';
 async function getAllInvestors() {
   try {
     const { data } = await api.get('/investors');
-    console.log(data);
+
     return data.data;
   } catch (error) {
-    console.log(error.response);
     return error.response;
   }
 }
@@ -22,4 +21,29 @@ async function getAllConsultants() {
   }
 }
 
-export { getAllInvestors, getAllConsultants };
+async function payMonthContract(id_contract, data) {
+  try {
+    const response = await api.post(
+      `/contracts/${id_contract}/contractspaymonth`,
+      data
+    );
+
+    return response;
+  } catch (error) {
+    // console.log(error.response.data.message)
+    return error;
+  }
+}
+
+async function sendMessage(user, messagem) {
+  try {
+    const response = await api.post(`/messagesbox`, { user, messagem });
+
+    return response;
+  } catch (error) {
+    // console.log(error.response.data.message)
+    return error;
+  }
+}
+
+export { getAllInvestors, getAllConsultants, payMonthContract, sendMessage };

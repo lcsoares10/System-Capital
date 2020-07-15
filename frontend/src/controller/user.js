@@ -101,4 +101,15 @@ async function detailUser(id_user, type) {
   }
 }
 
-export { createUserInvestor, editUser, detailUser, deleteUser };
+async function statusInvestor(id_user) {
+  try {
+    const response = await api.post(`/users/${id_user}/toggle_active`);
+
+    return response;
+  } catch (error) {
+    // console.log(error.response.data.message);
+    return error;
+  }
+}
+
+export { createUserInvestor, editUser, detailUser, deleteUser, statusInvestor };

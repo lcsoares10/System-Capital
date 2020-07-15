@@ -11,13 +11,16 @@ import convertCoinBr from '../../../utils/convertCoinBr';
 
 import { formatTel } from '../../../controller/formatsStrings';
 import allContracts from '../../../controller/Investor/allContracts';
-import { deleteUser } from '../../../controller/user';
+import { deleteUser, statusInvestor } from '../../../controller/user';
+import { sendMessage } from '../../../controller/Adm';
 import './styles.css';
 import { Link } from 'react-router-dom';
 
 import EditIcon from '@material-ui/icons/Edit';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import CheckIcon from '@material-ui/icons/Check';
 import DeleteIcon from '@material-ui/icons/Delete';
+
 import Swal from 'sweetalert2';
 
 import { useAuthContext } from '../../../Context/AuthContext';
@@ -52,7 +55,50 @@ export default function DetailInvestment(props) {
   }, [props.location.state.stateLink, props.location.state.stateLink.id]);
 
   async function handlleDeleteInvestor() {
-    const returnMessageApi = await deleteUser(userId, 'investor');
+    Swal.fire({
+      title: 'Deletar',
+      text:
+        'Tem certeza que deseja deletar o investidor ' +
+        investor.name +
+        ' ' +
+        investor.last_name +
+        ' ?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      camceçButtonText: 'Não',
+      confirmButtonText: 'Sim, quero deletar!',
+      background: '#121212',
+    }).then(async (result) => {
+      if (result.value) {
+        const returnMessageApi = await deleteUser(userId, 'investor');
+        if (returnMessageApi.hasOwnProperty('response')) {
+          Swal.fire({
+            title: 'Erro!',
+            text: returnMessageApi.response.data.message,
+            icon: 'error',
+            confirmButtonText: 'OK',
+            background: '#121212',
+            confirmButtonColor: '#a0770a',
+          });
+        } else {
+          Swal.fire({
+            title: 'Sucesso',
+            text: returnMessageApi,
+            icon: 'success',
+            confirmButtonText: 'OK',
+            background: '#121212',
+            confirmButtonColor: '#a0770a',
+          });
+          history.push('/investors');
+        }
+      }
+    });
+  }
+
+  async function handlleStatusInvestor() {
+    const returnMessageApi = await statusInvestor(investor.id);
     if (returnMessageApi.hasOwnProperty('response')) {
       Swal.fire({
         title: 'Erro!',
@@ -65,13 +111,63 @@ export default function DetailInvestment(props) {
     } else {
       Swal.fire({
         title: 'Sucesso',
-        text: returnMessageApi,
+        text: returnMessageApi.data.message,
         icon: 'success',
         confirmButtonText: 'OK',
         background: '#121212',
         confirmButtonColor: '#a0770a',
       });
       history.push('/investors');
+    }
+  }
+
+  async function handleSendMessage() {
+    const { value: text } = await Swal.fire({
+      input: 'textarea',
+      title: 'Enviar mensagem para ' + investor.name,
+      inputPlaceholder: 'Escreva sua mensagem aqui',
+      inputAttributes: {
+        'aria-label': 'Escreva sua mensagem aqui',
+      },
+      showCancelButton: true,
+      background: '#121212',
+    });
+
+    if (text) {
+      Swal.fire({
+        text: text,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        camceçButtonText: 'Não',
+        confirmButtonText: 'Enviar, mensagem!',
+        background: '#121212',
+      }).then(async (result) => {
+        if (result.value) {
+          const returnMessageApi = await sendMessage(userId, text);
+          if (returnMessageApi.hasOwnProperty('response')) {
+            Swal.fire({
+              title: 'Erro!',
+              text: returnMessageApi.response.data.message,
+              icon: 'error',
+              confirmButtonText: 'OK',
+              background: '#121212',
+              confirmButtonColor: '#a0770a',
+            });
+          } else {
+            Swal.fire({
+              title: 'Sucesso',
+              text: 'Mensagem enviada',
+              icon: 'success',
+              confirmButtonText: 'OK',
+              background: '#121212',
+              confirmButtonColor: '#a0770a',
+            });
+            //history.push('/investors');
+          }
+        }
+      });
     }
   }
 
@@ -84,7 +180,8 @@ export default function DetailInvestment(props) {
       <main className="main-ivestors">
         <div className="title-header">
           <h1 className="h1">Investidor</h1>
-          {user.is_admin && (
+
+          {user.is_admin === 1 && (
             <div className="button-controler-user">
               <Link
                 to={{
@@ -111,30 +208,45 @@ export default function DetailInvestment(props) {
 
               <Link to={`/investors`}>
                 {' '}
-                <HighlightOffIcon
-                  style={{
-                    margin: '0px 5px',
-                    backgroundColor: ' #a0770a',
-                    padding: '2px',
-                    borderRadius: '5px',
-                    boxShadow: 'var(--shadow-bottom)',
-                  }}
-                  tilte="Desativar"
-                />
+                {investor.active === 0 ? (
+                  <CheckIcon
+                    onClick={(e) => handlleStatusInvestor()}
+                    style={{
+                      margin: '0px 5px',
+                      backgroundColor: 'green',
+                      padding: '2px',
+                      borderRadius: '5px',
+                      boxShadow: 'var(--shadow-bottom)',
+                    }}
+                    title="Ativar"
+                    alt="Ativar"
+                  />
+                ) : (
+                  <HighlightOffIcon
+                    onClick={(e) => handlleStatusInvestor()}
+                    style={{
+                      margin: '0px 5px',
+                      backgroundColor: ' #a0770a',
+                      padding: '2px',
+                      borderRadius: '5px',
+                      boxShadow: 'var(--shadow-bottom)',
+                    }}
+                    title="Desativar"
+                  />
+                )}
               </Link>
 
-              <Link to={`/investors`} onClick={(e) => handlleDeleteInvestor()}>
-                {' '}
-                <DeleteIcon
-                  style={{
-                    backgroundColor: 'red',
-                    padding: '2px',
-                    borderRadius: '5px',
-                    boxShadow: 'var(--shadow-bottom)',
-                  }}
-                  title="Excluir"
-                />
-              </Link>
+              <DeleteIcon
+                onClick={(e) => handlleDeleteInvestor()}
+                style={{
+                  backgroundColor: 'red',
+                  padding: '2px',
+                  borderRadius: '5px',
+                  boxShadow: 'var(--shadow-bottom)',
+                  cursor: 'pointer',
+                }}
+                title="Excluir"
+              />
             </div>
           )}
         </div>
@@ -151,12 +263,17 @@ export default function DetailInvestment(props) {
             <p styled={{ marginTop: '10px' }} className="weight-thin">
               E-mail: <b className="text-white">{investor.email}</b>
             </p>
-            {user.is_admin && (
+            {user.is_admin === 1 && (
               <p styled={{ marginTop: '10px' }} className="weight-thin">
                 Consultor:{' '}
                 <b className="text-white">{investorConsultant.name}</b>
               </p>
             )}
+            <div className="enviar-mensage">
+              <button onClick={(e) => handleSendMessage()}>
+                Enviar Mensagem
+              </button>
+            </div>
           </div>
 
           <div className="content-contracts">
@@ -183,6 +300,10 @@ export default function DetailInvestment(props) {
                     Dia de pagamento:{' '}
                     <b>{contract.day.toString().padStart('2', '0')}</b>
                   </p>
+                  <p>
+                    Taxa de carregamento:{' '}
+                    <b>{convertCoinBr(contract.charging_rate)}</b>
+                  </p>
                   <div className="time-contract">
                     <p>Inicio: {moment(contract.begin).format('L')}</p>
                     <p>
@@ -192,9 +313,11 @@ export default function DetailInvestment(props) {
                         .format('L')}
                     </p>
                   </div>
-                  <Link to={`/detail-investment/${contract.id}`}>
-                    <button className="detail-pay"> PAGAMENTOS</button>
-                  </Link>
+                  {user.is_admin && (
+                    <Link to={`/detail-investment/${contract.id}`}>
+                      <button className="detail-pay"> PAGAMENTOS</button>
+                    </Link>
+                  )}
                 </div>
               ))}
             </div>
