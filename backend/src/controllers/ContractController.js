@@ -50,12 +50,24 @@ module.exports = {
       const { id } = req.params;
       let result = await ContractModel.findByPk(id,  {
           include: [
-              {
-                  association: 'investor',
-                  required: true,
-                  include : {association: 'user'}
-              }
-          ]
+            {
+              association: 'investor',
+              required: true,
+              include : [
+                {
+                  association: 'user',
+                  attributes: ['name', 'last_name', 'email'],
+                },
+                {
+                  association: 'consultant',
+                  include : {
+                    association: 'user',
+                    attributes: ['name', 'last_name', 'email'],
+                  },
+                }
+              ],
+            }
+          ],
       });
 
       if (!result) {

@@ -102,8 +102,8 @@ export default function DetailInvestment(props) {
     });
   }
 
-  async function handlleStatusInvestor() {
-    const returnMessageApi = await statusInvestor(investor.id);
+  async function handlleStatusInvestor(newUser) {
+    const returnMessageApi = await statusInvestor(investor.id, newUser);
     if (returnMessageApi.hasOwnProperty('response')) {
       Swal.fire({
         title: 'Erro!',
@@ -249,7 +249,14 @@ export default function DetailInvestment(props) {
                 {' '}
                 {investor.active === 0 ? (
                   <CheckIcon
-                    onClick={(e) => handlleStatusInvestor()}
+                    onClick={(e) =>
+                      handlleStatusInvestor(
+                        (investor.active === 0) &
+                          (investor.user_activated === 0)
+                          ? true
+                          : false
+                      )
+                    }
                     style={{
                       margin: '0px 5px',
                       backgroundColor: 'green',
@@ -262,7 +269,7 @@ export default function DetailInvestment(props) {
                   />
                 ) : (
                   <HighlightOffIcon
-                    onClick={(e) => handlleStatusInvestor()}
+                    onClick={(e) => handlleStatusInvestor(false)}
                     style={{
                       margin: '0px 5px',
                       backgroundColor: ' #a0770a',
@@ -292,8 +299,9 @@ export default function DetailInvestment(props) {
         <div
           style={{
             display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+            flexWrap: 'wrap',
           }}
         >
           <p className="name_user">
@@ -310,6 +318,9 @@ export default function DetailInvestment(props) {
 
         <div className="content-detail-investor">
           <div className="detail-investor">
+            <p className="weight-thin">
+              Cpf: <b className="text-white">{investor.identif}</b>
+            </p>
             <p className="weight-thin">
               Telefone:{' '}
               <b className="text-white">{formatTel(tel.toString())}</b>

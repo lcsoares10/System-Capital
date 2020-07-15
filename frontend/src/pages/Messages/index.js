@@ -38,7 +38,13 @@ export default function Messages() {
 
         <div className="content-message">
           {messages.length === 0 ? (
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+              }}
+            >
               <h3 className="text-white">Você não possui menssagens</h3>
               <span style={{ margin: '20px auto' }}>
                 <SentimentVeryDissatisfiedIcon

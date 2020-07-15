@@ -104,10 +104,44 @@ module.exports = {
         return out;
       });
 
-      console.log(users);
+      //console.log(users);
 
       await MessageUserViewModel.bulkCreate(users, { transaction: t });
       //=============
+
+      await t.commit();
+
+      return res.json(Util.response(result, 'Enviado com Sucesso'));
+
+    } catch (e) {
+      await t.rollback();
+      const result = Exception._(e);
+      return res.status(400).json(Util.response(result));
+    }
+
+  },
+
+  async toUser(req, res) {
+
+    const t = await MessageBoxModel.sequelize.transaction();
+
+    try {
+
+      const user_send = await UserModel.findByPk(req.user.id_user);
+      if (!user_send) throw new Exception("Usuário não existe");
+
+      const user = await UserModel.findByPk(req.params.id_user);
+      if (!user) throw new Exception("Usuário não existe");
+
+      const campos = { ...req.body, id_user_send: user_send.id};
+
+      const message = await MessageBoxModel.create(campos, { transaction: t });
+      const result = { ...message.toJSON() };
+
+      await MessageUserViewModel.create({
+        id_user: user.id,
+        id_message_box: message.id
+      }, { transaction: t });
 
       await t.commit();
 
