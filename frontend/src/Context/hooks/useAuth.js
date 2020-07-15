@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import api from '../../services/api';
-
+import Swal from 'sweetalert2';
 export default function useAuth() {
   const history = useHistory();
 
@@ -51,18 +51,33 @@ export default function useAuth() {
       localStorage.setItem('token_X6_Capital', token);
 
       api.defaults.headers.Authorization = `Bearer ${token}`;
-      console.log(payload.user)
+      console.log(payload.user);
       setUser(payload.user);
       setAuthenticated(true);
 
-      alert(data.message);
+      Swal.fire({
+        title: 'Sucesso',
+        text: data.message,
+        icon: 'success',
+        confirmButtonText: 'OK',
+        background: '#121212',
+        confirmButtonColor: '#a0770a',
+      });
+
       // history.push('/profile');
     } catch (error) {
       setAuthenticated(false);
       //const { data } = error.response;
       //alert(data.message);
       //console.log(error.response);
-      alert(error.message);
+      Swal.fire({
+        title: 'Erro!',
+        text: error.response.data.message,
+        icon: 'error',
+        confirmButtonText: 'OK',
+        background: '#121212',
+        confirmButtonColor: '#a0770a',
+      });
     }
   }
 
