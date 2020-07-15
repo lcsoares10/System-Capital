@@ -438,12 +438,12 @@ export default function DetailInvestment(props) {
                     <div className="time-contract">
                       <p>
                         Inicio:{' '}
-                        {contract.begin.substring(0, 10).replace('-', '/')}
+                        {moment(contract.begin.substring(0, 10)).format('L')}
                       </p>
 
                       <p>
                         Fim:{' '}
-                        {moment(contract.begin)
+                        {moment(contract.begin.substring(0, 10))
                           .add(contract.time, 'months')
                           .format('L')}
                       </p>
