@@ -93,7 +93,13 @@ module.exports = {
             },
           },
           {
-            association: 'user_send'
+            association: 'user_send',
+            required: true,
+            attributes: ['id', 'name', 'last_name', 'email'],
+            include: {
+              association: 'profile',
+              attributes: ['id', 'name', 'url'],
+            }
           }
         ],
       },);

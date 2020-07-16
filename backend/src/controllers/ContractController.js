@@ -19,9 +19,21 @@ module.exports = {
           {
             association: 'investor',
             required: true,
-            include : {association: 'user'}
+            include : [
+              {
+                association: 'user',
+                attributes: ['name', 'last_name', 'email'],
+              },
+              {
+                association: 'consultant',
+                include : {
+                  association: 'user',
+                  attributes: ['name', 'last_name', 'email'],
+                },
+              }
+            ],
           }
-        ]
+        ],
       };
 
       const Pagination = new PaginationClass(ContractModel);

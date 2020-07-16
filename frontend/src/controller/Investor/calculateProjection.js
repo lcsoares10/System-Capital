@@ -2,10 +2,11 @@ import moment from 'moment';
 import convertCoinBr from '../../utils/convertCoinBr';
 
 export default function calculateProjection(contract) {
-  let { id, begin, time, value } = contract;
+  let { id, begin, final, value, time } = contract;
 
   let dt_begin = moment(begin);
-  let dt_end = moment(begin).add(time, 'month');
+  let dt_end = moment(final);
+  //let dt_end = moment(begin).add(time, 'month');
 
   const aux = [];
   const months = [];
