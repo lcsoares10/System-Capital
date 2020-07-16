@@ -8,10 +8,9 @@ import Logon from '../pages/Logon';
 import InvestorProfile from '../pages/Investor/Profile';
 
 import ViewProfile from '../pages/ViewProfile';
-import ListUsers from '../pages/ListUsers';
 import Messages from '../pages/Messages';
-import RegisterContract from '../pages/RegisterContract';
-import RegisterUsers from '../pages/RegisterUsers';
+import EditContract from '../pages/Adm/EditContract';
+import ConsultantRegisters from '../pages/Adm/ConsultantRegisters';
 import DetailInvestment from '../pages/Investor/DetailInvestment';
 import DetailContract from '../pages/Investor/DetailContract';
 import NewUser from '../pages/NewUser';
@@ -98,16 +97,13 @@ export default function Routes() {
           <Route path="/" exact>
             <Redirect to="/login" />
           </Route>
-
           {/* Outros  */}
           <Route path="/Loading" component={Loading} />
-
           {/*É private apenas para ter o teste e já saber se já está logado ou
             não no sistema
             */}
           <PrivateRoute path="/login" component={Logon} />
-
-          {/* -----------------  */}
+          {/* ----------------- Investidor */}
           <PrivateRoute path="/view-profile" component={ViewProfile} />
           <PrivateRoute
             path="/InvestorProfile"
@@ -126,8 +122,7 @@ export default function Routes() {
           <PrivateRoute path="/messages" component={Messages} />
           {/* <PrivateRoute path="/RegisterContract"  component={RegisterContract} /> */}
           {/* <PrivateRoute path="/RegisterUsers"  component={RegisterUsers} /> */}
-
-          {/* -----------------  */}
+          {/* ----------------- Consultor */}
           <PrivateRoute
             path="/ConsultantProfile"
             is_profile
@@ -153,9 +148,8 @@ export default function Routes() {
             nivel="1"
             component={DetailIncome}
           />
-
           <PrivateRoute path="/newuser" nivel="1" component={NewUser} />
-
+          {/* ----------------- Adm  */}
           <PrivateRoute
             path="/admProfile"
             is_profile
@@ -166,7 +160,14 @@ export default function Routes() {
             nivel="2"
             component={InvestorRegisters}
           ></PrivateRoute>
-
+          <PrivateRoute
+            path="/editContract"
+            component={EditContract}
+          ></PrivateRoute>{' '}
+          <PrivateRoute
+            path="/consultants"
+            component={ConsultantRegisters}
+          ></PrivateRoute>
           <PrivateRoute path="/*" component={Page404} />
         </Switch>
       </AuthProvider>
