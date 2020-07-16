@@ -25,6 +25,7 @@ import DetailIncome from '../pages/Consultant/DetailIncome';
 
 import AdmProfile from '../pages/Adm/Profile';
 import InvestorRegisters from '../pages/Adm/InvestorsRegisters';
+import EditContract from '../pages/Adm/EditContract';
 
 import Loading from '../components/Loading';
 
@@ -38,38 +39,45 @@ const PrivateRoute = ({ component: Component, is_profile, nivel, ...rest }) => {
 
   const user_profile = {
     investor: '/InvestorProfile',
-    consultant: (user.is_admin) ? '/admProfile' : '/ConsultantProfile',
+    consultant: user.is_admin ? '/admProfile' : '/ConsultantProfile',
   };
 
-  nivel = (!nivel) ? 0 : nivel;
-  const user_nivel = (user.is_admin) ? 2 : (user.type == 'consultant' ? 1 : 0);
+  nivel = !nivel ? 0 : nivel;
+  const user_nivel = user.is_admin ? 2 : user.type == 'consultant' ? 1 : 0;
 
   return (
     <Route
       {...rest}
       render={(props) => {
-
         if (props.match.path !== '/login' && !authenticated) {
           return (
-            <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
+            <Redirect
+              to={{ pathname: '/login', state: { from: props.location } }}
+            />
           );
-
         } else if (props.match.path === '/login' && authenticated) {
           return (
-            <Redirect to={{ pathname: user_profile[user.type], state: { from: props.location }, }} />
-          )
-
+            <Redirect
+              to={{
+                pathname: user_profile[user.type],
+                state: { from: props.location },
+              }}
+            />
+          );
         } else {
-
           let hasRight = true;
-          if (is_profile && props.match.path !=  user_profile[user.type]) {
+          if (is_profile && props.match.path != user_profile[user.type]) {
             hasRight = false;
           } else if (user_nivel < nivel) {
             hasRight = false;
           }
 
           if (!hasRight) {
-            return <Redirect to={{ pathname: '/login', state: { from: props.location }, }} />
+            return (
+              <Redirect
+                to={{ pathname: '/login', state: { from: props.location } }}
+              />
+            );
           }
 
           return <Component {...props} />;
@@ -95,34 +103,62 @@ export default function Routes() {
           {/* Outros  */}
           <Route path="/Loading" component={Loading} />
 
-          {
-            /*É private apenas para ter o teste e já saber se já está logado ou
+          {/*É private apenas para ter o teste e já saber se já está logado ou
             não no sistema
-            */
-          }
+            */}
           <PrivateRoute path="/login" component={Logon} />
 
           {/* -----------------  */}
           <PrivateRoute path="/view-profile" component={ViewProfile} />
-          <PrivateRoute path="/InvestorProfile" is_profile component={InvestorProfile} />
-          <PrivateRoute path="/detail-investment/:id"  component={DetailInvestment} />
-          <PrivateRoute path="/detail-contract/:id"  component={DetailContract} />
+          <PrivateRoute
+            path="/InvestorProfile"
+            is_profile
+            component={InvestorProfile}
+          />
+          <PrivateRoute
+            path="/detail-investment/:id"
+            component={DetailInvestment}
+          />
+          <PrivateRoute
+            path="/detail-contract/:id"
+            component={DetailContract}
+          />
           {/* <PrivateRoute path="/listUsers"  component={ListUsers} /> */}
           <PrivateRoute path="/messages" component={Messages} />
-          {/* <PrivateRoute path="/RegisterContract"  component={RegisterContract} /> */}
-          {/* <PrivateRoute path="/RegisterUsers"  component={RegisterUsers} /> */}
+          <PrivateRoute path="/RegisterContract" component={RegisterContract} />
+          <PrivateRoute path="/RegisterUsers" component={RegisterUsers} />
 
-          {/* -----------------  */}
-          <PrivateRoute path="/ConsultantProfile" is_profile component={ConsultantProfile} />
-          <PrivateRoute path="/associatedInvestors/:id" nivel="1" component={AssociatedInvestors} />
-          <PrivateRoute path="/detailInvestor/:name" nivel="1" component={DetailInvestor} />
-          <PrivateRoute path="/incomeConsultant/:id" nivel="1" component={IncomeConsultant} />
-          <PrivateRoute path="/detailIncome/:id" nivel="1" component={DetailIncome} />
+          <PrivateRoute
+            path="/ConsultantProfile"
+            component={ConsultantProfile}
+          />
+          <PrivateRoute
+            path="/associatedInvestors/:id"
+            component={AssociatedInvestors}
+          />
+          <PrivateRoute
+            path="/detailInvestor/:name"
+            component={DetailInvestor}
+          />
+          <PrivateRoute
+            path="/incomeConsultant/:id"
+            component={IncomeConsultant}
+          />
+          <PrivateRoute path="/detailIncome/:id" component={DetailIncome} />
 
-          <PrivateRoute path="/newuser" nivel="1" component={NewUser} />
+          <PrivateRoute
+            path="/admProfile"
+            component={AdmProfile}
+          ></PrivateRoute>
 
-          <PrivateRoute path="/admProfile" is_profile component={AdmProfile} ></PrivateRoute>
-          <PrivateRoute path="/investors" nivel="2" component={InvestorRegisters} ></PrivateRoute>
+          <PrivateRoute
+            path="/investors"
+            component={InvestorRegisters}
+          ></PrivateRoute>
+          <PrivateRoute
+            path="/editContract"
+            component={EditContract}
+          ></PrivateRoute>
 
           <PrivateRoute path="/*" component={Page404} />
         </Switch>

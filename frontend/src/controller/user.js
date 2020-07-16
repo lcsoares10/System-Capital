@@ -101,9 +101,14 @@ async function detailUser(id_user, type) {
   }
 }
 
-async function statusInvestor(id_user) {
+async function statusInvestor(id_user, newUser) {
+  let response = '';
   try {
-    const response = await api.post(`/users/${id_user}/toggle_active`);
+    if (newUser == true) {
+      response = await api.post(`/users/${id_user}/toggle_activated_user`);
+    } else {
+      response = await api.post(`/users/${id_user}/toggle_active`);
+    }
 
     return response;
   } catch (error) {
