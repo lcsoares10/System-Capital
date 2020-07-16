@@ -1,5 +1,7 @@
 const { Model, DataTypes }  = require('sequelize');
 
+const moment = require('moment');
+
 class Contract extends Model {
 
   static get _name() {
@@ -14,6 +16,17 @@ class Contract extends Model {
         allowNull: false,
         validate: {
           notEmpty: true
+        }
+      },
+      final: { //final
+        alias: 'Final',
+        type: DataTypes.VIRTUAL,
+        get: function() {
+          if (this.break_contract) {
+            return moment(this.break_contract);
+          } else {
+            return moment(this.begin).add(this.time, 'month').add(-1, 'day');
+          }
         }
       },
       break_contract: { //quebra de contrato - Recebe valor caso o contrato seja encerrado antes do prazo original
