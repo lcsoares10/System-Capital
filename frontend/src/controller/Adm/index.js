@@ -37,7 +37,7 @@ async function payMonthContract(id_contract, data) {
 
 async function sendMessage(user, messagem) {
   try {
-    const response = await api.post(`/messagesbox`, { user, messagem });
+    const response = await api.post(`/messagesbox/${user}`, { messagem });
 
     return response;
   } catch (error) {
