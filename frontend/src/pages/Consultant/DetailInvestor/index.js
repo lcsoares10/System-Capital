@@ -9,7 +9,6 @@ import Alert from '../../../components/Alert';
 import api from '../../../services/api';
 import convertCoinBr from '../../../utils/convertCoinBr';
 
-import { formatTel } from '../../../controller/formatsStrings';
 import allContracts from '../../../controller/Investor/allContracts';
 import { deleteUser, statusInvestor } from '../../../controller/user';
 import { sendMessage } from '../../../controller/Adm';
@@ -20,7 +19,11 @@ import EditIcon from '@material-ui/icons/Edit';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import CheckIcon from '@material-ui/icons/Check';
 import DeleteIcon from '@material-ui/icons/Delete';
-
+import {
+  cpfMask,
+  maskTel,
+  durationContractMask,
+} from '../../../utils/maskInputs';
 import Swal from 'sweetalert2';
 
 import { useAuthContext } from '../../../Context/AuthContext';
@@ -150,7 +153,7 @@ export default function DetailInvestment(props) {
         background: '#121212',
       }).then(async (result) => {
         if (result.value) {
-          const returnMessageApi = await sendMessage(userId, text);
+          const returnMessageApi = await sendMessage(investor.id, text);
           if (returnMessageApi.hasOwnProperty('response')) {
             Swal.fire({
               title: 'Erro!',
@@ -319,11 +322,11 @@ export default function DetailInvestment(props) {
         <div className="content-detail-investor">
           <div className="detail-investor">
             <p className="weight-thin">
-              Cpf: <b className="text-white">{investor.identif}</b>
+              Cpf:{' '}
+              <b className="text-white">{cpfMask(String(investor.identif))}</b>
             </p>
             <p className="weight-thin">
-              Telefone:{' '}
-              <b className="text-white">{formatTel(tel.toString())}</b>
+              Telefone: <b className="text-white">{maskTel(tel.toString())}</b>
             </p>
             <p styled={{ marginTop: '10px' }} className="weight-thin">
               E-mail: <b className="text-white">{investor.email}</b>
@@ -332,7 +335,11 @@ export default function DetailInvestment(props) {
               <>
                 <p styled={{ marginTop: '10px' }} className="weight-thin">
                   Consultor:{' '}
-                  <b className="text-white">{investorConsultant.name}</b>
+                  <b className="text-white">
+                    {investorConsultant.name +
+                      ' ' +
+                      investorConsultant.last_name}
+                  </b>
                 </p>
                 <div className="enviar-mensage">
                   <button onClick={(e) => handleSendMessage()}>
@@ -445,6 +452,9 @@ export default function DetailInvestment(props) {
                     <p>
                       Taxa de carregamento:{' '}
                       <b>{convertCoinBr(contract.charging_rate)}</b>
+                    </p>
+                    <p>
+                      tempo de Contrato: <b>{contract.time + 'meses'}</b>
                     </p>
                     <div className="time-contract">
                       <p>

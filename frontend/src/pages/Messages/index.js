@@ -56,7 +56,7 @@ export default function Messages() {
             ''
           )}
           {messages.map((message, key) => {
-            console.log(message);
+            console.log(message.users[0].MessageUserView.viewed);
             if (message.users[0].MessageUserView.viewed === 0) {
               return (
                 <Message
