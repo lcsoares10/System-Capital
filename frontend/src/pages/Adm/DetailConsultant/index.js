@@ -5,71 +5,58 @@ import { useHistory } from 'react-router-dom';
 import Container from '../../../components/Container';
 import HeaderBackground from '../../../components/HeaderBackground';
 import FooterBackground from '../../../components/FooterBackground';
-import Alert from '../../../components/Alert';
-import api from '../../../services/api';
-import convertCoinBr from '../../../utils/convertCoinBr';
-
-import allContracts from '../../../controller/Investor/allContracts';
-import { deleteUser, statusInvestor } from '../../../controller/user';
+import { deleteUser, statusUser } from '../../../controller/user';
 import { sendMessage } from '../../../controller/Adm';
-import './styles.css';
-import { Link } from 'react-router-dom';
 
+import { Link } from 'react-router-dom';
+import { AllAssoatedinvestors } from '../../../controller/Consultant';
 import EditIcon from '@material-ui/icons/Edit';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import CheckIcon from '@material-ui/icons/Check';
 import DeleteIcon from '@material-ui/icons/Delete';
-import {
-  cpfMask,
-  maskTel,
-  durationContractMask,
-} from '../../../utils/maskInputs';
+import { cpfMask, maskTel } from '../../../utils/maskInputs';
 import Swal from 'sweetalert2';
+import List from '../../../components/List';
+import Alert from '../../../components/Alert';
 
 import { useAuthContext } from '../../../Context/AuthContext';
+
+import './styles.css';
 
 //------------------------------------------------------------
 
 export default function DetailInvestment(props) {
   const history = useHistory();
   const { user } = useAuthContext();
-  const [investor, setInvestor] = useState([]);
-  const [userId, setUserId] = useState('');
-  const [contractsInvestor, setContractsInvestor] = useState([]);
-  const [investorConsultant, setInvestorConsultant] = useState({});
-  const [statusContract, setStatusContract] = useState(0);
+  const [consultant, setConsultant] = useState([]);
+  const [userId, setUserId] = useState(''); //Id da tabela do consultor
+  const [investorsAssociated, setInvestorsAssociated] = useState([]);
 
   useEffect(() => {
-    async function requestGetInvestorAssciated() {
-      const dataInvestor = props.location.state.stateLink;
-      const contractsInvestor = await allContracts(
-        props.location.state.stateLink.id
-      );
-      setInvestor(dataInvestor.user);
-      setUserId(dataInvestor.id);
-      if (dataInvestor.consultant) {
-        setInvestorConsultant(dataInvestor.consultant.user);
-      }
+    async function requestGetconsultantAssciated() {
+      const dataconsultant = props.location.state.stateLink;
 
-      setContractsInvestor(contractsInvestor);
+      setConsultant(dataconsultant.user);
+      setUserId(dataconsultant.id);
+
+      const dataInvestorsAssociated = await AllAssoatedinvestors(
+        dataconsultant.id
+      );
+      setInvestorsAssociated(dataInvestorsAssociated.rows);
     }
     setTimeout(() => {
-      requestGetInvestorAssciated();
+      requestGetconsultantAssciated();
     }, 500);
-  }, [
-    statusContract,
-    props.location.state.stateLink,
-    props.location.state.stateLink.id,
-  ]);
-
-  async function handlleDeleteInvestor() {
+  }, [props.location.state.stateLink, props.location.state.stateLink.id]);
+  console.log(investorsAssociated);
+  async function handlleDelete() {
     Swal.fire({
       title: 'Deletar',
       text:
         'Tem certeza que deseja deletar o investidor ' +
-        investor.name +
+        consultant.name +
         ' ' +
-        investor.last_name +
+        consultant.last_name +
         ' ?',
       icon: 'warning',
       showCancelButton: true,
@@ -80,7 +67,7 @@ export default function DetailInvestment(props) {
       background: '#121212',
     }).then(async (result) => {
       if (result.value) {
-        const returnMessageApi = await deleteUser(userId, 'investor');
+        const returnMessageApi = await deleteUser(userId, 'consultant');
         if (returnMessageApi.hasOwnProperty('response')) {
           Swal.fire({
             title: 'Erro!',
@@ -99,14 +86,14 @@ export default function DetailInvestment(props) {
             background: '#121212',
             confirmButtonColor: '#a0770a',
           });
-          history.push('/investors');
+          history.push('/consultants');
         }
       }
     });
   }
 
-  async function handlleStatusInvestor(newUser) {
-    const returnMessageApi = await statusInvestor(investor.id, newUser);
+  async function handlleStatus(newUser) {
+    const returnMessageApi = await statusUser(consultant.id, newUser);
     if (returnMessageApi.hasOwnProperty('response')) {
       Swal.fire({
         title: 'Erro!',
@@ -131,7 +118,7 @@ export default function DetailInvestment(props) {
   async function handleSendMessage() {
     const { value: text } = await Swal.fire({
       input: 'textarea',
-      title: 'Enviar mensagem para ' + investor.name,
+      title: 'Enviar mensagem para ' + consultant.name,
       inputPlaceholder: 'Escreva sua mensagem aqui',
       inputAttributes: {
         'aria-label': 'Escreva sua mensagem aqui',
@@ -152,7 +139,7 @@ export default function DetailInvestment(props) {
         background: '#121212',
       }).then(async (result) => {
         if (result.value) {
-          const returnMessageApi = await sendMessage(investor.id, text);
+          const returnMessageApi = await sendMessage(consultant.id, text);
           if (returnMessageApi.hasOwnProperty('response')) {
             Swal.fire({
               title: 'Erro!',
@@ -171,14 +158,14 @@ export default function DetailInvestment(props) {
               background: '#121212',
               confirmButtonColor: '#a0770a',
             });
-            //history.push('/investors');
+            //history.push('/consultants');
           }
         }
       });
     }
   }
 
-  let tel = investor.tel ? investor.tel : 0;
+  let tel = consultant.tel ? consultant.tel : 0;
   tel = parseInt(tel);
 
   //INICIO DO COMPONENTE----------------------------------------------------------------------------
@@ -195,9 +182,9 @@ export default function DetailInvestment(props) {
                 to={{
                   pathname: '/newUser',
                   state: {
-                    user: investor,
+                    user: consultant,
                     userId,
-                    type: 'investor',
+                    type: 'consultant',
                     isEdit: true,
                   },
                 }}
@@ -216,12 +203,12 @@ export default function DetailInvestment(props) {
 
               <Link to={`/consultants`}>
                 {' '}
-                {investor.active === 0 ? (
+                {consultant.active === 0 ? (
                   <CheckIcon
                     onClick={(e) =>
-                      handlleStatusInvestor(
-                        (investor.active === 0) &
-                          (investor.user_activated === 0)
+                      handlleStatus(
+                        (consultant.active === 0) &
+                          (consultant.user_activated === 0)
                           ? true
                           : false
                       )
@@ -238,7 +225,7 @@ export default function DetailInvestment(props) {
                   />
                 ) : (
                   <HighlightOffIcon
-                    onClick={(e) => handlleStatusInvestor(false)}
+                    onClick={(e) => handlleStatus(false)}
                     style={{
                       margin: '0px 5px',
                       backgroundColor: ' #a0770a',
@@ -252,7 +239,7 @@ export default function DetailInvestment(props) {
               </Link>
 
               <DeleteIcon
-                onClick={(e) => handlleDeleteInvestor()}
+                onClick={(e) => handlleDelete()}
                 style={{
                   backgroundColor: 'red',
                   padding: '2px',
@@ -275,44 +262,68 @@ export default function DetailInvestment(props) {
         >
           <p className="name_user">
             {' '}
-            &nbsp;{investor.name}&nbsp;{investor.last_name}
+            &nbsp;{consultant.name}&nbsp;{consultant.last_name}
           </p>
           {user.is_admin === 1 &&
-            (investor.active === 1 ? (
+            (consultant.active === 1 ? (
               <span className="tag-active">ativo</span>
             ) : (
               <span className="tag-disabled">desativado</span>
             ))}
         </div>
 
-        <div className="content-detail-investor">
-          <div className="detail-investor">
+        <div className="content-detail-consultant">
+          <div className="detail-consultant">
             <p className="weight-thin">
               Cpf:{' '}
-              <b className="text-white">{cpfMask(String(investor.identif))}</b>
+              <b className="text-white">
+                {cpfMask(String(consultant.identif))}
+              </b>
             </p>
             <p className="weight-thin">
               Telefone: <b className="text-white">{maskTel(tel.toString())}</b>
             </p>
             <p styled={{ marginTop: '10px' }} className="weight-thin">
-              E-mail: <b className="text-white">{investor.email}</b>
+              E-mail: <b className="text-white">{consultant.email}</b>
             </p>
             {user.is_admin === 1 && (
-              <div className="enviar-mensage">
-                <button onClick={(e) => handleSendMessage()}>
-                  Enviar Mensagem
-                </button>
+              <div className="action-button-detail">
+                <div className="enviar-mensage">
+                  <button onClick={(e) => handleSendMessage()}>
+                    Enviar Mensagem
+                  </button>
+                </div>
+                <div className="projection">
+                  <Link to={`/incomeConsultant/${userId}`}>
+                    <button>Projeção</button>
+                  </Link>
+                </div>
               </div>
             )}
           </div>
 
-          <div className="content-contracts"></div>
+          <div className="content-investor-associated">
+            <h3>Investidores Associados</h3>
+            <div className="list" style={{ margin: '20px 0px' }}>
+              {investorsAssociated.length === 0 && (
+                <Alert>Não possui associados</Alert>
+              )}
+              {investorsAssociated.map((investor, key) => (
+                <List
+                  key={key}
+                  value_col_1={`${investor.user.name} ${investor.user.last_name}`}
+                  url={`/detailInvestor/${investor.user.name}`}
+                  stateLink={investor}
+                />
+              ))}
+            </div>
+          </div>
         </div>
       </main>
       <FooterBackground
         notLogin={true}
         notBack={true}
-        backPage={'/investors'}
+        backPage={'/consultants'}
       />
     </Container>
   );

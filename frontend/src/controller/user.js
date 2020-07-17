@@ -112,7 +112,7 @@ async function detailUser(id_user, type) {
   }
 }
 
-async function statusInvestor(id_user, newUser) {
+async function statusUser(id_user, newUser) {
   let response = '';
   try {
     if (newUser == true) {
@@ -133,6 +133,6 @@ export {
   editUser,
   detailUser,
   deleteUser,
-  statusInvestor,
+  statusUser,
   createUserConsultant,
 };
