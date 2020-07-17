@@ -204,20 +204,23 @@ module.exports = {
 
       const { ...campos } = req.body
 
-      const investor = await InvestorModel.findByPk(campos.id_investor,  {
-        include: { association: 'user', required: true }
-     });
+      if (campos.id_investor) {
+        const investor = await InvestorModel.findByPk(campos.id_investor,  {
+          include: { association: 'user', required: true }
+       });
 
-      if (!investor) {
-        throw new Exception("Investidor não existe", "id_investor");
+        if (!investor) {
+          throw new Exception("Investidor não existe", "id_investor");
+        }
       }
 
       contract = await contract.update(campos, { transaction: t });
 
       const result = {
-        ...contract.toJSON(),
-        investor: { ...investor.toJSON() }
+        ...contract.toJSON()
       };
+
+      //throw new Error('Teste');
 
       await t.commit();
 

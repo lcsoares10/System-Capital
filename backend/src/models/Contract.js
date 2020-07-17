@@ -15,10 +15,10 @@ class Contract extends Model {
         type: DataTypes.DATE,
         allowNull: false,
         validate: {
-          notEmpty: true
+          notEmpty: true,
         }
       },
-      final: { //final
+      final: {
         alias: 'Final',
         type: DataTypes.VIRTUAL(DataTypes.DATE),
         get() {
@@ -29,7 +29,7 @@ class Contract extends Model {
           }
         }
       },
-      is_vigente: { //final
+      is_vigente: {
         alias: 'Vigente',
         type: DataTypes.VIRTUAL(DataTypes.INTEGER),
         get() {
@@ -40,10 +40,47 @@ class Contract extends Model {
           return (today >= begin && today <= final );
         }
       },
+      xstatus: {
+        alias: 'Vigente',
+        type: DataTypes.VIRTUAL(DataTypes.STRING),
+        get() {
+
+          let status = "";
+          switch (true) {
+            case (this.contract_active === 0):
+              status = "desativado"
+              break;
+
+            case (this.contract_active === 1 && moment().format('YMMDD') < moment(this.begin).format('YMMDD')):
+              status = "ativado"
+              break;
+
+              case (this.contract_active === 1 && moment().format('YMMDD') > moment(this.final).format('YMMDD')):
+              status = "encerrado"
+              break;
+
+            default:
+              status = "vigente"
+              break;
+          }
+
+          return status;
+        }
+      },
       break_contract: { //quebra de contrato - Recebe valor caso o contrato seja encerrado antes do prazo original
-        alias: 'Qubra de Contrato',
+        alias: 'Rescisão de Contrato',
         type: DataTypes.DATE,
-        allowNull: true
+        allowNull: true,
+        validate: {
+          inValidDate(value) {
+            if (moment(value).format('YMMDD') < moment(this.begin).format('YMMDD')) {
+              throw new Error('Data de encerramento do contrato não pode ser menor que a data de início');
+            }
+            if (moment(value).format('YMMDD') > moment(this.begin).add(this.time, 'month').format('YMMDD')) {
+              throw new Error('Data de encerramento do contrato não pode ser maior que a data final');
+            }
+          }
+        }
       },
       day: { //dia do pagamento
         alias: 'Dia',
@@ -79,6 +116,9 @@ class Contract extends Model {
       hooks: {
         beforeValidate: (self, options) => {
           self.charging_rate = self.value * 0.15;
+        },
+        beforeUpdate: (self, options) => {
+          self.time = moment(self.break_contract).diff(self.previous('begin'), 'month');
         }
       },
       sequelize,

@@ -125,7 +125,8 @@ export default function DetailInvestment(props) {
         background: '#121212',
         confirmButtonColor: '#a0770a',
       });
-      history.push('/investors');
+      //history.push('/investors');
+      setInvestor({ ...investor, active: (investor.active == 1) ? 0 : 1});
     }
   }
 
@@ -200,7 +201,7 @@ export default function DetailInvestment(props) {
         confirmButtonColor: '#a0770a',
       });
     } catch (error) {
-      console.log(error.respose);
+      //console.log(error.respose);
       Swal.fire({
         title: 'Erro!',
         text: error.response.data.message,
@@ -248,7 +249,8 @@ export default function DetailInvestment(props) {
                 />
               </Link>
 
-              <Link to={`/investors`}>
+              {/* <Link to={`/investors`}> */}
+              <>
                 {' '}
                 {investor.active === 0 ? (
                   <CheckIcon
@@ -283,7 +285,8 @@ export default function DetailInvestment(props) {
                     title="Desativar"
                   />
                 )}
-              </Link>
+              </>
+              {/* </Link> */}
 
               <DeleteIcon
                 onClick={(e) => handlleDeleteInvestor()}
@@ -360,7 +363,11 @@ export default function DetailInvestment(props) {
                   <Alert>Esse investor não possui contratos</Alert>;
                 </div>
               )}
-              {contractsInvestor.map((contract, key) => (
+              {contractsInvestor.map((contract, key) => {
+
+                const statusContractClass = (['desativado', 'encerrado'].includes(contract.xstatus)) ? 'tag-disabled' : 'tag-active';
+
+                return (
                 <div className="contracts" key={key}>
                   <div className="header-contract">
                     <div
@@ -370,18 +377,22 @@ export default function DetailInvestment(props) {
                         alignItems: 'center',
                       }}
                     >
-                      <p>Cod: {contract.id.toString().padStart('5', '0')}</p>
+                      <p>COD: {contract.id.toString().padStart('5', '0')}</p>
 
-                      {user.is_admin === 1 &&
+                      <span className={statusContractClass}>{contract.xstatus}</span>
+
+                      {/* {user.is_admin === 1 &&
                         (contract.contract_active === 1 ? (
                           <span className="tag-active">ativo</span>
                         ) : (
                           <span className="tag-disabled">desativado</span>
-                        ))}
+                        ))} */}
                     </div>
 
                     <div className="button-controler-contract">
-                      {user.is_admin === 1 && (
+                      {user.is_admin === 1
+                        && contract.xstatus != 'encerrado'
+                        && (
                         <Link
                           to={{
                             pathname: '/editContract',
@@ -403,7 +414,9 @@ export default function DetailInvestment(props) {
                           />
                         </Link>
                       )}
-                      {user.is_admin === 1 &&
+                      {user.is_admin === 1
+                        && moment().format('YMMDD') < moment(contract.begin).format('YMMDD')
+                        &&
                         (contract.contract_active === 0 ? (
                           <CheckIcon
                             onClick={(e) =>
@@ -436,7 +449,9 @@ export default function DetailInvestment(props) {
                             title="Desativar"
                           />
                         ))}
+
                     </div>
+
                   </div>
                   <div className="article-contract">
                     <p>
@@ -454,7 +469,7 @@ export default function DetailInvestment(props) {
                       <b>{convertCoinBr(contract.charging_rate)}</b>
                     </p>
                     <p>
-                      tempo de Contrato: <b>{contract.time + 'meses'}</b>
+                      tempo de Contrato: <b>{contract.time + ' meses'}</b>
                     </p>
                     <div className="time-contract">
                       <p>
@@ -472,7 +487,7 @@ export default function DetailInvestment(props) {
                     )}
                   </div>
                 </div>
-              ))}
+              )})}
             </div>
           </div>
         </div>
