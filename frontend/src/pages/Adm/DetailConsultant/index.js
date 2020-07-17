@@ -113,6 +113,8 @@ export default function DetailInvestment(props) {
         confirmButtonColor: '#a0770a',
       });
     }
+
+    setConsultant({ ...consultant, active: (consultant.active == 1) ? 0 : 1});
   }
 
   async function handleSendMessage() {
@@ -201,7 +203,7 @@ export default function DetailInvestment(props) {
                 />
               </Link>
 
-              <Link to={`/consultants`}>
+              <>
                 {' '}
                 {consultant.active === 0 ? (
                   <CheckIcon
@@ -236,7 +238,7 @@ export default function DetailInvestment(props) {
                     title="Desativar"
                   />
                 )}
-              </Link>
+              </>
 
               <DeleteIcon
                 onClick={(e) => handlleDelete()}
