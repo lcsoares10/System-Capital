@@ -8,10 +8,10 @@ import Logon from '../pages/Logon';
 import InvestorProfile from '../pages/Investor/Profile';
 
 import ViewProfile from '../pages/ViewProfile';
-import ListUsers from '../pages/ListUsers';
 import Messages from '../pages/Messages';
-import RegisterContract from '../pages/RegisterContract';
-import RegisterUsers from '../pages/RegisterUsers';
+import EditContract from '../pages/Adm/EditContract';
+import ConsultantRegisters from '../pages/Adm/ConsultantRegisters';
+import DetailConsultant from '../pages/Adm/DetailConsultant';
 import DetailInvestment from '../pages/Investor/DetailInvestment';
 import DetailContract from '../pages/Investor/DetailContract';
 import NewUser from '../pages/NewUser';
@@ -25,7 +25,6 @@ import DetailIncome from '../pages/Consultant/DetailIncome';
 
 import AdmProfile from '../pages/Adm/Profile';
 import InvestorRegisters from '../pages/Adm/InvestorsRegisters';
-import EditContract from '../pages/Adm/EditContract';
 
 import Loading from '../components/Loading';
 
@@ -99,16 +98,13 @@ export default function Routes() {
           <Route path="/" exact>
             <Redirect to="/login" />
           </Route>
-
           {/* Outros  */}
           <Route path="/Loading" component={Loading} />
-
           {/*É private apenas para ter o teste e já saber se já está logado ou
             não no sistema
             */}
           <PrivateRoute path="/login" component={Logon} />
-
-          {/* -----------------  */}
+          {/* ----------------- Investidor */}
           <PrivateRoute path="/view-profile" component={ViewProfile} />
           <PrivateRoute
             path="/InvestorProfile"
@@ -125,41 +121,62 @@ export default function Routes() {
           />
           {/* <PrivateRoute path="/listUsers"  component={ListUsers} /> */}
           <PrivateRoute path="/messages" component={Messages} />
-          <PrivateRoute path="/RegisterContract" component={RegisterContract} />
-          <PrivateRoute path="/RegisterUsers" component={RegisterUsers} />
-
+          {/* <PrivateRoute path="/RegisterContract"  component={RegisterContract} /> */}
+          {/* <PrivateRoute path="/RegisterUsers"  component={RegisterUsers} /> */}
+          {/* ----------------- Consultor */}
           <PrivateRoute
             path="/ConsultantProfile"
+            is_profile
             component={ConsultantProfile}
           />
           <PrivateRoute
             path="/associatedInvestors/:id"
+            nivel="1"
             component={AssociatedInvestors}
           />
           <PrivateRoute
             path="/detailInvestor/:name"
+            nivel="1"
             component={DetailInvestor}
           />
           <PrivateRoute
             path="/incomeConsultant/:id"
+            nivel="1"
             component={IncomeConsultant}
           />
-          <PrivateRoute path="/detailIncome/:id" component={DetailIncome} />
-
+          <PrivateRoute
+            path="/detailIncome/:id"
+            nivel="1"
+            component={DetailIncome}
+          />
+          <PrivateRoute path="/newuser" nivel="1" component={NewUser} />
+          {/* ----------------- Adm  */}
           <PrivateRoute
             path="/admProfile"
+            is_profile
+            nivel="2"
             component={AdmProfile}
           ></PrivateRoute>
-
           <PrivateRoute
             path="/investors"
+            nivel="2"
             component={InvestorRegisters}
           ></PrivateRoute>
           <PrivateRoute
             path="/editContract"
+            nivel="2"
             component={EditContract}
+          ></PrivateRoute>{' '}
+          <PrivateRoute
+            path="/consultants"
+            nivel="2"
+            component={ConsultantRegisters}
+          ></PrivateRoute>{' '}
+          <PrivateRoute
+            path="/detailConsultant"
+            nivel="2"
+            component={DetailConsultant}
           ></PrivateRoute>
-
           <PrivateRoute path="/*" component={Page404} />
         </Switch>
       </AuthProvider>

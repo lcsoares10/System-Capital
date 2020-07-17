@@ -37,6 +37,13 @@
   color: #cecece;
   font-size: 16px;
 }
+.content-detail-message .content-message :before {
+  border: 10px solid transparent;
+  border-right-color: var(--bg-color-05);
+  content: '';
+  left: -0px;
+  position: absolute;
+}
 
 @keyframes move-left {
   0% {

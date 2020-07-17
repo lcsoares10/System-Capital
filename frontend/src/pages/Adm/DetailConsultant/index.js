@@ -125,7 +125,6 @@ export default function DetailInvestment(props) {
         background: '#121212',
         confirmButtonColor: '#a0770a',
       });
-      history.push('/investors');
     }
   }
 
@@ -179,39 +178,6 @@ export default function DetailInvestment(props) {
     }
   }
 
-  async function handleDisabledContract(status, id_contract) {
-    setStatusContract(0);
-    try {
-      const data = await api.put('/contracts/' + id_contract, {
-        contract_active: status,
-        id_investor: userId,
-      });
-      let message = 'Contrato ativado com sucesso';
-      if (status !== 1) {
-        message = 'Contrato desativado com sucesso';
-      }
-      setStatusContract(1);
-      Swal.fire({
-        title: 'Sucesso',
-        text: message,
-        icon: 'success',
-        confirmButtonText: 'OK',
-        background: '#121212',
-        confirmButtonColor: '#a0770a',
-      });
-    } catch (error) {
-      console.log(error.respose);
-      Swal.fire({
-        title: 'Erro!',
-        text: error.response.data.message,
-        icon: 'error',
-        confirmButtonText: 'OK',
-        background: '#121212',
-        confirmButtonColor: '#a0770a',
-      });
-    }
-  }
-
   let tel = investor.tel ? investor.tel : 0;
   tel = parseInt(tel);
 
@@ -221,7 +187,7 @@ export default function DetailInvestment(props) {
       <HeaderBackground notLogin={true} />
       <main className="main-ivestors">
         <div className="title-header">
-          <h1 className="h1">Investidor</h1>
+          <h1 className="h1">Consultor</h1>
 
           {user.is_admin === 1 && (
             <div className="button-controler-user">
@@ -248,7 +214,7 @@ export default function DetailInvestment(props) {
                 />
               </Link>
 
-              <Link to={`/investors`}>
+              <Link to={`/consultants`}>
                 {' '}
                 {investor.active === 0 ? (
                   <CheckIcon
@@ -332,153 +298,15 @@ export default function DetailInvestment(props) {
               E-mail: <b className="text-white">{investor.email}</b>
             </p>
             {user.is_admin === 1 && (
-              <>
-                <p styled={{ marginTop: '10px' }} className="weight-thin">
-                  Consultor:{' '}
-                  <b className="text-white">
-                    {investorConsultant.name +
-                      ' ' +
-                      investorConsultant.last_name}
-                  </b>
-                </p>
-                <div className="enviar-mensage">
-                  <button onClick={(e) => handleSendMessage()}>
-                    Enviar Mensagem
-                  </button>
-                </div>
-              </>
+              <div className="enviar-mensage">
+                <button onClick={(e) => handleSendMessage()}>
+                  Enviar Mensagem
+                </button>
+              </div>
             )}
           </div>
 
-          <div className="content-contracts">
-            <h2>Contratos</h2>
-            <div className="list-contracts">
-              {contractsInvestor[0] ? (
-                ''
-              ) : (
-                <div>
-                  <Alert>Esse investor não possui contratos</Alert>;
-                </div>
-              )}
-              {contractsInvestor.map((contract, key) => (
-                <div className="contracts" key={key}>
-                  <div className="header-contract">
-                    <div
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                      }}
-                    >
-                      <p>Cod: {contract.id.toString().padStart('5', '0')}</p>
-
-                      {user.is_admin === 1 &&
-                        (contract.contract_active === 1 ? (
-                          <span className="tag-active">ativo</span>
-                        ) : (
-                          <span className="tag-disabled">desativado</span>
-                        ))}
-                    </div>
-
-                    <div className="button-controler-contract">
-                      {user.is_admin === 1 && (
-                        <Link
-                          to={{
-                            pathname: '/editContract',
-                            state: {
-                              contract,
-                              userId,
-                            },
-                          }}
-                        >
-                          {' '}
-                          <EditIcon
-                            title="Editar"
-                            style={{
-                              backgroundColor: ' #a0770a',
-                              padding: '2px',
-                              borderRadius: '5px',
-                              boxShadow: 'var(--shadow-bottom)',
-                            }}
-                          />
-                        </Link>
-                      )}
-                      {user.is_admin === 1 &&
-                        (contract.contract_active === 0 ? (
-                          <CheckIcon
-                            onClick={(e) =>
-                              handleDisabledContract(1, contract.id)
-                            }
-                            style={{
-                              margin: '0px 5px',
-                              backgroundColor: 'green',
-                              padding: '2px',
-                              color: 'white',
-                              borderRadius: '5px',
-                              boxShadow: 'var(--shadow-bottom)',
-                            }}
-                            title="Ativar"
-                            alt="Ativar"
-                          />
-                        ) : (
-                          <HighlightOffIcon
-                            onClick={(e) =>
-                              handleDisabledContract(0, contract.id)
-                            }
-                            style={{
-                              margin: '0px 5px',
-                              backgroundColor: ' #a0770a',
-                              padding: '2px',
-                              color: 'white',
-                              borderRadius: '5px',
-                              boxShadow: 'var(--shadow-bottom)',
-                            }}
-                            title="Desativar"
-                          />
-                        ))}
-                    </div>
-                  </div>
-                  <div className="article-contract">
-                    <p>
-                      Valor Investido:{' '}
-                      <b styled={{ color: 'green' }}>
-                        {convertCoinBr(contract.value)}
-                      </b>
-                    </p>
-                    <p>
-                      Dia de pagamento:{' '}
-                      <b>{contract.day.toString().padStart('2', '0')}</b>
-                    </p>
-                    <p>
-                      Taxa de carregamento:{' '}
-                      <b>{convertCoinBr(contract.charging_rate)}</b>
-                    </p>
-                    <p>
-                      tempo de Contrato: <b>{contract.time + 'meses'}</b>
-                    </p>
-                    <div className="time-contract">
-                      <p>
-                        Inicio:{' '}
-                        {moment(contract.begin.substring(0, 10)).format('L')}
-                      </p>
-
-                      <p>
-                        Fim:{' '}
-                        {moment(contract.begin.substring(0, 10))
-                          .add(contract.time, 'months')
-                          .format('L')}
-                      </p>
-                    </div>
-                    {user.is_admin === 1 && (
-                      <Link to={`/detail-investment/${contract.id}`}>
-                        <button className="detail-pay"> PAGAMENTOS</button>
-                      </Link>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+          <div className="content-contracts"></div>
         </div>
       </main>
       <FooterBackground
