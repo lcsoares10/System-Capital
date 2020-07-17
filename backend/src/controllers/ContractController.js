@@ -22,13 +22,13 @@ module.exports = {
             include : [
               {
                 association: 'user',
-                attributes: ['name', 'last_name', 'email'],
+                attributes: ['name', 'last_name', 'fullname', 'email'],
               },
               {
                 association: 'consultant',
                 include : {
                   association: 'user',
-                  attributes: ['name', 'last_name', 'email'],
+                  attributes: ['name', 'last_name', 'fullname', 'email'],
                 },
               }
             ],
@@ -68,13 +68,13 @@ module.exports = {
               include : [
                 {
                   association: 'user',
-                  attributes: ['name', 'last_name', 'email'],
+                  attributes: ['name', 'last_name', 'fullname', 'email'],
                 },
                 {
                   association: 'consultant',
                   include : {
                     association: 'user',
-                    attributes: ['name', 'last_name', 'email'],
+                    attributes: ['name', 'last_name', 'fullname', 'email'],
                   },
                 }
               ],

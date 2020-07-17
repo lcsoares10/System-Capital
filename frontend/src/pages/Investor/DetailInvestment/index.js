@@ -56,10 +56,17 @@ export default function DetailInvestment(props) {
         <div className="content-ivestment">
           <div className="detail-invest">
             <p className="weight-thin">
-              Data da Aplicação:{' '}
+              Data Início:{' '}
               <b className="text-white">
                 {' '}
                 {moment(contract.begin).format('L')}
+              </b>
+            </p>
+            <p className="weight-thin">
+              Data Final:{' '}
+              <b className="text-white">
+                {' '}
+                {moment(contract.final).format('L')}
               </b>
             </p>
             <p className="weight-thin">

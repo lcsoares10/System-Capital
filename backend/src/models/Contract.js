@@ -20,13 +20,24 @@ class Contract extends Model {
       },
       final: { //final
         alias: 'Final',
-        type: DataTypes.VIRTUAL,
-        get: function() {
+        type: DataTypes.VIRTUAL(DataTypes.DATE),
+        get() {
           if (this.break_contract) {
             return moment(this.break_contract);
           } else {
             return moment(this.begin).add(this.time, 'month').add(-1, 'day');
           }
+        }
+      },
+      is_vigente: { //final
+        alias: 'Vigente',
+        type: DataTypes.VIRTUAL(DataTypes.INTEGER),
+        get() {
+          const today = moment().format('YYYYMMDD');
+          const begin = moment(this.begin).format('YYYYMMDD');
+          const final = moment(this.final).format('YYYYMMDD');
+
+          return (today >= begin && today <= final );
         }
       },
       break_contract: { //quebra de contrato - Recebe valor caso o contrato seja encerrado antes do prazo original

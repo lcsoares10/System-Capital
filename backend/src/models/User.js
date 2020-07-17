@@ -76,6 +76,13 @@ class User extends Model {
           is: /^[A-Za-z\s]+$/i
         }
       },
+      fullname: { //final
+        alias: 'Nome completo',
+        type: DataTypes.VIRTUAL,
+        get() {
+          return `${this.name} ${this.last_name}`;
+        }
+      },
       tel: {
         alias: 'Telefone',
         type: DataTypes.STRING,

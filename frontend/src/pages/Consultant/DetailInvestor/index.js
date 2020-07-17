@@ -307,10 +307,7 @@ export default function DetailInvestment(props) {
                   <div className="time-contract">
                     <p>Inicio: {moment(contract.begin).format('L')}</p>
                     <p>
-                      Fim:{' '}
-                      {moment(contract.begin)
-                        .add(contract.time, 'months')
-                        .format('L')}
+                      Fim:{' '}{moment(contract.final).format('L')}
                     </p>
                   </div>
                   {user.is_admin && (
