@@ -10,7 +10,7 @@ import api from '../../../services/api';
 import convertCoinBr from '../../../utils/convertCoinBr';
 
 import allContracts from '../../../controller/Investor/allContracts';
-import { deleteUser, statusInvestor } from '../../../controller/user';
+import { deleteUser, statusUser } from '../../../controller/user';
 import { sendMessage } from '../../../controller/Adm';
 import './styles.css';
 import { Link } from 'react-router-dom';
@@ -105,8 +105,8 @@ export default function DetailInvestment(props) {
     });
   }
 
-  async function handlleStatusInvestor(newUser) {
-    const returnMessageApi = await statusInvestor(investor.id, newUser);
+  async function handllestatusUser(newUser) {
+    const returnMessageApi = await statusUser(investor.id, newUser);
     if (returnMessageApi.hasOwnProperty('response')) {
       Swal.fire({
         title: 'Erro!',
@@ -253,7 +253,7 @@ export default function DetailInvestment(props) {
                 {investor.active === 0 ? (
                   <CheckIcon
                     onClick={(e) =>
-                      handlleStatusInvestor(
+                      handllestatusUser(
                         (investor.active === 0) &
                           (investor.user_activated === 0)
                           ? true
@@ -272,7 +272,7 @@ export default function DetailInvestment(props) {
                   />
                 ) : (
                   <HighlightOffIcon
-                    onClick={(e) => handlleStatusInvestor(false)}
+                    onClick={(e) => handllestatusUser(false)}
                     style={{
                       margin: '0px 5px',
                       backgroundColor: ' #a0770a',

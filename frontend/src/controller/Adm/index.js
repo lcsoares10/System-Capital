@@ -46,4 +46,21 @@ async function sendMessage(user, messagem) {
   }
 }
 
-export { getAllInvestors, getAllConsultants, payMonthContract, sendMessage };
+async function consultantsYeld(user_id, year) {
+  try {
+    const response = await api.post(`/consultants/${user_id}/yield/${year}`);
+
+    return response;
+  } catch (error) {
+    // console.log(error.response.data.message)
+    return error;
+  }
+}
+
+export {
+  getAllInvestors,
+  getAllConsultants,
+  payMonthContract,
+  sendMessage,
+  consultantsYeld,
+};
