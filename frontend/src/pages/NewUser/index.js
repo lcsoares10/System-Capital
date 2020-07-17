@@ -43,7 +43,7 @@ const Contract = (props) => {
       <h3 style={{ margin: '28px auto' }}>Cadastrar Contrato</h3>
       <div className="edit-form">
         <label htmlFor="valueInvest" className="label">
-          Valor Investido
+          Valor Investido *
         </label>
 
         <IntlCurrencyInput
@@ -57,7 +57,7 @@ const Contract = (props) => {
 
       <div className="edit-form">
         <label htmlFor="startContract" className="label">
-          Incio do contrato
+          Incio do contrato *
         </label>
         <input
           type="date"
@@ -70,7 +70,7 @@ const Contract = (props) => {
 
       <div className="edit-form">
         <label htmlFor="handleTimeContract" className="label">
-          Duração do contrato
+          Duração do contrato *
         </label>
         <input
           type="text"
@@ -186,7 +186,7 @@ export default function NewUser(props) {
           <form onSubmit={handleNewUser}>
             <div className="edit-form">
               <label htmlFor="nome" className="label">
-                Nome
+                Nome *
               </label>
               <input
                 type="text"
@@ -197,7 +197,7 @@ export default function NewUser(props) {
             </div>
             <div className="edit-form">
               <label htmlFor="sobreNome" className="label">
-                Sobre nome
+                Sobrenome *
               </label>
               <input
                 type="text"
@@ -209,7 +209,7 @@ export default function NewUser(props) {
 
             <div className="edit-form">
               <label htmlFor="sobreNome" className="label">
-                CPF
+                CPF *
               </label>
               <input
                 maxLength="14"
@@ -222,7 +222,7 @@ export default function NewUser(props) {
 
             <div className="edit-form">
               <label htmlFor="tel" className="label">
-                Telefone
+                Telefone *
               </label>
               <input
                 id="tel"
@@ -237,7 +237,7 @@ export default function NewUser(props) {
 
             <div className="edit-form">
               <label htmlFor="email" className="label">
-                Email
+                Email *
               </label>
               <input
                 type="email"

@@ -177,7 +177,7 @@ module.exports = {
 
       const { id } = req.params;
       let consultant = await ConsultantModel.findByPk(id);
-      if (!investor) throw new Exception('Consultor não existe');
+      if (!consultant) throw new Exception('Consultor não existe');
 
       //----
       //User
