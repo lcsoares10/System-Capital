@@ -38,7 +38,13 @@ export default function Messages() {
 
         <div className="content-message">
           {messages.length === 0 ? (
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+              }}
+            >
               <h3 className="text-white">Você não possui menssagens</h3>
               <span style={{ margin: '20px auto' }}>
                 <SentimentVeryDissatisfiedIcon
@@ -50,11 +56,14 @@ export default function Messages() {
             ''
           )}
           {messages.map((message, key) => {
-            console.log(message.users[0].MessageUserView.viewed);
+            console.log(message);
             if (message.users[0].MessageUserView.viewed === 0) {
               return (
                 <Message
-                  messagem={message.messagem}
+                  messagem={
+                    message.messagem.substring(0, 30) +
+                    (message.messagem.length > 31 ? '...' : '')
+                  }
                   user_send={message.user_send}
                   key={key}
                   viewed={message.users[0].MessageUserView.viewed}
@@ -64,7 +73,10 @@ export default function Messages() {
             return (
               <Message
                 key={key}
-                messagem={message.messagem}
+                messagem={
+                  message.messagem.substring(0, 30) +
+                  (message.messagem.length > 31 ? '...' : '')
+                }
                 user_send={message.user_send}
                 viewed={message.users[0].MessageUserView.viewed}
               />
