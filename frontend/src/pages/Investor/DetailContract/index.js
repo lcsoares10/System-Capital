@@ -29,7 +29,7 @@ export default function DetailInvestment(props) {
       //getConsultant(data.investor.id_consultant);
     }
 
-/*     async function getConsultant(id_consultant) {
+    /* async function getConsultant(id_consultant) {
       setConsultant(await findConsultant(id_consultant));
     } */
 

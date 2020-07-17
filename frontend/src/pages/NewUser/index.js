@@ -5,7 +5,11 @@ import Container from '../../components/Container';
 import HeaderBackground from '../../components/HeaderBackground';
 import FooterBackground from '../../components/FooterBackground';
 
-import { createUserInvestor, editUser } from '../../controller/user';
+import {
+  createUserInvestor,
+  createUserConsultant,
+  editUser,
+} from '../../controller/user';
 import { useAuthContext } from '../../Context/AuthContext';
 
 //import AlertPopUp from '../../components/AlertPopUp';
@@ -117,7 +121,7 @@ export default function NewUser(props) {
       formData.append('cpf', cpf.replace(/[.-]/g, ''));
       formData.append('tel', tel.replace(/[()-]/g, ''));
       formData.append('email', email);
-      returnMessage = await editUser(formData, newUser.userId, 'investor');
+      returnMessage = await editUser(formData, newUser.userId, newUser.type);
     } else {
       const data = {
         // login: name,
@@ -132,7 +136,11 @@ export default function NewUser(props) {
         value: valueInvest,
         day: 5, //O dia foi setado no dia 5 pois eles so fazem pagamento mes 5
       };
-      returnMessage = await createUserInvestor(data);
+      if (newUser.type === 'consultant') {
+        returnMessage = await createUserConsultant(data);
+      } else {
+        returnMessage = await createUserInvestor(data);
+      }
     }
 
     //se requisição falahar
@@ -154,7 +162,11 @@ export default function NewUser(props) {
         background: '#121212',
         confirmButtonColor: '#a0770a',
       });
-      history.push('/investors');
+      if (newUser.type === 'consultant') {
+        history.push('/consultants');
+      } else {
+        history.push('/investors');
+      }
     }
   }
   useEffect(() => {

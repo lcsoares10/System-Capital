@@ -11,11 +11,22 @@ async function createUserInvestor(data) {
       `/investors/createInvestorContract`,
       data
     );
-    console.log(id_investor);
+
     let contrato = id_investor.data.data.contract.id;
     return `Investidor ${id_investor.data.data.user.name} e contrato ${String(
       contrato
     ).padStart(5, 0)} foram criados com sucesso`;
+  } catch (error) {
+    // console.log(error.response.data.message);
+    return error;
+  }
+}
+
+async function createUserConsultant(data) {
+  data = { ...data, login: 'naoDefinido' };
+  try {
+    const consultor = await api.post(`/consultants`, data);
+    return `Consultor ${consultor.data.data.user.name}foi criado com sucesso`;
   } catch (error) {
     // console.log(error.response.data.message);
     return error;
@@ -117,4 +128,11 @@ async function statusInvestor(id_user, newUser) {
   }
 }
 
-export { createUserInvestor, editUser, detailUser, deleteUser, statusInvestor };
+export {
+  createUserInvestor,
+  editUser,
+  detailUser,
+  deleteUser,
+  statusInvestor,
+  createUserConsultant,
+};

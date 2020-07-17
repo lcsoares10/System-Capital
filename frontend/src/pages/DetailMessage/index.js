@@ -6,7 +6,7 @@ import './styles.css';
 
 //------------------------------------------------------------
 
-export default function detailInvestment(props) {
+export default function detailMessage(props) {
   return (
     <div className="content-detail-message">
       <div className="nav">

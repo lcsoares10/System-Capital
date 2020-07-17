@@ -6,6 +6,7 @@ import HeaderBackground from '../../../components/HeaderBackground';
 import FooterBackground from '../../../components/FooterBackground';
 
 import { getAllInvestors, getAllConsultants } from '../../../controller/Adm';
+import { AllAssoatedinvestors } from '../../../controller/Consultant';
 // import api from '../../services/api';
 
 import './styles.css';
@@ -18,20 +19,22 @@ export default function AdmProfile() {
 
   const [totInvestors, setTotInvestors] = useState(0);
   const [totConsultants, setTotConsultants] = useState(0);
+  const [totInvestorAssociated, setTotInvestorAssociated] = useState(0);
 
   useEffect(() => {
     // Create an scoped async function in the hook
-    async function getInvestors() {
-      const data = await getAllInvestors();
-      setTotInvestors(data.totrows);
-    }
-    async function getConsultants() {
-      const data = await getAllConsultants();
-      setTotConsultants(data.totrows);
+    async function getTotals() {
+      const datai = await getAllInvestors();
+      setTotInvestors(datai.totrows);
+      const datac = await getAllConsultants();
+      setTotConsultants(datac.totrows);
+      const datainvestorA = await AllAssoatedinvestors(user.id);
+      console.log(datainvestorA);
+      setTotInvestorAssociated(datainvestorA.totrows);
     }
 
-    getInvestors();
-    getConsultants();
+    getTotals();
+
     //Execute the created function directly
   }, []);
 
@@ -42,7 +45,18 @@ export default function AdmProfile() {
         <div className="title-header">
           <h1 className="h1-profile">Dashboard</h1>
         </div>
-        <div className="dashboard">
+        <div className=" dashboard-adm">
+          <div className="content-panel">
+            <h3>Pendências</h3>
+            <div className="detail-content">
+              <span>{totConsultants}</span>
+              <div>
+                <Link to={`/associatedInvestors/${user.id}`}>
+                  <button>Visualizar</button>
+                </Link>
+              </div>
+            </div>
+          </div>
           <div className="content-panel">
             <h3>Investidores</h3>
             <div className="detail-content">
@@ -56,9 +70,21 @@ export default function AdmProfile() {
             <h3>Consultores</h3>
             <div className="detail-content">
               <span>{totConsultants}</span>
-              <Link to={`/associatedInvestors/${user.id}`}>
+              <Link to={`/consultants`}>
                 <button>Gerenciar</button>
               </Link>
+            </div>
+          </div>
+
+          <div className="content-panel">
+            <h3>Investidores Associados</h3>
+            <div className="detail-content">
+              <span>{totInvestorAssociated}</span>
+              <div>
+                <Link to={`/associatedInvestors/${user.id}`}>
+                  <button>Visualizar</button>
+                </Link>
+              </div>
             </div>
           </div>
         </div>

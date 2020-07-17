@@ -13,6 +13,9 @@ export default function Message(props) {
   }
 
   function handleViwed(bool) {
+    try {
+      //const data = api.post()
+    } catch (error) {}
     setViewDetail(bool);
   }
 
