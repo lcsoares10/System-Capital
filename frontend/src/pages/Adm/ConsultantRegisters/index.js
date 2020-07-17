@@ -12,19 +12,36 @@ import './styles.css';
 //------------------------------------------------------------
 
 export default function ConsultantRegisters(props) {
-  const [investors, setInvestors] = useState([]);
-  const [totInvestors, setTotInvestors] = useState(0);
+  const [consultants, setconsultants] = useState([]);
+  const [totconsultants, setTotconsultants] = useState(0);
+  const [dataSearch, setDataSerach] = useState([]);
+  const [valudeInput, setValudeInput] = useState('');
 
   useEffect(() => {
-    async function getAssoatedinvestors() {
+    async function getAssoatedconsultants() {
       const data = await getAllConsultants();
-      setInvestors(data.rows);
-      setTotInvestors(data.totrows);
+      setconsultants(data.rows);
+      setTotconsultants(data.totrows);
     }
     setTimeout(() => {
-      getAssoatedinvestors();
+      getAssoatedconsultants();
     }, 500);
   }, [props.match.params.id]);
+
+  //Tendo criar um search
+  function handleSearch(valueInput) {
+    setValudeInput(valueInput);
+    console.log(valudeInput);
+    let searchConsultants = consultants.filter((consultant) => {
+      return consultant.user.name
+        .toLowerCase()
+        .includes(valudeInput.toLowerCase());
+    });
+    if (searchConsultants.length !== 0) {
+      setconsultants(searchConsultants);
+    }
+    console.log(consultants);
+  }
 
   return (
     <Container>
@@ -47,20 +64,20 @@ export default function ConsultantRegisters(props) {
           <div className="detail">
             <p className="weight-thin">
               Total de Consultores:&nbsp;
-              <b className="text-white">{totInvestors}</b>
+              <b className="text-white">{totconsultants}</b>
             </p>
           </div>
 
           <div className="content-list">
             <h2>Lista de Consultores</h2>
             <div className="list">
-              {investors.map((investor, key) => (
+              {consultants.map((consultant, key) => (
                 <List
                   key={key}
-                  value_col_1={`${investor.user.name} ${investor.user.last_name}`}
-                  url={`/detailInvestor/${investor.user.name}`}
-                  stateLink={investor}
-                  backgroundColor={investor.user.active === 0 ? true : false}
+                  value_col_1={`${consultant.user.name} ${consultant.user.last_name}`}
+                  url={`/detailConsultant/${consultant.user.name}`}
+                  stateLink={consultant}
+                  backgroundColor={consultant.user.active === 0 ? true : false}
                 />
               ))}
             </div>

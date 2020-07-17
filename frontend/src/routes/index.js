@@ -11,6 +11,7 @@ import ViewProfile from '../pages/ViewProfile';
 import Messages from '../pages/Messages';
 import EditContract from '../pages/Adm/EditContract';
 import ConsultantRegisters from '../pages/Adm/ConsultantRegisters';
+import DetailConsultant from '../pages/Adm/DetailConsultant';
 import DetailInvestment from '../pages/Investor/DetailInvestment';
 import DetailContract from '../pages/Investor/DetailContract';
 import NewUser from '../pages/NewUser';
@@ -153,6 +154,7 @@ export default function Routes() {
           <PrivateRoute
             path="/admProfile"
             is_profile
+            nivel="2"
             component={AdmProfile}
           ></PrivateRoute>
           <PrivateRoute
@@ -162,11 +164,18 @@ export default function Routes() {
           ></PrivateRoute>
           <PrivateRoute
             path="/editContract"
+            nivel="2"
             component={EditContract}
           ></PrivateRoute>{' '}
           <PrivateRoute
             path="/consultants"
+            nivel="2"
             component={ConsultantRegisters}
+          ></PrivateRoute>{' '}
+          <PrivateRoute
+            path="/detailConsultant"
+            nivel="2"
+            component={DetailConsultant}
           ></PrivateRoute>
           <PrivateRoute path="/*" component={Page404} />
         </Switch>
