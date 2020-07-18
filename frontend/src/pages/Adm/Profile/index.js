@@ -100,7 +100,12 @@ export default function AdmProfile() {
                   totalPendenciesContracts}
               </span>
               <div>
-                <Link to={`/associatedInvestors/${user.id}`}>
+                <Link
+                  to={{
+                    pathname: `/pendencies`,
+                    state: { investors, consultants, contracts },
+                  }}
+                >
                   <button>Visualizar</button>
                 </Link>
               </div>

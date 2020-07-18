@@ -9,9 +9,7 @@ import InvestorProfile from '../pages/Investor/Profile';
 
 import ViewProfile from '../pages/ViewProfile';
 import Messages from '../pages/Messages';
-import EditContract from '../pages/Adm/EditContract';
-import ConsultantRegisters from '../pages/Adm/ConsultantRegisters';
-import DetailConsultant from '../pages/Adm/DetailConsultant';
+
 import DetailInvestment from '../pages/Investor/DetailInvestment';
 import DetailContract from '../pages/Investor/DetailContract';
 import NewUser from '../pages/NewUser';
@@ -25,6 +23,10 @@ import DetailIncome from '../pages/Consultant/DetailIncome';
 
 import AdmProfile from '../pages/Adm/Profile';
 import InvestorRegisters from '../pages/Adm/InvestorsRegisters';
+import EditContract from '../pages/Adm/EditContract';
+import ConsultantRegisters from '../pages/Adm/ConsultantRegisters';
+import DetailConsultant from '../pages/Adm/DetailConsultant';
+import Pendencies from '../pages/Adm/Pendencies';
 
 import Loading from '../components/Loading';
 
@@ -176,6 +178,11 @@ export default function Routes() {
             path="/detailConsultant"
             nivel="2"
             component={DetailConsultant}
+          ></PrivateRoute>
+          <PrivateRoute
+            path="/pendencies"
+            nivel="2"
+            component={Pendencies}
           ></PrivateRoute>
           <PrivateRoute path="/*" component={Page404} />
         </Switch>
