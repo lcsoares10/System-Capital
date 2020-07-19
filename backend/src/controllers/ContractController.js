@@ -1,3 +1,5 @@
+const {Sequelize, Op } = require("sequelize");
+
 const UserModel = require('@/src/models/User');
 const InvestorModel = require('@/src/models/Investor');
 const ContractModel = require('@/src/models/Contract');
@@ -13,6 +15,23 @@ module.exports = {
   async index(req, res) {
 
     try {
+
+      let selFilter = (req.query.search) ? req.query.search : null;
+      let wf = {};
+      if (selFilter) {
+        wf = {
+          contract: {
+            where: {
+              [Op.or]: [
+                { id: { [Op.like]: `%${parseInt(selFilter)}%` } },
+                { value: { [Op.eq]: selFilter } },
+                Sequelize.where(Sequelize.fn('date_format', Sequelize.col('begin'), '%d-%m-%Y'), 'like', `%${selFilter}%`),
+              ]
+            }
+          }
+        }
+      }
+
       const page = req.query.page || 1;
       const options = {
         include: [
@@ -34,6 +53,10 @@ module.exports = {
             ],
           }
         ],
+        attributes: [
+          [Sequelize.fn('date_format', Sequelize.col('begin'), '%Y%m%d'), 'begin_order']
+        ],
+        ...wf.contract,
       };
 
       const Pagination = new PaginationClass(ContractModel);
@@ -47,7 +70,7 @@ module.exports = {
       //   return row;
       // });
 
-      return res.json(result);
+      return res.json(Util.response(result));
 
     } catch (e) {
       const result = Exception._(e);
