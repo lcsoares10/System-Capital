@@ -91,3 +91,15 @@
   left: 20px;
   font-size: 14px;
 }
+.edit-form-check {
+  margin-top: 10px;
+}
+.isAdmin {
+  margin-left: -45px;
+  color: var(--text-color-beige);
+  position: relative;
+  width: 100%;
+}
+.MuiSvgIcon-root {
+  color: #3a3a3a;
+}

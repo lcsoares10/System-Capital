@@ -39,7 +39,7 @@ export default function ConsultantRegisters(props) {
         </div>
 
         <div className="section">
-          <div className="content-list">
+          <div className="content-list" style={{ marginBottom: '5px' }}>
             <h2>Consultores</h2>
             <div className="list">
               {consultants.map((consultant, key) => (
