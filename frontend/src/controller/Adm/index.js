@@ -1,9 +1,13 @@
 import api from '../../services/api';
 
-async function getAllInvestors(page, valueSearch) {
+async function getAllInvestors(indexProfile, page = '', valueSearch = '') {
+  let size = '';
+  if (indexProfile == true) {
+    size = '&pageSize=9999';
+  }
   try {
     const { data } = await api.get(
-      '/investors?page=' + page + '&search=' + valueSearch
+      '/investors?page=' + page + '&search=' + valueSearch + size
     );
 
     return data.data;
@@ -12,10 +16,15 @@ async function getAllInvestors(page, valueSearch) {
   }
 }
 
-async function getAllConsultants(page, valueSearch) {
+async function getAllConsultants(indexProfile, page = '', valueSearch = '') {
+  let size = '';
+  if (indexProfile == true) {
+    size = '&pageSize=9999';
+  }
+
   try {
     const { data } = await api.get(
-      '/consultants?page=' + page + '&search=' + valueSearch
+      '/consultants?page=' + page + '&search=' + valueSearch + size
     );
     //console.log(data)
     return data;
