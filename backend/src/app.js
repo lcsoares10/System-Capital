@@ -46,7 +46,7 @@ app.use(inteceptedResponse);
 
 /** ==========================================================*/
 //Log Request Morgan
-app.use(require('@/src/modules/log/morgan.js'));
+//app.use(require('@/src/modules/log/morgan.js'));
 
 /** ==========================================================*/
 //Statics

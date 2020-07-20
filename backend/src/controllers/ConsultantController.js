@@ -1,3 +1,5 @@
+const { Op } = require("sequelize");
+
 const UserController = require('@/src/controllers/UserController');
 
 const ImageModel = require('@/src/models/Image');
@@ -16,11 +18,28 @@ module.exports = {
   async index(req, res) {
 
     try {
+
+      let selFilter = (req.query.search) ? req.query.search : null;
+      let wf = {};
+      if (selFilter) {
+        wf = {
+          user: {
+            where: {
+              [Op.or]: [
+                { name: { [Op.like]: `%${selFilter}%` } },
+                { last_name: { [Op.like]: `%${selFilter}%` } }
+              ]
+            }
+          }
+        }
+      }
+
       const page = req.query.page || 1;
       const options = {
         include: {
           association: 'user',
           required: true,
+          ...wf.user,
           include: { association: 'profile'}
         }
       };
@@ -177,7 +196,7 @@ module.exports = {
 
       const { id } = req.params;
       let consultant = await ConsultantModel.findByPk(id);
-      if (!investor) throw new Exception('Consultor não existe');
+      if (!consultant) throw new Exception('Consultor não existe');
 
       //----
       //User
