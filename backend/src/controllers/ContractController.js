@@ -32,6 +32,7 @@ module.exports = {
         }
       }
 
+      const pageSize = req.query.pageSize || null;
       const page = req.query.page || 1;
       const options = {
         include: [
@@ -59,7 +60,7 @@ module.exports = {
         ...wf.contract,
       };
 
-      const Pagination = new PaginationClass(ContractModel);
+      const Pagination = new PaginationClass(ContractModel, pageSize);
       const result = await Pagination.select(page, options);
 
       // result.rows = result.rows.map(row => {
