@@ -7,6 +7,7 @@ import FooterBackground from '../../../components/FooterBackground';
 import List from '../../../components/List';
 import { getAllConsultants } from '../../../controller/Adm';
 import icon_new from '../../../assets/icon_new.png';
+import SelectPage from '../../../components/SelectPage';
 
 import './styles.css';
 //------------------------------------------------------------
@@ -16,17 +17,21 @@ export default function ConsultantRegisters(props) {
   const [totconsultants, setTotconsultants] = useState(0);
   const [dataSearch, setDataSerach] = useState([]);
   const [valudeInput, setValudeInput] = useState('');
+  const [page, setPage] = useState(1);
+  const [totPages, setTotPages] = useState(1);
 
   useEffect(() => {
     async function getAssoatedconsultants() {
-      const data = await getAllConsultants();
+      const data = await getAllConsultants(page);
       setconsultants(data.rows);
       setTotconsultants(data.totrows);
+      setPage(data.page);
+      setTotPages(data.totpages);
     }
     setTimeout(() => {
       getAssoatedconsultants();
     }, 500);
-  }, [props.match.params.id]);
+  }, [page]);
 
   //Tendo criar um search
   function handleSearch(valueInput) {
@@ -80,6 +85,11 @@ export default function ConsultantRegisters(props) {
                   backgroundColor={consultant.user.active === 0 ? true : false}
                 />
               ))}
+              <SelectPage
+                page={page}
+                handleSetPage={setPage}
+                totPages={totPages}
+              />
             </div>
           </div>
         </div>

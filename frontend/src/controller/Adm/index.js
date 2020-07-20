@@ -10,9 +10,9 @@ async function getAllInvestors() {
   }
 }
 
-async function getAllConsultants() {
+async function getAllConsultants(page) {
   try {
-    const { data } = await api.get('/consultants');
+    const { data } = await api.get('/consultants?page=' + page);
     //console.log(data)
     return data;
   } catch (error) {

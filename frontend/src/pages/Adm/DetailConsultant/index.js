@@ -197,6 +197,7 @@ export default function DetailInvestment(props) {
                     padding: '2px',
                     borderRadius: '5px',
                     boxShadow: 'var(--shadow-bottom)',
+                    color: 'white',
                   }}
                 />
               </Link>
@@ -219,6 +220,7 @@ export default function DetailInvestment(props) {
                       padding: '2px',
                       borderRadius: '5px',
                       boxShadow: 'var(--shadow-bottom)',
+                      color: 'white',
                     }}
                     title="Ativar"
                     alt="Ativar"
@@ -232,6 +234,7 @@ export default function DetailInvestment(props) {
                       padding: '2px',
                       borderRadius: '5px',
                       boxShadow: 'var(--shadow-bottom)',
+                      color: 'white',
                     }}
                     title="Desativar"
                   />
@@ -246,6 +249,7 @@ export default function DetailInvestment(props) {
                   borderRadius: '5px',
                   boxShadow: 'var(--shadow-bottom)',
                   cursor: 'pointer',
+                  color: 'white',
                 }}
                 title="Excluir"
               />
