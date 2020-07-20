@@ -7,6 +7,13 @@ body {
   background-color: #121212;
   overflow-x: hidden;
 }
+textarea:focus,
+input:focus,
+select:focus {
+  box-shadow: 0 0 0 0;
+  border: 0 none;
+  outline: 0;
+}
 
 :root {
   /*Cores para sobreposição de superfícies*/

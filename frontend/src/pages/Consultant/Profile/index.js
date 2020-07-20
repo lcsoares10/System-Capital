@@ -27,7 +27,7 @@ export default function Profile() {
     // Create an scoped async function in the hook
     async function getInvestor() {
       const data = await AllAssoatedinvestors(user.id);
-      setTotInvestors(data.totrows);
+      setTotInvestors(data.totreg);
     }
     getInvestor();
     //Execute the created function directly
@@ -63,7 +63,7 @@ export default function Profile() {
         </div>
         <div className="dashboard">
           <div className="content-projection">
-            <p>Rendimento</p>
+            <p>Projeção Anual</p>
             <div className="graph pie">
               <LineChart data={dataProjection}></LineChart>
             </div>

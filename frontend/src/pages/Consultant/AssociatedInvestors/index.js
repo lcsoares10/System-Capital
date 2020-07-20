@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Container from '../../../components/Container';
 import HeaderBackground from '../../../components/HeaderBackground';
 import FooterBackground from '../../../components/FooterBackground';
-
+import SelectPage from '../../../components/SelectPage';
 import List from '../../../components/List';
 import { AllAssoatedinvestors } from '../../../controller/Consultant';
 
@@ -13,12 +13,16 @@ import './styles.css';
 export default function DetailInvestment(props) {
   const [investors, setInvestors] = useState([]);
   const [totInvestors, setTotInvestors] = useState(0);
+  const [page, setPage] = useState(1);
+  const [totPages, setTotPages] = useState(1);
 
   useEffect(() => {
     async function getAssoatedinvestors() {
-      const data = await AllAssoatedinvestors(props.match.params.id);
+      const data = await AllAssoatedinvestors(props.match.params.id, page);
       setInvestors(data.rows);
-      setTotInvestors(data.totrows);
+      setTotInvestors(data.totreg);
+      setPage(data.page);
+      setTotPages(data.totpages);
     }
     setTimeout(() => {
       getAssoatedinvestors();
@@ -52,6 +56,11 @@ export default function DetailInvestment(props) {
                   stateLink={investor}
                 />
               ))}
+              <SelectPage
+                page={page}
+                handleSetPage={setPage}
+                totPages={totPages}
+              />
             </div>
           </div>
         </div>

@@ -1,8 +1,10 @@
 import api from '../../services/api';
 
-async function getAllInvestors() {
+async function getAllInvestors(page, valueSearch) {
   try {
-    const { data } = await api.get('/investors');
+    const { data } = await api.get(
+      '/investors?page=' + page + '&search=' + valueSearch
+    );
 
     return data.data;
   } catch (error) {
@@ -10,9 +12,11 @@ async function getAllInvestors() {
   }
 }
 
-async function getAllConsultants() {
+async function getAllConsultants(page, valueSearch) {
   try {
-    const { data } = await api.get('/consultants');
+    const { data } = await api.get(
+      '/consultants?page=' + page + '&search=' + valueSearch
+    );
     //console.log(data)
     return data;
   } catch (error) {
