@@ -103,11 +103,11 @@ export default function EditContract(props) {
             <div className="inputs-contracts">
               <h1>Editar Contrato</h1>
               <p className="text-white">
-                cod:{String(contract.id).padStart(5, '0')}
+                COD:{String(contract.id).padStart(5, '0')}
               </p>
               <div className="edit-form">
                 <label htmlFor="valueInvest" className="label">
-                  Valor Investido
+                  Valor Investido *
                 </label>
 
                 <IntlCurrencyInput
@@ -122,7 +122,7 @@ export default function EditContract(props) {
 
               <div className="edit-form">
                 <label htmlFor="startContract" className="label">
-                  Incio do contrato
+                  Incio do contrato *
                 </label>
                 <input
                   type="date"
@@ -135,7 +135,7 @@ export default function EditContract(props) {
 
               <div className="edit-form">
                 <label htmlFor="handleTimeContract" className="label">
-                  Duração do contrato
+                  Duração do contrato *
                 </label>
                 <input
                   type="text"

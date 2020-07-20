@@ -26,8 +26,12 @@ export default function DetailInvestment(props) {
     async function getContract() {
       const data = await findContract(props.match.params.id);
       setContract(data);
-      setConsultant(data.investor.consultant.user);
+      //getConsultant(data.investor.id_consultant);
     }
+
+    /* async function getConsultant(id_consultant) {
+      setConsultant(await findConsultant(id_consultant));
+    } */
 
     setTimeout(() => {
       getContract();
@@ -53,7 +57,7 @@ export default function DetailInvestment(props) {
           <p className="text-beige">
             Data de Termino:{' '}
             <b className="text-white">
-              {moment(contract.begin).add(1, 'year').format('L')}
+              {moment(contract.final).format('L')}
             </b>
           </p>
           <p className="text-beige">
@@ -70,10 +74,9 @@ export default function DetailInvestment(props) {
             </b>
           </p>
           <p className="text-beige">
-            Consultor:{' '}
-            <b className="text-white">
-              {consultant.name + ' ' + consultant.last_name}
-            </b>
+            Consultor: <b className="text-white">{
+              contract.investor.consultant.user.fullname
+            }</b>
           </p>
         </div>
       </main>

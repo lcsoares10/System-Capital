@@ -62,7 +62,10 @@
   display: flex;
   flex-direction: column;
   border-radius: 20px;
-  margin-top: 5px;
+}
+
+.main-ivestors .content-contracts .list-contracts .contracts + .contracts {
+  margin-top: 15px;
 }
 
 .main-ivestors .content-contracts .list-contracts .contracts .header-contract {
