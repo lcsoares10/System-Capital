@@ -63,7 +63,7 @@ export default function Profile() {
         </div>
         <div className="dashboard">
           <div className="content-projection">
-            <p>Rendimento</p>
+            <p>Projeção Anual</p>
             <div className="graph pie">
               <LineChart data={dataProjection}></LineChart>
             </div>

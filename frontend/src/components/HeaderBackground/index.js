@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import './styles.css';
 
 import logo_nav from '../../assets/logo_x6.svg';
@@ -10,30 +10,32 @@ import { useAuthContext } from '../../Context/AuthContext';
 
 //------------------------------------------------------------
 function ContentHeader() {
+  const { handleLogout, user } = useAuthContext();
 
-    const { handleLogout } = useAuthContext();
-    
-    return(
-        <nav>
-            <Link to="/">
-                <img className="logo-nav" src={logo_nav}  alt=""/>
-            </Link>
+  return (
+    <nav>
+      <Link to="/">
+        <img className="logo-nav" src={logo_nav} alt="" />
+      </Link>
 
-            <div className="icons-button">
+      <div className="icons-button">
+        {user.is_admin !== 1 && (
+          <Link to="/messages">
+            {' '}
+            <img src={icon_messages} alt="" />
+          </Link>
+        )}
 
-                <Link to="/messages"> <img src={icon_messages} alt=""/></Link>
-                <Link to="/view-profile">  <img src={icon_profile} alt=""/></Link>
-                <img src={icon_exit}  onClick={(e) => handleLogout(e)} alt=""/>
-            </div>
-        </nav>
-    );
+        <Link to="/view-profile">
+          {' '}
+          <img src={icon_profile} alt="" />
+        </Link>
+        <img src={icon_exit} onClick={(e) => handleLogout(e)} alt="" />
+      </div>
+    </nav>
+  );
 }
 
 export default function HeaderBackground(props) {
-
-    return (
-        <header>
-            {props.notLogin === true ? <ContentHeader/>:''}
-        </header>
-    );
+  return <header>{props.notLogin === true ? <ContentHeader /> : ''}</header>;
 }

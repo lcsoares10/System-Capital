@@ -45,7 +45,7 @@ export default function AdmProfile() {
       setTotInvestorAssociated(datainvestorA.totreg);
 
       const dataContracts = await getAllContracts();
-
+      console.log(dataContracts);
       count += getPendenciasInvestors(datai.rows);
       count += getPendenciasConsultants(datac.rows);
       count += getPendenciasContracts(dataContracts.rows);

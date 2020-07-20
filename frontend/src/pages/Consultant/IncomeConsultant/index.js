@@ -69,7 +69,7 @@ export default function IncomeConsultant(props) {
           }}
           className="title-header"
         >
-          <h1 className="h1-">Rendimentos</h1>
+          <h1 className="h1-">Projeção</h1>
           <select
             onChange={(e) => setYearCurrent(e.target.value)}
             className="select-contract"
@@ -87,11 +87,11 @@ export default function IncomeConsultant(props) {
         <div className="section">
           <div className="detail">
             <p className="weight-thin">
-              &nbsp;Total Faturado:
+              &nbsp;Total projetado:
               <b className="text-white">&nbsp;{convertCoinBr(totIncome)}</b>
             </p>
             <p className="weight-thin" style={{ marginTop: '10px' }}>
-              &nbsp;Faturado {monthCurrent}:
+              &nbsp;Projetado {monthCurrent}:
               <b className="text-white">
                 &nbsp;{convertCoinBr(monthValueCurrent.value)}
               </b>
@@ -99,7 +99,7 @@ export default function IncomeConsultant(props) {
           </div>
 
           <div className="content-list">
-            <h2>Rendimento ao mes</h2>
+            <h2>Projetado ao mes</h2>
 
             <div className="list">
               {incomeMonths.map((month, key) => (

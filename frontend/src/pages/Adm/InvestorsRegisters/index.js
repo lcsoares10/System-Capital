@@ -10,6 +10,7 @@ import { getAllInvestors } from '../../../controller/Adm';
 import icon_new from '../../../assets/icon_new.png';
 
 import './styles.css';
+import Search from '../../../components/Search';
 //------------------------------------------------------------
 
 export default function InvestorRegisters(props) {
@@ -17,10 +18,10 @@ export default function InvestorRegisters(props) {
   const [totInvestors, setTotInvestors] = useState(0);
   const [page, setPage] = useState(1);
   const [totPages, setTotPages] = useState(1);
-
+  const [valueSearch, setValueSearch] = useState('');
   useEffect(() => {
     async function getAssoatedinvestors() {
-      const data = await getAllInvestors(page);
+      const data = await getAllInvestors(page, valueSearch);
       setInvestors(data.rows);
       setTotInvestors(data.totreg);
       setPage(data.page);
@@ -29,7 +30,7 @@ export default function InvestorRegisters(props) {
     setTimeout(() => {
       getAssoatedinvestors();
     }, 500);
-  }, [page]);
+  }, [page, valueSearch]);
 
   return (
     <Container>
@@ -58,7 +59,12 @@ export default function InvestorRegisters(props) {
 
           <div className="content-list">
             <h2>Lista de Investidores</h2>
+
             <div className="list">
+              <Search
+                valueSearch={valueSearch}
+                handleSetValueSearch={setValueSearch}
+              ></Search>
               {investors.map((investor, key) => (
                 <List
                   key={key}

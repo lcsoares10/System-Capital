@@ -26,7 +26,7 @@ export default function SelectPage(props) {
   console.log(props.page);
   return (
     <Pages>
-      {props.totPages !== 1 && (
+      {props.totPages !== 1 && props.totPages !== 0 && (
         <>
           {' '}
           <NavigateBeforeIcon

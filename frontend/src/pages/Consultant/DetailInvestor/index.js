@@ -126,7 +126,7 @@ export default function DetailInvestment(props) {
         confirmButtonColor: '#a0770a',
       });
       //history.push('/investors');
-      setInvestor({ ...investor, active: (investor.active == 1) ? 0 : 1});
+      setInvestor({ ...investor, active: investor.active == 1 ? 0 : 1 });
     }
   }
 
@@ -368,130 +368,133 @@ export default function DetailInvestment(props) {
                 </div>
               )}
               {contractsInvestor.map((contract, key) => {
-
-                const statusContractClass = (['desativado', 'encerrado'].includes(contract.xstatus)) ? 'tag-disabled' : 'tag-active';
+                const statusContractClass = [
+                  'desativado',
+                  'encerrado',
+                ].includes(contract.xstatus)
+                  ? 'tag-disabled'
+                  : 'tag-active';
 
                 return (
-                <div className="contracts" key={key}>
-                  <div className="header-contract">
-                    <div
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                      }}
-                    >
-                      <p>COD: {contract.id.toString().padStart('5', '0')}</p>
+                  <div className="contracts" key={key}>
+                    <div className="header-contract">
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <p>COD: {contract.id.toString().padStart('5', '0')}</p>
 
-                      <span className={statusContractClass}>{contract.xstatus}</span>
+                        <span className={statusContractClass}>
+                          {contract.xstatus}
+                        </span>
 
-                      {/* {user.is_admin === 1 &&
+                        {/* {user.is_admin === 1 &&
                         (contract.contract_active === 1 ? (
                           <span className="tag-active">ativo</span>
                         ) : (
                           <span className="tag-disabled">desativado</span>
                         ))} */}
-                    </div>
+                      </div>
 
-                    <div className="button-controler-contract">
-                      {user.is_admin === 1
-                        && contract.xstatus != 'encerrado'
-                        && (
-                        <Link
-                          to={{
-                            pathname: '/editContract',
-                            state: {
-                              contract,
-                              userId,
-                            },
-                          }}
-                        >
-                          {' '}
-                          <EditIcon
-                            title="Editar"
-                            style={{
-                              backgroundColor: ' #a0770a',
-                              padding: '2px',
-                              borderRadius: '5px',
-                              boxShadow: 'var(--shadow-bottom)',
-                            }}
-                          />
+                      <div className="button-controler-contract">
+                        {user.is_admin === 1 &&
+                          contract.xstatus != 'encerrado' && (
+                            <Link
+                              to={{
+                                pathname: '/editContract',
+                                state: {
+                                  contract,
+                                  userId,
+                                },
+                              }}
+                            >
+                              {' '}
+                              <EditIcon
+                                title="Editar"
+                                style={{
+                                  backgroundColor: ' #a0770a',
+                                  padding: '2px',
+                                  borderRadius: '5px',
+                                  boxShadow: 'var(--shadow-bottom)',
+                                  color: 'white',
+                                }}
+                              />
+                            </Link>
+                          )}
+                        {user.is_admin === 1 &&
+                          moment().format('YMMDD') <
+                            moment(contract.begin).format('YMMDD') &&
+                          (contract.contract_active === 0 ? (
+                            <CheckIcon
+                              onClick={(e) =>
+                                handleDisabledContract(1, contract.id)
+                              }
+                              style={{
+                                margin: '0px 5px',
+                                backgroundColor: 'green',
+                                padding: '2px',
+                                color: 'white',
+                                borderRadius: '5px',
+                                boxShadow: 'var(--shadow-bottom)',
+                              }}
+                              title="Ativar"
+                              alt="Ativar"
+                            />
+                          ) : (
+                            <HighlightOffIcon
+                              onClick={(e) =>
+                                handleDisabledContract(0, contract.id)
+                              }
+                              style={{
+                                margin: '0px 5px',
+                                backgroundColor: ' #a0770a',
+                                padding: '2px',
+                                color: 'white',
+                                borderRadius: '5px',
+                                boxShadow: 'var(--shadow-bottom)',
+                              }}
+                              title="Desativar"
+                            />
+                          ))}
+                      </div>
+                    </div>
+                    <div className="article-contract">
+                      <p>
+                        Valor Investido:{' '}
+                        <b styled={{ color: 'green' }}>
+                          {convertCoinBr(contract.value)}
+                        </b>
+                      </p>
+                      <p>
+                        Dia de pagamento:{' '}
+                        <b>{contract.day.toString().padStart('2', '0')}</b>
+                      </p>
+                      <p>
+                        Taxa de carregamento:{' '}
+                        <b>{convertCoinBr(contract.charging_rate)}</b>
+                      </p>
+                      <p>
+                        tempo de Contrato: <b>{contract.time + ' meses'}</b>
+                      </p>
+                      <div className="time-contract">
+                        <p>
+                          Inicio:{' '}
+                          {moment(contract.begin.substring(0, 10)).format('L')}
+                        </p>
+                        <p>Fim: {moment(contract.final).format('L')}</p>
+                      </div>
+                      {user.is_admin === 1 && (
+                        <Link to={`/detail-investment/${contract.id}`}>
+                          <button className="detail-pay"> PAGAMENTOS</button>
                         </Link>
                       )}
-                      {user.is_admin === 1
-                        && moment().format('YMMDD') < moment(contract.begin).format('YMMDD')
-                        &&
-                        (contract.contract_active === 0 ? (
-                          <CheckIcon
-                            onClick={(e) =>
-                              handleDisabledContract(1, contract.id)
-                            }
-                            style={{
-                              margin: '0px 5px',
-                              backgroundColor: 'green',
-                              padding: '2px',
-                              color: 'white',
-                              borderRadius: '5px',
-                              boxShadow: 'var(--shadow-bottom)',
-                            }}
-                            title="Ativar"
-                            alt="Ativar"
-                          />
-                        ) : (
-                          <HighlightOffIcon
-                            onClick={(e) =>
-                              handleDisabledContract(0, contract.id)
-                            }
-                            style={{
-                              margin: '0px 5px',
-                              backgroundColor: ' #a0770a',
-                              padding: '2px',
-                              color: 'white',
-                              borderRadius: '5px',
-                              boxShadow: 'var(--shadow-bottom)',
-                            }}
-                            title="Desativar"
-                          />
-                        ))}
-
                     </div>
-
                   </div>
-                  <div className="article-contract">
-                    <p>
-                      Valor Investido:{' '}
-                      <b styled={{ color: 'green' }}>
-                        {convertCoinBr(contract.value)}
-                      </b>
-                    </p>
-                    <p>
-                      Dia de pagamento:{' '}
-                      <b>{contract.day.toString().padStart('2', '0')}</b>
-                    </p>
-                    <p>
-                      Taxa de carregamento:{' '}
-                      <b>{convertCoinBr(contract.charging_rate)}</b>
-                    </p>
-                    <p>
-                      tempo de Contrato: <b>{contract.time + ' meses'}</b>
-                    </p>
-                    <div className="time-contract">
-                      <p>
-                        Inicio:{' '}
-                        {moment(contract.begin.substring(0, 10)).format('L')}
-                      </p>
-                      <p>
-                        Fim:{' '}{moment(contract.final).format('L')}
-                      </p>
-                    </div>
-                    {user.is_admin === 1 && (
-                      <Link to={`/detail-investment/${contract.id}`}>
-                        <button className="detail-pay"> PAGAMENTOS</button>
-                      </Link>
-                    )}
-                  </div>
-                </div>
-              )})}
+                );
+              })}
             </div>
           </div>
         </div>
