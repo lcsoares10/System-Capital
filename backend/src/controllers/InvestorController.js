@@ -147,6 +147,7 @@ module.exports = {
         day: req.body.day,
         time: req.body.time,
         value: req.body.value,
+        final: moment(req.body.begin).add(req.body.time, 'month').add(-1, 'day'),
         id_investor: investor.id,
       }
 

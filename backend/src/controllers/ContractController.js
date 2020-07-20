@@ -197,6 +197,8 @@ module.exports = {
           throw new Exception("Investidor não existe", "id_investor");
       }
 
+      campos.final = moment(campos.begin).add(campos.time, 'month').add(-1, 'day');
+
       const contract = await ContractModel.create(campos, { transaction: t });
 
       const result = {
