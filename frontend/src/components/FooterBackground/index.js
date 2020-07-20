@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './styles.css';
-
 import icon_new from '../../assets/icon_new.png';
 import { useAuthContext } from '../../Context/AuthContext';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import { useHistory } from 'react-router-dom';
 
 //------------------------------------------------------------
 function ContentFooter(props) {
@@ -18,12 +18,15 @@ function ContentFooter(props) {
 export default function FooterBackground(props) {
   const { user } = useAuthContext();
   //console.log('Footer 1');
-
+  const history = useHistory();
   return (
     <footer>
       {props.notBack && (
-        <Link className="back-link" to={props.backPage ? props.backPage : '/'}>
-          <ArrowBackIcon style={{ color: 'white' }} />
+        <Link className="back-link" to={''}>
+          <ArrowBackIcon
+            style={{ color: 'white' }}
+            onClick={(e) => history.goBack()}
+          />
         </Link>
       )}
 

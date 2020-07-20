@@ -20,15 +20,12 @@ import { useAuthContext } from '../../../Context/AuthContext';
 
 export default function AdmProfile() {
   const { user } = useAuthContext();
+  let count = 0;
 
   const [totInvestors, setTotInvestors] = useState(0);
   const [totConsultants, setTotConsultants] = useState(0);
   const [totInvestorAssociated, setTotInvestorAssociated] = useState(0);
-  const [totalPendenciesConsultants, setTotalPendenciesConsultants] = useState(
-    0
-  );
-  const [totalPendenciesInvestors, setTotalPendenciesInvestors] = useState(0);
-  const [totalPendenciesContracts, setTotalPendenciesContracts] = useState(0);
+  const [totalPendencies, setTotalPendencies] = useState('');
   //const [totalPendencies, setTotalPendencies] = useState(0);
 
   const [investors, setInvestors] = useState([]); //Investidores pendentes
@@ -39,19 +36,22 @@ export default function AdmProfile() {
     // Create an scoped async function in the hook
     async function getTotals() {
       const datai = await getAllInvestors();
-      setTotInvestors(datai.totrows);
+      setTotInvestors(datai.totreg);
 
       const datac = await getAllConsultants();
-      setTotConsultants(datac.totrows);
+      setTotConsultants(datac.totreg);
 
       const datainvestorA = await AllAssoatedinvestors(user.id);
-      setTotInvestorAssociated(datainvestorA.totrows);
-      const dataContracts = await getAllContracts();
+      setTotInvestorAssociated(datainvestorA.totreg);
 
+      const dataContracts = await getAllContracts();
+      console.log(dataContracts);
+      count += getPendenciasInvestors(datai.rows);
+      count += getPendenciasConsultants(datac.rows);
+      count += getPendenciasContracts(dataContracts.rows);
+
+      setTotalPendencies(count);
       //Sum evidencias
-      getPendenciasConsultants(datac.rows);
-      getPendenciasInvestors(datai.rows);
-      getPendenciasContracts(dataContracts.rows);
     }
 
     getTotals();
@@ -63,24 +63,25 @@ export default function AdmProfile() {
       return investor.user.active === 0;
     });
     setInvestors(pendencies);
-    setTotalPendenciesInvestors(pendencies.length);
+    return pendencies.length;
   }
+
   //Filtra Consultores Desativados
   function getPendenciasConsultants(rows) {
     const pendencies = rows.filter((consultant) => {
       return consultant.user.active === 0;
     });
     setConsultants(pendencies);
-    setTotalPendenciesConsultants(pendencies.length);
+    return pendencies.length;
   }
+
   //Filtra Contratos Desativados
   function getPendenciasContracts(rows) {
-    console.log(rows);
     const pendencies = rows.filter((contract) => {
       return contract.contract_active === 0;
     });
-    setContracts(pendencies);
-    setTotalPendenciesConsultants(pendencies.length);
+
+    return pendencies.length;
   }
 
   return (
@@ -94,11 +95,7 @@ export default function AdmProfile() {
           <div className="content-panel">
             <h3>Pendências</h3>
             <div className="detail-content">
-              <span>
-                {totalPendenciesConsultants +
-                  totalPendenciesInvestors +
-                  totalPendenciesContracts}
-              </span>
+              <span>{totalPendencies}</span>
               <div>
                 <Link
                   to={{
