@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-
+import SearchIcon from '@material-ui/icons/Search';
 const InputSearch = styled.input`
   background-color: black;
-  width: 90%;
+  width: 100%;
   padding: 10px 20px;
   border: 0px;
   border-radius: 20px;
@@ -20,7 +20,7 @@ const InputSearch = styled.input`
 const ContainerSearch = styled.div`
   width: 100%;
   color: white;
-  padding: 10px;
+  padding: 5px 0px;
   font-size: 1em;
   position: relative;
   display: flex;
@@ -36,6 +36,9 @@ export default function Search(props) {
         placeholder="Pesquisar"
         value={props.valueSearch}
         onChange={(e) => props.handleSetValueSearch(e.target.value)}
+      />
+      <SearchIcon
+        style={{ position: 'absolute', right: '20px', marginTop: '5px' }}
       />
     </ContainerSearch>
   );

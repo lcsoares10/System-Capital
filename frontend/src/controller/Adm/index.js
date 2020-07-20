@@ -12,9 +12,11 @@ async function getAllInvestors(page, valueSearch) {
   }
 }
 
-async function getAllConsultants(page) {
+async function getAllConsultants(page, valueSearch) {
   try {
-    const { data } = await api.get('/consultants?page=' + page);
+    const { data } = await api.get(
+      '/consultants?page=' + page + '&search=' + valueSearch
+    );
     //console.log(data)
     return data;
   } catch (error) {

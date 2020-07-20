@@ -8,7 +8,7 @@ import List from '../../../components/List';
 import { getAllConsultants } from '../../../controller/Adm';
 import icon_new from '../../../assets/icon_new.png';
 import SelectPage from '../../../components/SelectPage';
-
+import Search from '../../../components/Search';
 import './styles.css';
 //------------------------------------------------------------
 
@@ -19,10 +19,11 @@ export default function ConsultantRegisters(props) {
   const [valudeInput, setValudeInput] = useState('');
   const [page, setPage] = useState(1);
   const [totPages, setTotPages] = useState(1);
+  const [valueSearch, setValueSearch] = useState('');
 
   useEffect(() => {
     async function getAssoatedconsultants() {
-      const data = await getAllConsultants(page);
+      const data = await getAllConsultants(page, valueSearch);
       setconsultants(data.rows);
       setTotconsultants(data.totreg);
       setPage(data.page);
@@ -31,7 +32,7 @@ export default function ConsultantRegisters(props) {
     setTimeout(() => {
       getAssoatedconsultants();
     }, 500);
-  }, [page]);
+  }, [page, valueSearch]);
 
   //Tendo criar um search
   function handleSearch(valueInput) {
@@ -76,6 +77,10 @@ export default function ConsultantRegisters(props) {
           <div className="content-list">
             <h2>Lista de Consultores</h2>
             <div className="list">
+              <Search
+                valueSearch={valueSearch}
+                handleSetValueSearch={setValueSearch}
+              ></Search>
               {consultants.map((consultant, key) => (
                 <List
                   key={key}
