@@ -61,7 +61,7 @@ export default function DetailInvestment(props) {
             </b>
           </p>
           <p className="text-beige">
-            Prazo: <b className="text-white">12 Meses</b>
+            Prazo: <b className="text-white">{contract.time} Meses</b>
           </p>
           <p className="text-beige">
             Valor Investido:{' '}

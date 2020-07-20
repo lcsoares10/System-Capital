@@ -6,7 +6,7 @@ class Pagination {
 
   constructor(model, pageSize) {
     this._model = model;
-    this._pageSize = pageSize || 50;
+    this._pageSize = pageSize || 5;
   }
 
   async select(pagenum, options={}) {

@@ -18,14 +18,30 @@ class Contract extends Model {
           notEmpty: true,
         }
       },
+      // final: {
+      //   alias: 'Final',
+      //   type: DataTypes.VIRTUAL(DataTypes.DATE),
+      //   get() {
+      //     if (this.break_contract) {
+      //       return moment(this.break_contract);
+      //     } else {
+      //       return moment(this.begin).add(this.time, 'month').add(-1, 'day');
+      //     }
+      //   }
+      // },
       final: {
         alias: 'Final',
-        type: DataTypes.VIRTUAL(DataTypes.DATE),
-        get() {
-          if (this.break_contract) {
-            return moment(this.break_contract);
-          } else {
-            return moment(this.begin).add(this.time, 'month').add(-1, 'day');
+        type: DataTypes.DATE,
+        allowNull: false,
+        validate: {
+          notEmpty: true,
+          inValidDate(value) {
+            if (moment(value).format('YMMDD') < moment(this.begin).format('YMMDD')) {
+              throw new Error('Data de encerramento do contrato não pode ser menor que a data de início');
+            }
+            // if (moment(value).format('YMMDD') > moment(this.begin).add(this.time, 'month').format('YMMDD')) {
+            //   throw new Error('Data de encerramento do contrato não pode ser maior que a data final');
+            // }
           }
         }
       },
@@ -67,21 +83,21 @@ class Contract extends Model {
           return status;
         }
       },
-      break_contract: { //quebra de contrato - Recebe valor caso o contrato seja encerrado antes do prazo original
-        alias: 'Rescisão de Contrato',
-        type: DataTypes.DATE,
-        allowNull: true,
-        validate: {
-          inValidDate(value) {
-            if (moment(value).format('YMMDD') < moment(this.begin).format('YMMDD')) {
-              throw new Error('Data de encerramento do contrato não pode ser menor que a data de início');
-            }
-            if (moment(value).format('YMMDD') > moment(this.begin).add(this.time, 'month').format('YMMDD')) {
-              throw new Error('Data de encerramento do contrato não pode ser maior que a data final');
-            }
-          }
-        }
-      },
+      // break_contract: { //quebra de contrato - Recebe valor caso o contrato seja encerrado antes do prazo original
+      //   alias: 'Rescisão de Contrato',
+      //   type: DataTypes.DATE,
+      //   allowNull: true,
+      //   validate: {
+      //     inValidDate(value) {
+      //       if (moment(value).format('YMMDD') < moment(this.begin).format('YMMDD')) {
+      //         throw new Error('Data de encerramento do contrato não pode ser menor que a data de início');
+      //       }
+      //       if (moment(value).format('YMMDD') > moment(this.begin).add(this.time, 'month').format('YMMDD')) {
+      //         throw new Error('Data de encerramento do contrato não pode ser maior que a data final');
+      //       }
+      //     }
+      //   }
+      // },
       day: { //dia do pagamento
         alias: 'Dia',
         type: DataTypes.INTEGER,
@@ -117,8 +133,12 @@ class Contract extends Model {
         beforeValidate: (self, options) => {
           self.charging_rate = self.value * 0.15;
         },
+        beforeCreate: (self, options) => {
+          self.final = moment(self.begin).add(self.time, 'month').add(-1, 'day');
+        },
         beforeUpdate: (self, options) => {
-          self.time = moment(self.break_contract).diff(self.previous('begin'), 'month');
+          let begin = (self.begin) ? self.begin : self.previous('begin');
+          self.time = moment(self.final).diff(begin, 'month');
         }
       },
       sequelize,
