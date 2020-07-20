@@ -48,6 +48,7 @@ export default function AdmProfile() {
       console.log(dataContracts);
       count += getPendenciasInvestors(datai.rows);
       count += getPendenciasConsultants(datac.rows);
+      console.log(dataContracts.rows);
       count += getPendenciasContracts(dataContracts.rows);
 
       setTotalPendencies(count);
@@ -77,6 +78,7 @@ export default function AdmProfile() {
 
   //Filtra Contratos Desativados
   function getPendenciasContracts(rows) {
+    console.log(rows);
     const pendencies = rows.filter((contract) => {
       return contract.contract_active === 0;
     });
