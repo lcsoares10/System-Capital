@@ -23,7 +23,7 @@ export default function ConsultantRegisters(props) {
 
   useEffect(() => {
     async function getAssoatedconsultants() {
-      const data = await getAllConsultants(page, valueSearch);
+      const data = await getAllConsultants(false, page, valueSearch);
       setconsultants(data.rows);
       setTotconsultants(data.totreg);
       setPage(data.page);

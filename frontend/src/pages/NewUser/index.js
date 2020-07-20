@@ -138,6 +138,7 @@ export default function NewUser(props) {
         time: timeContract.replace(/[ ]|[meses]/g, ''),
         value: valueInvest,
         day: 5, //O dia foi setado no dia 5 pois eles so fazem pagamento mes 5
+        final: '',
       };
       if (newUser.type === 'consultant') {
         data = { ...data, is_admin: adminCheck };
