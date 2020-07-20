@@ -1,5 +1,6 @@
 'use strict';
 
+const moment = require('moment');
 const bcrypt = require('bcrypt');
 const cpf = require("@fnando/cpf/commonjs");
 
@@ -90,6 +91,7 @@ module.exports = {
                 {
                   id_investor,
                   begin: new Date(),
+                  final: moment(new Date()).add(12, 'month').add(-1, 'day').format(),
                   day: 5,
                   time: '12',
                   value: 10000,

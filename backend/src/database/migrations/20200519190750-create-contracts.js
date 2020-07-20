@@ -24,10 +24,14 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: false
       },
-      break_contract: {
+      final: {
         type: Sequelize.DATE,
-        allowNull: true
+        allowNull: false
       },
+      // break_contract: {
+      //   type: Sequelize.DATE,
+      //   allowNull: true
+      // },
       time: {
         type: Sequelize.INTEGER,
         allowNull: false
