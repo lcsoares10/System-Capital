@@ -27,7 +27,7 @@ export default function Profile() {
     // Create an scoped async function in the hook
     async function getInvestor() {
       const data = await AllAssoatedinvestors(user.id);
-      setTotInvestors(data.totrows);
+      setTotInvestors(data.totreg);
     }
     getInvestor();
     //Execute the created function directly

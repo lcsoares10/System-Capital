@@ -24,7 +24,7 @@ export default function ConsultantRegisters(props) {
     async function getAssoatedconsultants() {
       const data = await getAllConsultants(page);
       setconsultants(data.rows);
-      setTotconsultants(data.totrows);
+      setTotconsultants(data.totreg);
       setPage(data.page);
       setTotPages(data.totpages);
     }

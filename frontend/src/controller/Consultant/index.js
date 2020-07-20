@@ -1,8 +1,10 @@
 import api from '../../services/api';
 
-async function AllAssoatedinvestors(id_consultant) {
+async function AllAssoatedinvestors(id_consultant, page) {
   try {
-    const { data } = await api.get(`/consultants/${id_consultant}/investors`);
+    const { data } = await api.get(
+      `/consultants/${id_consultant}/investors?page=${page}`
+    );
     console.log(data);
     return data;
   } catch (error) {

@@ -26,17 +26,25 @@ export default function SelectPage(props) {
   console.log(props.page);
   return (
     <Pages>
-      <NavigateBeforeIcon
-        style={{ color: back, cursor: 'pointer' }}
-        onClick={(e) => 1 !== props.page && props.handleSetPage(props.page - 1)}
-      />
-      <p style={{ color: 'white' }}>{props.page}</p>
-      <NavigateNextIcon
-        style={{ color: next, cursor: 'pointer' }}
-        onClick={(e) =>
-          props.totPages !== props.page && props.handleSetPage(props.page + 1)
-        }
-      />
+      {props.totPages !== 1 && (
+        <>
+          {' '}
+          <NavigateBeforeIcon
+            style={{ color: back, cursor: 'pointer' }}
+            onClick={(e) =>
+              1 !== props.page && props.handleSetPage(props.page - 1)
+            }
+          />
+          <p style={{ color: 'white' }}>{props.page}</p>
+          <NavigateNextIcon
+            style={{ color: next, cursor: 'pointer' }}
+            onClick={(e) =>
+              props.totPages !== props.page &&
+              props.handleSetPage(props.page + 1)
+            }
+          />
+        </>
+      )}
     </Pages>
   );
 }
