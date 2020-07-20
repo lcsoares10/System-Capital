@@ -40,6 +40,8 @@ module.exports = {
         }
       }
 
+      const pageSize = req.query.pageSize || null;
+
       const page = req.query.page || 1;
       const options = {
         include: [
@@ -58,7 +60,7 @@ module.exports = {
         ]
       };
 
-      const Pagination = new PaginationClass(InvestorModel);
+      const Pagination = new PaginationClass(InvestorModel, pageSize);
       const result = await Pagination.select(page, options);
 
       return res.json(Util.response(result));
