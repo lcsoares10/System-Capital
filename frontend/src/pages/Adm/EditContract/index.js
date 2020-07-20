@@ -37,16 +37,17 @@ const currencyConfig = {
 
 export default function EditContract(props) {
   //Variavel que fara o controle de criação de usuario ou consultor
-  console.log(props.location);
+  //console.log(props.location);
   const contract = props.location.state.contract;
   const userId = props.location.state.userId;
-  const history = useHistory();
+  //const history = useHistory();
 
-  const { user } = useAuthContext();
+  //const { user } = useAuthContext();
   //console.log(user);
 
   const [valueInvest, setValueInvest] = useState(0);
   const [startContract, setStartContract] = useState('');
+  const [endContract, setEndContract] = useState('');
   const [timeContract, setTimeContract] = useState('');
 
   const handlevalueInvestInput = (event, value, maskedValue) => {
@@ -57,14 +58,16 @@ export default function EditContract(props) {
   useEffect(() => {
     setValueInvest(Number(contract.value));
     setStartContract(contract.begin.substring(0, 10));
+    setEndContract(contract.final.substring(0, 10));
     setTimeContract(String(contract.time));
   }, []);
-  console.log(contract);
-  console.log(userId);
+  //console.log(contract);
+  //console.log(userId);
   async function handleEditContract(e) {
     e.preventDefault();
     const dataForm = {
       begin: startContract,
+      final: endContract,
       day: 5,
       time: timeContract.replace(/[ ]|[meses]/g, ''),
       value: valueInvest,
@@ -72,7 +75,17 @@ export default function EditContract(props) {
     };
 
     try {
-      const data = await api.put('/contracts/' + contract.id, dataForm);
+      const result = await api.put('/contracts/' + contract.id, dataForm);
+
+      if (result) {
+          let contract = result.data.data;
+          console.log(contract);
+          setValueInvest(Number(contract.value));
+          setStartContract(contract.begin.substring(0, 10));
+          setEndContract(contract.final.substring(0, 10));
+          setTimeContract(String(contract.time));
+      }
+
       Swal.fire({
         title: 'Sucesso',
         text: 'Contrato alterado com sucesso ',
@@ -103,6 +116,9 @@ export default function EditContract(props) {
             <div className="inputs-contracts">
               <h1>Editar Contrato</h1>
               <p className="text-white">
+                Status:{' '}{(contract.xstatus)}
+              </p>
+              <p className="text-white">
                 COD:{String(contract.id).padStart(5, '0')}
               </p>
               <div className="edit-form">
@@ -117,6 +133,7 @@ export default function EditContract(props) {
                   onChange={handlevalueInvestInput}
                   value={valueInvest}
                   required
+                  disabled={['vigente', 'encerrado'].includes(contract.xstatus)}
                 />
               </div>
 
@@ -130,6 +147,7 @@ export default function EditContract(props) {
                   value={startContract}
                   onChange={(e) => setStartContract(e.target.value)}
                   required
+                  disabled={['vigente', 'encerrado'].includes(contract.xstatus)}
                 />
               </div>
 
@@ -145,8 +163,24 @@ export default function EditContract(props) {
                     setTimeContract(durationContractMask(e.target.value))
                   }
                   required
+                  disabled={['vigente', 'encerrado'].includes(contract.xstatus)}
                 />
               </div>
+
+              <div className="edit-form">
+                <label htmlFor="startContract" className="label">
+                  Final do contrato *
+                </label>
+                <input
+                  type="date"
+                  id="endContract"
+                  value={endContract}
+                  onChange={(e) => setEndContract(e.target.value)}
+                  required
+                  disabled={!['vigente', 'encerrado'].includes(contract.xstatus)}
+                />
+              </div>
+
             </div>
             <button style={{ padding: '10px 90px', marginTop: '30px' }}>
               SALVAR
