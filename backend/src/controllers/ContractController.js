@@ -53,9 +53,9 @@ module.exports = {
             ],
           }
         ],
-        attributes: [
-          [Sequelize.fn('date_format', Sequelize.col('begin'), '%Y%m%d'), 'begin_order']
-        ],
+        attributes: {
+          include: [[Sequelize.fn('date_format', Sequelize.col('begin'), '%Y%m%d'), 'begin_order']]
+        },
         ...wf.contract,
       };
 
