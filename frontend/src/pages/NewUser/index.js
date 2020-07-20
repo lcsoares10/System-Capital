@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Container from '../../components/Container';
 import HeaderBackground from '../../components/HeaderBackground';
 import FooterBackground from '../../components/FooterBackground';
+import Checkbox from '@material-ui/core/Checkbox';
 
 import {
   createUserInvestor,
@@ -104,6 +105,8 @@ export default function NewUser(props) {
   const [tel, setTel] = useState('');
   const [email, setEmail] = useState('');
 
+  const [adminCheck, setAdminCheck] = useState(0);
+
   const [valueInvest, setValueInvest] = useState(0);
   const [startContract, setStartContract] = useState('');
   const [timeContract, setTimeContract] = useState('');
@@ -123,7 +126,7 @@ export default function NewUser(props) {
       formData.append('email', email);
       returnMessage = await editUser(formData, newUser.userId, newUser.type);
     } else {
-      const data = {
+      let data = {
         // login: name,
         email,
         name,
@@ -137,6 +140,7 @@ export default function NewUser(props) {
         day: 5, //O dia foi setado no dia 5 pois eles so fazem pagamento mes 5
       };
       if (newUser.type === 'consultant') {
+        data = { ...data, is_admin: adminCheck };
         returnMessage = await createUserConsultant(data);
       } else {
         returnMessage = await createUserInvestor(data);
@@ -246,7 +250,6 @@ export default function NewUser(props) {
                 required
               />
             </div>
-
             <div className="edit-form">
               <label htmlFor="email" className="label">
                 Email *
@@ -258,6 +261,21 @@ export default function NewUser(props) {
                 required
               />
             </div>
+
+            {newUser.type === 'consultant' && newUser.isEdit === false && (
+              <div className="edit-form-check">
+                <label htmlFor="isAdmin" className="isAdmin">
+                  Usuário Administrador
+                </label>
+                <Checkbox
+                  checked={adminCheck}
+                  onChange={(e) => setAdminCheck(e.target.checked)}
+                  color={'default'}
+                  inputProps={{ 'aria-label': 'checkbox with default color' }}
+                />
+              </div>
+            )}
+
             {newUser.type === 'investor' && newUser.isEdit === false ? (
               <Contract
                 valueInvest={valueInvest}

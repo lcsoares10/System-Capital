@@ -105,13 +105,23 @@ export default function ViewProfile() {
               <label htmlFor="nome" className="label">
                 Nome
               </label>
-              <input type="text" readOnly={true} value={name} />
+              <input
+                type="text"
+                readOnly={true}
+                value={name}
+                style={{ cursor: ' context-menu' }}
+              />
             </div>
             <div className="no-edit-form">
               <label htmlFor="sobreNome" className="label">
                 Sobre nome
               </label>
-              <input type="text" readOnly={true} value={lastName} />
+              <input
+                type="text"
+                readOnly={true}
+                value={lastName}
+                style={{ cursor: ' context-menu' }}
+              />
             </div>
 
             <div className="edit-form">
