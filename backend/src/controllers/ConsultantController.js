@@ -100,18 +100,22 @@ module.exports = {
       }
 
       let selFilter = (req.query.search) ? req.query.search : null;
-      let wf = {};
-      if (selFilter) {
-        wf = {
-          user: {
-            where: {
-              id_consultant: id,
-              [Op.or]: [
-                { name: { [Op.like]: `%${selFilter}%` } },
-                { last_name: { [Op.like]: `%${selFilter}%` } }
-              ]
-            }
+
+      let wf = {
+        user: {
+          where: {
+            id_consultant: id,
           }
+        }
+      };
+
+      if (selFilter) {
+        wf.user.where = {
+          ...wf.user.where,
+          [Op.or]: [
+            { name: { [Op.like]: `%${selFilter}%` } },
+            { last_name: { [Op.like]: `%${selFilter}%` } },
+          ],
         }
       }
 
