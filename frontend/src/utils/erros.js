@@ -9,7 +9,7 @@ const getMessage = (error) => {
 
   switch (true) {
     case Boolean(error.response):
-      msg = error.response;
+      msg = error.response.data.message;
       break;
 
     default:

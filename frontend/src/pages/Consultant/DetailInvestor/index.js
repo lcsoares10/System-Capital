@@ -184,7 +184,7 @@ export default function DetailInvestment(props) {
     setStatusContract(0);
     try {
       const data = await api.put('/contracts/' + id_contract, {
-        contract_active: status,
+        contract_activated: status,
         id_investor: userId,
       });
       let message = 'Contrato ativado com sucesso';
@@ -392,7 +392,7 @@ export default function DetailInvestment(props) {
                         </span>
 
                         {/* {user.is_admin === 1 &&
-                        (contract.contract_active === 1 ? (
+                        (contract.contract_activated === 1 ? (
                           <span className="tag-active">ativo</span>
                         ) : (
                           <span className="tag-disabled">desativado</span>
@@ -427,7 +427,7 @@ export default function DetailInvestment(props) {
                         {user.is_admin === 1 &&
                           moment().format('YMMDD') <
                             moment(contract.begin).format('YMMDD') &&
-                          (contract.contract_active === 0 ? (
+                          (contract.contract_activated === 0 ? (
                             <CheckIcon
                               onClick={(e) =>
                                 handleDisabledContract(1, contract.id)

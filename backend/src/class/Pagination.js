@@ -38,6 +38,18 @@ class Pagination {
     });
   }
 
+  async count(options={}) {
+
+    const count = await this._model.count({ ...options });
+
+    return new Promise((resolve, reject) => {
+      const out = {
+        totreg: count,
+      }
+      resolve(out);
+    });
+  }
+
 }
 
 module.exports = Pagination;

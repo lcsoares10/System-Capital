@@ -1,11 +1,11 @@
 const express = require('express');
 const routes = express.Router();
 
-const authAdminMiddleware = require('@/src/middleware/authAdmin');
+const authAdmin = require('@/src/middleware/authAdmin');
 
 const ContractPayCompetenceController = require('@/src/controllers/ContractPayCompetenceController');
 
-routes.use(authAdminMiddleware);
+routes.use(authAdmin);
 
 routes.get('/', ContractPayCompetenceController.index);
 routes.get('/:id', ContractPayCompetenceController.get);

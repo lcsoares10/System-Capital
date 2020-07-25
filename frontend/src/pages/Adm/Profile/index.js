@@ -60,7 +60,7 @@ export default function AdmProfile() {
   //Filtra investidores desativados
   function getPendenciasInvestors(rows) {
     const pendencies = rows.filter((investor) => {
-      return investor.user.active === 0;
+      return investor.user.user_activated === 0;
     });
     setInvestors(pendencies);
     return pendencies.length;
@@ -69,7 +69,7 @@ export default function AdmProfile() {
   //Filtra Consultores Desativados
   function getPendenciasConsultants(rows) {
     const pendencies = rows.filter((consultant) => {
-      return consultant.user.active === 0;
+      return consultant.user.user_activated === 0;
     });
     setConsultants(pendencies);
     return pendencies.length;
@@ -79,7 +79,7 @@ export default function AdmProfile() {
   function getPendenciasContracts(rows) {
     console.log(rows);
     const pendencies = rows.filter((contract) => {
-      return contract.contract_active === 0;
+      return contract.contract_activated === 0;
     });
 
     return pendencies.length;

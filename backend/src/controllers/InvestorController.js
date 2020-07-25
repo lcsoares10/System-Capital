@@ -2,8 +2,6 @@ const { Op } = require('sequelize');
 
 const UserController = require('@/src/controllers/UserController');
 
-const ImageModel = require('@/src/models/Image');
-const UserModel = require('@/src/models/User');
 const InvestorModel = require('@/src/models/Investor');
 const ConsultantModel = require('@/src/models/Consultant');
 const ContractModel = require('@/src/models/Contract');
@@ -59,7 +57,13 @@ module.exports = {
       };
 
       const Pagination = new PaginationClass(InvestorModel, pageSize);
-      const result = await Pagination.select(page, options);
+      const onlyCount = req.query.onlyCount || null;
+      if (onlyCount) {
+        //só o total de registros
+        result = await Pagination.count(options);
+      } else {
+        result = await Pagination.select(page, options);
+      }
 
       return res.json(Util.response(result));
     } catch (e) {

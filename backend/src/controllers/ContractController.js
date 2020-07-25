@@ -61,15 +61,13 @@ module.exports = {
       };
 
       const Pagination = new PaginationClass(ContractModel, pageSize);
-      const result = await Pagination.select(page, options);
-
-      // result.rows = result.rows.map(row => {
-      //   console.log(row.virtual);
-      //   row = row.toJSON();
-      //   //taxa de carregamento
-      //   row.charging_rate = row.value * 0.015;
-      //   return row;
-      // });
+      const onlyCount = req.query.onlyCount || null;
+      if (onlyCount) {
+        //só o total de registros
+        result = await Pagination.count(options);
+      } else {
+        result = await Pagination.select(page, options);
+      }
 
       return res.json(Util.response(result));
 
