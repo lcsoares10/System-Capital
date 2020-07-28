@@ -44,12 +44,12 @@ module.exports = {
         type: Sequelize.FLOAT,
         allowNull: false
       },
-      contract_active: {
+      contract_activated: {
         type: Sequelize.INTEGER,
         allowNull: false,
         defaultValue: 0
       },
-      contract_active_date: {
+      contract_activated_at: {
         type: Sequelize.DATE,
         allowNull: true
       },

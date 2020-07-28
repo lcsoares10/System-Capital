@@ -161,7 +161,7 @@ module.exports = {
         console.log('E-mail enviado');
         mailer.sendMail({
           to: user.email,
-          template: 'login/warn_user_active',
+          template: 'login/warn_user_activated',
           context: {
             login: user.email,
             password: user.password,

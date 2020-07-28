@@ -63,15 +63,15 @@ class Contract extends Model {
 
           let status = "";
           switch (true) {
-            case (this.contract_active === 0):
+            case (this.contract_activated === 0):
               status = "desativado"
               break;
 
-            case (this.contract_active === 1 && moment().format('YMMDD') < moment(this.begin).format('YMMDD')):
+            case (this.contract_activated === 1 && moment().format('YMMDD') < moment(this.begin).format('YMMDD')):
               status = "ativado"
               break;
 
-              case (this.contract_active === 1 && moment().format('YMMDD') > moment(this.final).format('YMMDD')):
+              case (this.contract_activated === 1 && moment().format('YMMDD') > moment(this.final).format('YMMDD')):
               status = "encerrado"
               break;
 
@@ -126,8 +126,8 @@ class Contract extends Model {
         type: DataTypes.FLOAT,
         allowNull: false
       },
-      contract_active: DataTypes.INTEGER,
-      contract_active_date: DataTypes.DATE,
+      contract_activated: DataTypes.INTEGER,
+      contract_activated_at: DataTypes.DATE,
     }, {
       hooks: {
         beforeValidate: (self, options) => {

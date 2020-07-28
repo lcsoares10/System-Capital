@@ -2,8 +2,6 @@ const { Op } = require("sequelize");
 
 const UserController = require('@/src/controllers/UserController');
 
-const ImageModel = require('@/src/models/Image');
-const UserModel = require('@/src/models/User');
 const InvestorModel = require('@/src/models/Investor');
 const ConsultantModel = require('@/src/models/Consultant');
 
@@ -46,9 +44,15 @@ module.exports = {
       };
 
       const Pagination = new PaginationClass(ConsultantModel, pageSize);
-      const result = await Pagination.select(page, options);
+      const onlyCount = req.query.onlyCount || null;
+      if (onlyCount) {
+        //só o total de registros
+        result = await Pagination.count(options);
+      } else {
+        result = await Pagination.select(page, options);
+      }
 
-      return res.json(result);
+      return res.json(Util.response(result));
 
     } catch (e) {
       const result = Exception._(e);
@@ -95,18 +99,38 @@ module.exports = {
         if (!consultant) throw new Exception("Consultor não existe", "id_consultant");
       }
 
+      let selFilter = (req.query.search) ? req.query.search : null;
+      let wf = {};
+      if (selFilter) {
+        wf = {
+          user: {
+            where: {
+              id_consultant: id,
+              [Op.or]: [
+                { name: { [Op.like]: `%${selFilter}%` } },
+                { last_name: { [Op.like]: `%${selFilter}%` } }
+              ]
+            }
+          }
+        }
+      }
+
       const page = req.query.page || 1;
       const options = {
         include: { association: 'user', required: true },
-        where: {
-          id_consultant: id
-        }
+        ...wf.user
       };
 
       const Pagination = new PaginationClass(InvestorModel);
-      const result = await Pagination.select(page, options);
+      const onlyCount = req.query.onlyCount || null;
+      if (onlyCount) {
+        //só o total de registros
+        result = await Pagination.count(options);
+      } else {
+        result = await Pagination.select(page, options);
+      }
 
-      return res.json(result);
+      return res.json(Util.response(result));
 
     } catch (e) {
       const result = Exception._(e);
