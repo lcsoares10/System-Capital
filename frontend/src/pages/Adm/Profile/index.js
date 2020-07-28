@@ -135,7 +135,7 @@ export default function AdmProfile() {
               <h3>Contratos</h3>
               <div className="detail-content">
                 <span>{totalContracts}</span>
-                <Link to={`/consultants`}>
+                <Link to={`/contracts`}>
                   <button>Gerenciar</button>
                 </Link>
               </div>

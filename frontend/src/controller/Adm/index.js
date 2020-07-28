@@ -70,9 +70,18 @@ async function consultantsYeld(user_id, year) {
   }
 }
 
-async function getAllContracts() {
+async function getAllContracts(indexProfile, page = '', valueSearch = '') {
+  let size = '';
+  if (indexProfile == true) {
+    size = '&pageSize=9999';
+  }
+  if (valueSearch !== '') {
+    valueSearch = parseInt(valueSearch);
+  }
   try {
-    const { data } = await api.get(`/contracts`);
+    const { data } = await api.get(
+      '/contracts?page=' + page + '&search=' + valueSearch + size
+    );
     // console.log(data);
     return data;
   } catch (error) {
