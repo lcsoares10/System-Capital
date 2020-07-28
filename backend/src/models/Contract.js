@@ -132,7 +132,9 @@ class Contract extends Model {
       hooks: {
         beforeValidate: (self, options) => {
           self.charging_rate = self.value * 0.15;
-          //self.final = moment(self.begin).add(self.time, 'month').add(-1, 'day');
+        },
+        beforeCreate: (self, options) => {
+          self.final = moment(self.begin).add(self.time, 'month').add(-1, 'day');
         },
         beforeUpdate: (self, options) => {
           let begin = (self.begin) ? self.begin : self.previous('begin');

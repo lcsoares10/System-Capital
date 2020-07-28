@@ -2,11 +2,13 @@ const { Op } = require('sequelize');
 
 const UserController = require('@/src/controllers/UserController');
 
+const ImageModel = require('@/src/models/Image');
+const UserModel = require('@/src/models/User');
 const InvestorModel = require('@/src/models/Investor');
 const ConsultantModel = require('@/src/models/Consultant');
 const ContractModel = require('@/src/models/Contract');
+
 const file = require('@/src/utils/file');
-const moment = require('moment');
 
 const Util = require('@/src/class/Util');
 const Exception = require('@/src/class/Exeption');
@@ -35,8 +37,6 @@ module.exports = {
         };
       }
 
-      const pageSize = req.query.pageSize || null;
-
       const page = req.query.page || 1;
       const options = {
         include: [
@@ -56,14 +56,8 @@ module.exports = {
         ],
       };
 
-      const Pagination = new PaginationClass(InvestorModel, pageSize);
-      const onlyCount = req.query.onlyCount || null;
-      if (onlyCount) {
-        //só o total de registros
-        result = await Pagination.count(options);
-      } else {
-        result = await Pagination.select(page, options);
-      }
+      const Pagination = new PaginationClass(InvestorModel);
+      const result = await Pagination.select(page, options);
 
       return res.json(Util.response(result));
     } catch (e) {
@@ -146,9 +140,6 @@ module.exports = {
         day: req.body.day,
         time: req.body.time,
         value: req.body.value,
-        final: moment(req.body.begin)
-          .add(req.body.time, 'month')
-          .add(-1, 'day'),
         id_investor: investor.id,
       };
 

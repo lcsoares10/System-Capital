@@ -41,20 +41,24 @@ export default function DetailIncome(props) {
       <main className="main-view-list">
         <div className="title-header">
           <h1 className="h1-">
-            Rendimentos de {moment(props.match.params.id, 'MM').format('MMMM')}
+            Projeção de {moment(props.match.params.id, 'MM').format('MMMM')}
           </h1>
         </div>
 
         <div className="section">
           <div className="detail">
             <p className="weight-thin">
-              &nbsp;Total Faturado:
+              &nbsp;Total Projetado:
               <b className="text-white">{convertCoinBr(totIncomeMonth)}</b>
             </p>
           </div>
 
           <div className="content-list">
+<<<<<<< HEAD
             <h2>Rendimento ao mês</h2>
+=======
+            <h2>Projetado do mês</h2>
+>>>>>>> dfae34cb8c38ea01ffc20fa1a656aef93bc6d086
 
             <div className="list">
               {investorIncomeMonth.map((investor, key) => (
