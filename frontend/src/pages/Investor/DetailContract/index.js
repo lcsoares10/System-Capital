@@ -9,7 +9,6 @@ import Loading from '../../../components/Loading';
 
 //services
 import findContract from '../../../controller/Investor/findContract';
-import findConsultant from '../../../controller/Investor/findConsultant';
 
 //Functions aux
 import convertCoinBr from '../../../utils/convertCoinBr';
@@ -20,18 +19,12 @@ import './styles.css';
 
 export default function DetailInvestment(props) {
   const [contract, setContract] = useState({});
-  const [consultant, setConsultant] = useState({});
 
   useEffect(() => {
     async function getContract() {
       const data = await findContract(props.match.params.id);
       setContract(data);
-      //getConsultant(data.investor.id_consultant);
     }
-
-    /* async function getConsultant(id_consultant) {
-      setConsultant(await findConsultant(id_consultant));
-    } */
 
     setTimeout(() => {
       getContract();
@@ -56,9 +49,7 @@ export default function DetailInvestment(props) {
           </p>
           <p className="text-beige">
             Data de Termino:{' '}
-            <b className="text-white">
-              {moment(contract.final).format('L')}
-            </b>
+            <b className="text-white">{moment(contract.final).format('L')}</b>
           </p>
           <p className="text-beige">
             Prazo: <b className="text-white">{contract.time} Meses</b>
@@ -74,9 +65,10 @@ export default function DetailInvestment(props) {
             </b>
           </p>
           <p className="text-beige">
-            Consultor: <b className="text-white">{
-              contract.investor.consultant.user.fullname
-            }</b>
+            Consultor:{' '}
+            <b className="text-white">
+              {contract.investor.consultant.user.fullname}
+            </b>
           </p>
         </div>
       </main>

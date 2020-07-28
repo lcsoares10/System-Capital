@@ -9,9 +9,6 @@ import ListContracts from '../../../components/ListContracts';
 
 import allContracts from '../../../controller/Investor/allContracts';
 import calculateProjection from '../../../controller/Investor/calculateProjection';
-//import findContract from '../../controller/Investor/findContract';
-
-// import api from '../../services/api';
 
 import './styles.css';
 

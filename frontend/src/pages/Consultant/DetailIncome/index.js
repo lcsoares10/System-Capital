@@ -54,7 +54,7 @@ export default function DetailIncome(props) {
           </div>
 
           <div className="content-list">
-            <h2>Rendimento ao mes</h2>
+            <h2>Rendimento ao mês</h2>
 
             <div className="list">
               {investorIncomeMonth.map((investor, key) => (

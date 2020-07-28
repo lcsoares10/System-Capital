@@ -8,7 +8,6 @@ import LineChart from '../../../components/ Graphics/line';
 
 import { AllAssoatedinvestors } from '../../../controller/Consultant';
 import { getYeldYear } from '../../../controller/Consultant';
-// import api from '../../services/api';
 
 import './styles.css';
 
