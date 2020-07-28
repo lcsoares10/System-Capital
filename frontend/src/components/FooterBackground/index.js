@@ -17,7 +17,7 @@ function ContentFooter(props) {
 
 export default function FooterBackground(props) {
   const { user } = useAuthContext();
-  //console.log('Footer 1');
+  // ('Footer 1');
   const history = useHistory();
   return (
     <footer>

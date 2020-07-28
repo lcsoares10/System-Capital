@@ -15,7 +15,6 @@ import './styles.css';
 export default function ConsultantRegisters(props) {
   const [consultants, setconsultants] = useState([]);
   const [totconsultants, setTotconsultants] = useState(0);
-  const [valudeInput, setValudeInput] = useState('');
   const [page, setPage] = useState(1);
   const [totPages, setTotPages] = useState(1);
   const [valueSearch, setValueSearch] = useState('');
@@ -32,21 +31,6 @@ export default function ConsultantRegisters(props) {
       getAssoatedconsultants();
     }, 500);
   }, [page, valueSearch]);
-
-  //Tendo criar um search
-  function handleSearch(valueInput) {
-    setValudeInput(valueInput);
-    console.log(valudeInput);
-    let searchConsultants = consultants.filter((consultant) => {
-      return consultant.user.name
-        .toLowerCase()
-        .includes(valudeInput.toLowerCase());
-    });
-    if (searchConsultants.length !== 0) {
-      setconsultants(searchConsultants);
-    }
-    console.log(consultants);
-  }
 
   return (
     <Container>

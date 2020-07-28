@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import moment from 'moment';
 import { useHistory } from 'react-router-dom';
 
 import Container from '../../../components/Container';
@@ -48,7 +47,7 @@ export default function DetailInvestment(props) {
       requestGetconsultantAssciated();
     }, 500);
   }, [props.location.state.stateLink, props.location.state.stateLink.id]);
-  console.log(investorsAssociated);
+
   async function handlleDelete() {
     Swal.fire({
       title: 'Deletar',
@@ -114,7 +113,7 @@ export default function DetailInvestment(props) {
       });
     }
 
-    setConsultant({ ...consultant, active: (consultant.active == 1) ? 0 : 1});
+    setConsultant({ ...consultant, active: consultant.active == 1 ? 0 : 1 });
   }
 
   async function handleSendMessage() {

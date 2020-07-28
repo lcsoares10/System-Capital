@@ -28,7 +28,7 @@ export default function DetailInvestment(props) {
     setTimeout(() => {
       getPayMonths();
     }, 500);
-  }, [resetPage]);
+  }, [resetPage, props.match.params.id]);
 
   function calculateMonthPay(option) {
     let totalPay = 0;
