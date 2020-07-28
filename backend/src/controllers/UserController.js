@@ -1,6 +1,7 @@
 const mailer = require("@/src/modules/mailer");
 
 const UserModel = require('@/src/models/User');
+const ContractModel = require('@/src/models/Contract');
 const ImageModel =  require('@/src/models/Image');
 const MessageBoxModel = require('@/src/models/MessageBox');
 
@@ -156,6 +157,31 @@ module.exports = {
       });
 
       //-----------
+      //Ativar contrato
+      //Quando é um investidor novo é obrigatório ter um contrato
+      let contract;
+        contract = await ContractModel.findOne({
+          include: [
+            {
+              association: 'investor',
+              include: {
+                  association: 'user',
+                  where: {
+                    id: user.id
+                  }
+                }
+            }
+          ]
+        });
+
+        if (contract) {
+          contract.update({
+            contract_activated: (!!contract.contract_activated) ? 0 : 1,
+            contract_activated_at: (!!contract.contract_activated) ? null : new Date(),
+          });
+        }
+
+      //-----------
       //Enviar e-mail
       if (!user.first_login_at && user.user_activated) {
         console.log('E-mail enviado');
@@ -174,8 +200,11 @@ module.exports = {
       }
       //-----------
 
-      return res.json(Util.response(
-        user, `${(!!user.user_activated) ? 'Ativado' : 'Desativado'} com Sucesso`
+      return res.json(Util.response({
+          user,
+          contract: (contract) ? { ...contract.toJSON() } : null
+        },
+         `${(!!user.user_activated) ? 'Ativado' : 'Desativado'} com Sucesso`
       ));
 
     } catch (e) {

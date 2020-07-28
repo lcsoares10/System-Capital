@@ -426,7 +426,7 @@ export default function DetailInvestment(props) {
                           )}
                         {user.is_admin === 1 &&
                           moment().format('YMMDD') <
-                            moment(contract.begin).format('YMMDD') &&
+                            moment(contract.begin).format('YMMDD') ||
                           (contract.contract_activated === 0 ? (
                             <CheckIcon
                               onClick={(e) =>
