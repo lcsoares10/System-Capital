@@ -40,13 +40,6 @@ main .content-panel p {
   padding: 10px;
 }
 
-main h2 {
-  margin-top: var(--margin-title);
-  color: white;
-  font-weight: var(--font-weight-thin);
-  font-size: var(--font-size-36);
-}
-
 main .content-panel button {
   margin-top: 5px;
   color: var(--bg-color-button);

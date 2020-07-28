@@ -8,7 +8,7 @@ import icon_profile_my from '../../assets/icon-profile-my.png';
 import EditIcon from '@material-ui/icons/Edit';
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
 //masks
-import { maskTel } from '../../utils/maskInputs';
+import { maskTel, cpfMask } from '../../utils/maskInputs';
 //------------------------------------------------------------
 import { useAuthContext } from '../../Context/AuthContext';
 import { editUser, detailUser } from '../../controller/user';
@@ -18,7 +18,7 @@ import { Link } from 'react-router-dom';
 
 export default function ViewProfile() {
   const { user } = useAuthContext();
-  // const [login, setLogin] = useState('');
+
   const [name, setName] = useState('');
   const [lastName, setLastName] = useState('');
   const [cpf, setCpf] = useState('');
@@ -29,10 +29,10 @@ export default function ViewProfile() {
   useEffect(() => {
     async function getDetailProfile() {
       const data = await detailUser(user.id, user.type);
-      //  setLogin(data.login);
+
       setName(data.name);
       setLastName(data.last_name);
-      setCpf(data.identif);
+      setCpf(cpfMask(data.identif));
       setTel(maskTel(data.tel));
       setEmail(data.email);
       setImgProfile(data.profile);
@@ -53,7 +53,6 @@ export default function ViewProfile() {
 
     const response = await editUser(formData, user.id, user.type);
     alert(response);
-    // window.location.reload(false);
   }
 
   function handdleInputImage(image) {
@@ -123,7 +122,17 @@ export default function ViewProfile() {
                 style={{ cursor: ' context-menu' }}
               />
             </div>
-
+            <div className="no-edit-form">
+              <label htmlFor="cpf" className="label">
+                CPF
+              </label>
+              <input
+                type="text"
+                readOnly={true}
+                value={cpf}
+                style={{ cursor: ' context-menu' }}
+              />
+            </div>
             <div className="edit-form">
               <label htmlFor="tel" className="label">
                 Telefone
@@ -159,10 +168,3 @@ export default function ViewProfile() {
     </Container>
   );
 }
-
-/* <div className="no-edit-form">
-<label htmlFor="login" className="label">
-  Login
-</label>
-<input type="text" readOnly={true} value={login} />
-</div> */

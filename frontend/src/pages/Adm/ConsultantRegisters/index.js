@@ -15,7 +15,6 @@ import './styles.css';
 export default function ConsultantRegisters(props) {
   const [consultants, setconsultants] = useState([]);
   const [totconsultants, setTotconsultants] = useState(0);
-  const [dataSearch, setDataSerach] = useState([]);
   const [valudeInput, setValudeInput] = useState('');
   const [page, setPage] = useState(1);
   const [totPages, setTotPages] = useState(1);

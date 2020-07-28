@@ -19,11 +19,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import CheckIcon from '@material-ui/icons/Check';
 import DeleteIcon from '@material-ui/icons/Delete';
-import {
-  cpfMask,
-  maskTel,
-  durationContractMask,
-} from '../../../utils/maskInputs';
+import { cpfMask, maskTel } from '../../../utils/maskInputs';
 import Swal from 'sweetalert2';
 
 import { useAuthContext } from '../../../Context/AuthContext';
@@ -126,7 +122,7 @@ export default function DetailInvestment(props) {
         confirmButtonColor: '#a0770a',
       });
       //history.push('/investors');
-      setInvestor({ ...investor, active: investor.active == 1 ? 0 : 1 });
+      setInvestor({ ...investor, active: investor.active === 1 ? 0 : 1 });
     }
   }
 
@@ -183,7 +179,7 @@ export default function DetailInvestment(props) {
   async function handleDisabledContract(status, id_contract) {
     setStatusContract(0);
     try {
-      const data = await api.put('/contracts/' + id_contract, {
+      await api.put('/contracts/' + id_contract, {
         contract_activated: status,
         id_investor: userId,
       });
@@ -425,40 +421,40 @@ export default function DetailInvestment(props) {
                             </Link>
                           )}
                         {user.is_admin === 1 &&
-                          moment().format('YMMDD') <
+                          (moment().format('YMMDD') <
                             moment(contract.begin).format('YMMDD') ||
-                          (contract.contract_activated === 0 ? (
-                            <CheckIcon
-                              onClick={(e) =>
-                                handleDisabledContract(1, contract.id)
-                              }
-                              style={{
-                                margin: '0px 5px',
-                                backgroundColor: 'green',
-                                padding: '2px',
-                                color: 'white',
-                                borderRadius: '5px',
-                                boxShadow: 'var(--shadow-bottom)',
-                              }}
-                              title="Ativar"
-                              alt="Ativar"
-                            />
-                          ) : (
-                            <HighlightOffIcon
-                              onClick={(e) =>
-                                handleDisabledContract(0, contract.id)
-                              }
-                              style={{
-                                margin: '0px 5px',
-                                backgroundColor: ' #a0770a',
-                                padding: '2px',
-                                color: 'white',
-                                borderRadius: '5px',
-                                boxShadow: 'var(--shadow-bottom)',
-                              }}
-                              title="Desativar"
-                            />
-                          ))}
+                            (contract.contract_activated === 0 ? (
+                              <CheckIcon
+                                onClick={(e) =>
+                                  handleDisabledContract(1, contract.id)
+                                }
+                                style={{
+                                  margin: '0px 5px',
+                                  backgroundColor: 'green',
+                                  padding: '2px',
+                                  color: 'white',
+                                  borderRadius: '5px',
+                                  boxShadow: 'var(--shadow-bottom)',
+                                }}
+                                title="Ativar"
+                                alt="Ativar"
+                              />
+                            ) : (
+                              <HighlightOffIcon
+                                onClick={(e) =>
+                                  handleDisabledContract(0, contract.id)
+                                }
+                                style={{
+                                  margin: '0px 5px',
+                                  backgroundColor: ' #a0770a',
+                                  padding: '2px',
+                                  color: 'white',
+                                  borderRadius: '5px',
+                                  boxShadow: 'var(--shadow-bottom)',
+                                }}
+                                title="Desativar"
+                              />
+                            )))}
                       </div>
                     </div>
                     <div className="article-contract">

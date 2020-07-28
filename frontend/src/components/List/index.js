@@ -20,11 +20,10 @@ export default function ListContracts(props) {
   const stateLink = props.stateLink;
 
   let styleColumn = {};
-  let flexDirection = {};
+
   let deactivate = {};
   if (props.flexColumn === true) {
     styleColumn = { padding: '10px 0px ' };
-    flexDirection = { flexDirection: 'column' };
   }
   if (props.backgroundColor) {
     deactivate = { backgroundColor: '#1d1d1d' };
