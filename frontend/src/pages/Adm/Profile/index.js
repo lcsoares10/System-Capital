@@ -77,7 +77,7 @@ export default function AdmProfile() {
 
   //Filtra Contratos Desativados
   function getPendenciasContracts(rows) {
-    console.log(rows);
+    //console.log(rows);
     const pendencies = rows.filter((contract) => {
       return contract.contract_activated === 0;
     });

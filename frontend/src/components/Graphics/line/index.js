@@ -3,7 +3,7 @@ import { Line } from 'react-chartjs-2';
 import convertCoinBr from '../../../utils/convertCoinBr';
 
 export default function LineChart(props) {
-  console.log(props.data.months);
+  // console.log(props.data.months);
 
   const months = props.data.months || [];
   const values = props.data.values || [];

@@ -52,7 +52,7 @@ export default function Profile() {
     return { values, months };
   }
 
-  console.log(dataProjection);
+  // console.log(dataProjection);
   return (
     <Container className="container-login">
       <HeaderBackground notLogin={true} />

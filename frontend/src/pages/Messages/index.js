@@ -27,7 +27,7 @@ export default function Messages() {
     }
     getMessages();
   }, [user.id_user]);
-  console.log(messages);
+  //console.log(messages);
   return (
     <Container>
       <HeaderBackground notLogin={true} />
@@ -56,7 +56,7 @@ export default function Messages() {
             ''
           )}
           {messages.map((message, key) => {
-            console.log(message.users[0].MessageUserView.viewed);
+            //  console.log(message.users[0].MessageUserView.viewed);
             if (message.users[0].MessageUserView.viewed === 0) {
               return (
                 <Message

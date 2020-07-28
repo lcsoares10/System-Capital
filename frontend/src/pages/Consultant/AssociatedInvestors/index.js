@@ -28,7 +28,7 @@ export default function DetailInvestment(props) {
       getAssoatedinvestors();
     }, 500);
   }, [props.match.params.id]);
-  console.log(investors[0]);
+  //console.log(investors[0]);
   return (
     <Container>
       <HeaderBackground notLogin={true} />

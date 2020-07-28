@@ -93,7 +93,7 @@ const Contract = (props) => {
 
 export default function NewUser(props) {
   //Variavel que fara o controle de criação de usuario ou consultor
-  console.log(props.location);
+  // console.log(props.location);
   const newUser = props.location.state;
   const history = useHistory();
 

@@ -73,10 +73,10 @@ async function consultantsYeld(user_id, year) {
 async function getAllContracts() {
   try {
     const { data } = await api.get(`/contracts`);
-    console.log(data);
+    // console.log(data);
     return data;
   } catch (error) {
-    console.log(error.response);
+    //console.log(error.response);
     return error;
   }
 }

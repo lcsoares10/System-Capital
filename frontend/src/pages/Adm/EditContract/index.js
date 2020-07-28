@@ -78,12 +78,12 @@ export default function EditContract(props) {
       const result = await api.put('/contracts/' + contract.id, dataForm);
 
       if (result) {
-          let contract = result.data.data;
-          console.log(contract);
-          setValueInvest(Number(contract.value));
-          setStartContract(contract.begin.substring(0, 10));
-          setEndContract(contract.final.substring(0, 10));
-          setTimeContract(String(contract.time));
+        let contract = result.data.data;
+        //console.log(contract);
+        setValueInvest(Number(contract.value));
+        setStartContract(contract.begin.substring(0, 10));
+        setEndContract(contract.final.substring(0, 10));
+        setTimeContract(String(contract.time));
       }
 
       Swal.fire({
@@ -115,9 +115,7 @@ export default function EditContract(props) {
           <form onSubmit={handleEditContract}>
             <div className="inputs-contracts">
               <h1>Editar Contrato</h1>
-              <p className="text-white">
-                Status:{' '}{(contract.xstatus)}
-              </p>
+              <p className="text-white">Status: {contract.xstatus}</p>
               <p className="text-white">
                 COD:{String(contract.id).padStart(5, '0')}
               </p>
@@ -177,10 +175,11 @@ export default function EditContract(props) {
                   value={endContract}
                   onChange={(e) => setEndContract(e.target.value)}
                   required
-                  disabled={!['vigente', 'encerrado'].includes(contract.xstatus)}
+                  disabled={
+                    !['vigente', 'encerrado'].includes(contract.xstatus)
+                  }
                 />
               </div>
-
             </div>
             <button style={{ padding: '10px 90px', marginTop: '30px' }}>
               SALVAR

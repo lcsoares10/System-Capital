@@ -43,7 +43,7 @@ export default function Profile() {
     setDataProjection(calculateProjection(contract));
   }
 
-  console.log(user);
+  // console.log(user);
 
   return (
     <Container className="container-login">

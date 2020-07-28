@@ -23,7 +23,7 @@ export default function SelectPage(props) {
     next = '';
     back = '#a0770a';
   }
-  console.log(props.page);
+  //console.log(props.page);
   return (
     <Pages>
       {props.totPages !== 1 && props.totPages !== 0 && (

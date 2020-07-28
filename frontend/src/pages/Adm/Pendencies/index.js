@@ -11,7 +11,7 @@ import './styles.css';
 //------------------------------------------------------------
 
 export default function ConsultantRegisters(props) {
-  console.log(props.location.state);
+  // console.log(props.location.state);
   const consultants = props.location.state.consultants;
   const investors = props.location.state.investors;
 

@@ -56,7 +56,7 @@ async function editUser(dataForm, id_user, type) {
     const { data } = await api.put(url, dataForm, config);
     return `${data.data.user.name} seus dados foram alterados com sucesso`;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return error;
   }
 }
@@ -80,7 +80,7 @@ async function deleteUser(id_user, type) {
     const { data } = await api.delete(url);
     return `${data.data.user.name} foi deletado com sucesso`;
   } catch (error) {
-    console.log(error);
+    //  console.log(error);
     return error;
   }
 }
@@ -107,7 +107,7 @@ async function detailUser(id_user, type) {
     }
     return data.user;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return error.response.message;
   }
 }
