@@ -23,6 +23,7 @@ import { cpfMask, maskTel } from '../../../utils/maskInputs';
 import Swal from 'sweetalert2';
 
 import { useAuthContext } from '../../../Context/AuthContext';
+import { detailUser } from '../../../controller/user';
 
 //------------------------------------------------------------
 
@@ -41,7 +42,12 @@ export default function DetailInvestment(props) {
       const contractsInvestor = await allContracts(
         props.location.state.stateLink.id
       );
-      setInvestor(dataInvestor.user);
+      const data = await detailUser(
+        props.location.state.stateLink.id,
+        'investor'
+      );
+
+      setInvestor(data);
       setUserId(dataInvestor.id);
       if (dataInvestor.consultant) {
         setInvestorConsultant(dataInvestor.consultant.user);

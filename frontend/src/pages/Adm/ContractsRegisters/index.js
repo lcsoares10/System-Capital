@@ -69,8 +69,8 @@ export default function ContractsRegisters(props) {
                 <List
                   key={key}
                   value_col_1={`${String(contract.id).padStart('5', 0)} `}
-                  url={`/detailcontract/${contract.id}`}
-                  stateLink={contract}
+                  url={`/detailInvestor/${contract.investor.user.name}`}
+                  stateLink={contract.investor}
                   backgroundColor={
                     contract.is_vigente === false ||
                     contract.contract_activated === 0

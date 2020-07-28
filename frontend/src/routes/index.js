@@ -181,6 +181,11 @@ export default function Routes() {
             component={DetailConsultant}
           ></PrivateRoute>
           <PrivateRoute
+            path="/pendencies"
+            nivel="2"
+            component={Pendencies}
+          ></PrivateRoute>
+          <PrivateRoute
             path="/contracts"
             nivel="2"
             component={ContractsRegisters}
