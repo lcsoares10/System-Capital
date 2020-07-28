@@ -1,11 +1,6 @@
 .container-login {
   align-items: flex-start;
 }
-.dashboard-adm {
-  display: flex;
-  margin-bottom: 50px;
-  flex-direction: column;
-}
 
 main .title-header {
   display: flex;
@@ -84,11 +79,4 @@ main .content-panel button {
 }
 
 @media (min-width: 600px) {
-  main .content-panel {
-    margin: 28px 10px;
-  }
-  .dashboard-adm {
-    flex-direction: row;
-    justify-content: space-around;
-  }
 }
