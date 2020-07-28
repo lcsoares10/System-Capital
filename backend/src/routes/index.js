@@ -13,6 +13,7 @@ const contractRoutes = require('./contract');
 const contractpaycompetenceRoutes = require('./contractpaycompetence');
 const messageboxRoutes = require('./messagebox');
 const attachmentRoutes = require('./attachment');
+const adminRoutes = require('./admin');
 
 /** ==========================================================*/
 /** Rotas */
@@ -33,7 +34,7 @@ routes.use('/consultants', consultantRoutes);
 routes.use('/contracts', contractRoutes);
 routes.use('/contractpaycompetences', contractpaycompetenceRoutes);
 routes.use('/messagesbox', messageboxRoutes);
-
 routes.use('/attachments', attachmentRoutes);
+routes.use('/admin', adminRoutes);
 
 module.exports = routes;

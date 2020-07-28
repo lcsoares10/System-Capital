@@ -27,7 +27,7 @@ async function getAllConsultants(indexProfile, page = '', valueSearch = '') {
       '/consultants?page=' + page + '&search=' + valueSearch + size
     );
     //console.log(data)
-    return data;
+    return data.data;
   } catch (error) {
     // console.log(error.response.data.message)
     return error.response.data.message;

@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import api from '../../services/api';
 import Swal from 'sweetalert2';
+
+import erros from '../../utils/erros';
+
 export default function useAuth() {
   const history = useHistory();
 
@@ -49,9 +52,8 @@ export default function useAuth() {
       const { payload } = jwtDecode(token);
 
       localStorage.setItem('token_X6_Capital', token);
-
       api.defaults.headers.Authorization = `Bearer ${token}`;
-      console.log(payload.user);
+
       setUser(payload.user);
       setAuthenticated(true);
 
@@ -66,13 +68,13 @@ export default function useAuth() {
 
       // history.push('/profile');
     } catch (error) {
+
       setAuthenticated(false);
-      //const { data } = error.response;
-      //alert(data.message);
-      //console.log(error.response);
+      //const msg = (error.response) ? error.response.data.message : error.message;
+
       Swal.fire({
         title: 'Erro!',
-        text: error.response.data.message,
+        text: erros.getMessage(error),
         icon: 'error',
         confirmButtonText: 'OK',
         background: '#121212',

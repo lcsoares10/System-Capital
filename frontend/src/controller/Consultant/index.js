@@ -5,8 +5,8 @@ async function AllAssoatedinvestors(id_consultant, page) {
     const { data } = await api.get(
       `/consultants/${id_consultant}/investors?page=${page}`
     );
-    console.log(data);
-    return data;
+    console.log(data.data);
+    return data.data;
   } catch (error) {
     console.log(error.response);
     return error;
