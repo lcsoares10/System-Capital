@@ -21,7 +21,7 @@ export default function InvestorRegisters(props) {
   const [valueSearch, setValueSearch] = useState('');
   useEffect(() => {
     async function getAssoatedinvestors() {
-      const data = await getAllInvestors(page, valueSearch);
+      const data = await getAllInvestors(false, page, valueSearch);
       setInvestors(data.rows);
       setTotInvestors(data.totreg);
       setPage(data.page);

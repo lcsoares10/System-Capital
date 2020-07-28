@@ -35,21 +35,20 @@ export default function AdmProfile() {
   useEffect(() => {
     // Create an scoped async function in the hook
     async function getTotals() {
-      const datai = await getAllInvestors();
+      const datai = await getAllInvestors(true);
       setTotInvestors(datai.totreg);
 
-      const datac = await getAllConsultants();
+      const datac = await getAllConsultants(true);
       setTotConsultants(datac.totreg);
 
       const datainvestorA = await AllAssoatedinvestors(user.id);
       setTotInvestorAssociated(datainvestorA.totreg);
 
       const dataContracts = await getAllContracts();
-      console.log(dataContracts);
+
       count += getPendenciasInvestors(datai.rows);
       count += getPendenciasConsultants(datac.rows);
-      console.log(dataContracts.rows);
-      count += getPendenciasContracts(dataContracts.rows);
+      count += getPendenciasContracts(dataContracts.data.rows);
 
       setTotalPendencies(count);
       //Sum evidencias
