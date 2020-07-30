@@ -41,7 +41,7 @@ export default function ContractsRegisters(props) {
           <h1 className="h1-">Contratos</h1>
           <Link
             to={{
-              pathname: '/newUser',
+              pathname: '/newContract',
               state: { type: 'contract', isEdit: false },
             }}
             style={{ position: 'absolute', right: '20px', marginTop: '7px' }}

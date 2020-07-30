@@ -28,6 +28,7 @@ import ConsultantRegisters from '../pages/Adm/ConsultantRegisters';
 import DetailConsultant from '../pages/Adm/DetailConsultant';
 import Pendencies from '../pages/Adm/Pendencies';
 import ContractsRegisters from '../pages/Adm/ContractsRegisters';
+import NewContract from '../pages/Adm/NewContract';
 
 import Loading from '../components/Loading';
 
@@ -189,6 +190,11 @@ export default function Routes() {
             path="/contracts"
             nivel="2"
             component={ContractsRegisters}
+          ></PrivateRoute>
+          <PrivateRoute
+            path="/newContract"
+            nivel="2"
+            component={NewContract}
           ></PrivateRoute>
           <PrivateRoute path="/*" component={Page404} />
         </Switch>
